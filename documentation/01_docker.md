@@ -1,5 +1,7 @@
 # Docker
 
+[Docu](https://hub.docker.com/r/ethereum/client-go)
+
 ### Addresses
 
 - IP Address: 194.95.66.64
@@ -22,7 +24,7 @@
 
 ### 03: Create genesis block
 
-    cd /tmp
+    cd /tmp && \
     nano /tmp/genesis.json
 
     // content of `genesis.json`:
@@ -45,7 +47,7 @@
 ### 04: Init blockchain
     sudo docker run \
         --rm \
-        --volume "$PWD":/tmp \
+        --volume /tmp:/tmp \
         --volume ethereum:/root \
         ethereum/client-go:latest \
             init \
@@ -92,3 +94,4 @@
 - create account: `personal.newAccount("12345678")`
     - first account is coinbase account
 - unlock account: `personal.unlockAccount("address", "pw")`
+- get account balance: `web3.fromWei(eth.getBalance(eth.coinbase), "ether")`
