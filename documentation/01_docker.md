@@ -91,4 +91,4 @@
 - check accounts: `eth.accounts` 
 - create account: `personal.newAccount("12345678")`
     - first account is coinbase account
-    - unlock account: `personal.unlockAccount("address", "pw")`
+- unlock account: `personal.unlockAccount("address", "pw")`
