@@ -3,11 +3,8 @@
 [Docu](https://hub.docker.com/r/ethereum/client-go)
 
 ### Addresses
-
 - IP Address: 194.95.66.64
 - RPC Port: 8545
-
-
 
 ### 01: Setup network
     sudo docker network create \
@@ -71,14 +68,14 @@
             --datadir /root \
             --rpc \
             --rpcaddr 0.0.0.0 \
-            --rpcport "8545" \
+            --rpcport 8545 \
             --rpccorsdomain "*" \
             --rpcapi eth,net,web3 \
             --nodiscover \
             --networkid 15 && \
     sudo docker logs -f ethereum
 
-Parameter: [https://github.com/ethereum/go-ethereum/wiki/Command-Line-Options](https://github.com/ethereum/go-ethereum/wiki/Command-Line-Options)
+Full list of possible parameter: [https://github.com/ethereum/go-ethereum/wiki/Command-Line-Options](https://github.com/ethereum/go-ethereum/wiki/Command-Line-Options)
 
 ### 05: Attach to node
     sudo docker run \
