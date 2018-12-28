@@ -46,6 +46,7 @@
             "eip158Block": 0
         },
         "alloc"         : {},
+        "coinbase"      : "0x",
         "difficulty"    : "0x20000",
         "gasLimit"      : "0x2fefd8",
         "nonce"         : "0x6800300660911093",
@@ -113,14 +114,27 @@ Full list of possible parameter: [https://github.com/ethereum/go-ethereum/wiki/C
             --networkid 32 \
             attach
 
-### 06: Setup node
+### 07: Connect to node
+    // find out nodeId
+    admin.nodeInfo
+    
+    // connect to node
+    admin.addPeer("enode://<id>@<ip>:<port>")
+    
+    // show connected nodes
+    admin.peers
+    
+    // show nodes blocknumber
+    eth.blockNumber
+
+### 08: Setup node
 - check accounts: `eth.accounts` 
 - create account: `personal.newAccount("12345678")`
     - first account is coinbase account
 - unlock account: `personal.unlockAccount("address", "pw")`
 - get account balance: `web3.fromWei(eth.getBalance(eth.coinbase), "ether")`
 
-### 07: Setup monitoring
+### 09: Setup monitoring
     sudo docker run \
         -it \
         --rm \
