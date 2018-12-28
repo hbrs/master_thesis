@@ -100,10 +100,6 @@
             --gasprice 18000000000 \
             --verbosity 3 &&\
     sudo docker logs -f geth_1
-    
-    https://github.com/ethereum/go-ethereum/wiki/Command-Line-Options
-    
-    ,miner,personal,rpc,debug
 
 Full list of possible parameter: [https://github.com/ethereum/go-ethereum/wiki/Command-Line-Options](https://github.com/ethereum/go-ethereum/wiki/Command-Line-Options)
 
@@ -116,11 +112,8 @@ Full list of possible parameter: [https://github.com/ethereum/go-ethereum/wiki/C
             --datadir "/root" \
             --networkid 32 \
             attach
-            
-    
 
 ### 06: Setup node
-
 - check accounts: `eth.accounts` 
 - create account: `personal.newAccount("12345678")`
     - first account is coinbase account
@@ -128,7 +121,6 @@ Full list of possible parameter: [https://github.com/ethereum/go-ethereum/wiki/C
 - get account balance: `web3.fromWei(eth.getBalance(eth.coinbase), "ether")`
 
 ### 07: Setup monitoring
-
     sudo docker run \
         -it \
         --rm \
@@ -146,23 +138,23 @@ Full list of possible parameter: [https://github.com/ethereum/go-ethereum/wiki/C
 
     git clone https://github.com/cubedro/eth-net-intelligence-api.git &&\
     git clone https://github.com/cubedro/eth-netstats.git &&\
-    
+
     npm install -g pm2 &&\
     npm install -g grunt-cli &&\
-    
+
     cd eth-net-intelligence-api &&\
-    
+
     npm install &&\
-    
+
     nano app.json
-    
+
     pm2 start app.json
-    
+
     cd ../eth-netstats && \
-    
+
     npm install &&\
     grunt &&\
-    
+
     export WS_SECRET=secret &&\
-    
+
     npm start
