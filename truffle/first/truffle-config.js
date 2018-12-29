@@ -40,6 +40,12 @@ module.exports = {
    */
 
   networks: {
+	hbrs: {
+	      host: "194.95.66.64",
+	      port: 8545,
+	      network_id: "32",
+	      gas: 3500000
+	}
     // Useful for testing. The `development` name is special - truffle uses it by default
     // if it's defined here and no other network is specified at the command line.
     // You should run a client (like ganache-cli, geth or parity) in a separate terminal
@@ -79,13 +85,6 @@ module.exports = {
       // network_id: 2111,   // This network is yours, in the cloud.
       // production: true    // Treats this network as if it was a public net. (default: false)
     // }
-
-	hbrs: {
-		host: "194.95.66.64",
-		port: 8545,
-		network_id: "15",
-		gas: 3500000
-	}
   },
 
   // Set default mocha options here, use special reporters etc.

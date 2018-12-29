@@ -20,7 +20,7 @@
     sudo docker volume ls
 
 ### 03: Create account
-    echo "12345678" > /tmp/password.txt
+    echo "12345678" > /tmp/password.txt &&\
 
     sudo docker run \
         -it \
@@ -47,7 +47,7 @@
         },
         "alloc"         : {},
         "coinbase"      : "0x",
-        "difficulty"    : "0x20000",
+        "difficulty"    : "0x2",
         "gasLimit"      : "0x2fefd8",
         "nonce"         : "0x6800300660911093",
         "mixhash"       : "0x0000000000000000000000000000000000000000000000000000000000000000",
@@ -96,7 +96,7 @@
             --nat "any" \
             --nodiscover \
             --mine \
-            --minerthreads 1 \
+            --minerthreads 8 \
             --targetgaslimit 4712388 \
             --gasprice 18000000000 \
             --verbosity 3 &&\
@@ -160,15 +160,41 @@ Full list of possible parameter: [https://github.com/ethereum/go-ethereum/wiki/C
 
     npm install &&\
 
-    nano app.json
+    nano app.json &&\
 
-    pm2 start app.json
+    pm2 start app.json &&\
 
     cd ../eth-netstats && \
 
     npm install &&\
-    grunt &&\
+    grunt all &&\
 
     export WS_SECRET=secret &&\
 
     npm start
+
+    {
+        "name"              : "geth_1",
+        "script"            : "app.js",
+        "log_date_format"   : "YYYY-MM-DD HH:mm Z",
+        "merge_logs"        : false,
+        "watch"             : false,
+        "max_restarts"      : 4,
+        "exec_interpreter"  : "node",
+        "exec_mode"         : "fork_mode",
+        "env": {
+            "NODE_ENV"        : "production",
+            "RPC_HOST"        : "172.22.0.10",
+            "RPC_PORT"        : "8545",
+            "LISTENING_PORT"  : "30303",
+            "INSTANCE_NAME"   : "geth_1",
+            "CONTACT_DETAILS" : "",
+            "WS_SERVER"       : "http://172.22.0.22:3000",
+            "WS_SECRET"       : "secret",
+            "VERBOSITY"       : 2
+        }
+    }
+
+**Sources:**
+- https://github.com/cubedro/eth-net-intelligence-api
+- https://github.com/cubedro/eth-netstats
