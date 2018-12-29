@@ -1,11 +1,5 @@
 # Docker
 
-[Docu](https://hub.docker.com/r/ethereum/client-go)
-
-### Addresses
-- IP Address: 194.95.66.64
-- RPC Port: 8545
-
 ### 01: Setup network
     sudo docker network create \
         --driver=bridge \
