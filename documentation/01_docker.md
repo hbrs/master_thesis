@@ -211,7 +211,6 @@
 - https://github.com/ethersphere/eth-utils
 
 ### 11: RPC
-
 *Example:*
     curl \
         -X POST \
