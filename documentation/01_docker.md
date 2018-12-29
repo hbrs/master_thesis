@@ -1,6 +1,6 @@
-# Setup `geth` with Docker
+# Setup geth with Docker
 
-### 01: Setup network
+### Step 01: Setup network
     sudo docker network create \
         --driver=bridge \
         --subnet=172.22.0.0/24 \
@@ -8,12 +8,12 @@
         --gateway=172.22.0.1 \
         dockernet
 
-### 02: Create volumn
+### Step 02: Create volumn
     sudo docker volume rm geth_1 && \
     sudo docker volume create geth_1 && \
     sudo docker volume ls
 
-### 03: Create account
+### Step 03: Create account
     echo "12345678" > /tmp/password.txt &&\
 
     sudo docker run \
@@ -29,7 +29,7 @@
 **Links:**
 - https://hub.docker.com/r/ethereum/client-go
 
-### 04: Create genesis block
+### Step 04: Create genesis block
 
     cd /tmp && \
     nano /tmp/genesis.json
@@ -52,7 +52,7 @@
         "timestamp"     : "0x0"
     }
 
-### 05: Init blockchain
+### Step 05: Init blockchain
     sudo docker run \
         --rm \
         --volume /tmp/genesis.json:/tmp/genesis.json \
@@ -62,7 +62,7 @@
                 --datadir "/root" \
                 /tmp/genesis.json
     
-### 06: Run node
+### Step 06: Run node
     sudo docker stop geth_1 &&\
     sudo docker rm geth_1 &&\
     sudo docker run \
@@ -106,7 +106,7 @@
 - https://ethereum.gitbooks.io/frontier-guide/content/cli.html
 - https://github.com/ethereum/go-ethereum/wiki/Management-APIs
 
-### 07: Attach to node
+### Step 07: Attach to node
     sudo docker run \
         -it \
         --rm \
@@ -116,7 +116,7 @@
             --networkid 32 \
             attach
 
-### 08: Connect to node
+### Step 08: Connect to node
     // find out nodeId
     admin.nodeInfo
     
@@ -129,7 +129,7 @@
     // show nodes blocknumber
     eth.blockNumber
 
-### 09: API commands
+### Step 09: API commands
 - check accounts: `eth.accounts` 
 - create account: `personal.newAccount("12345678")`
     - first account is coinbase account
@@ -140,7 +140,7 @@
 **Links:**
 - https://github.com/ethereum/go-ethereum/wiki/Managing-your-accounts
 
-### 10: Setup monitoring
+### Step 10: Setup monitoring
     sudo docker run \
         -it \
         --rm \
@@ -152,6 +152,8 @@
         --workdir /usr/src/app \
         node:latest \
             /bin/bash
+
+*Run this script within the container:*
 
     apt update &&\
     apt install nano &&\
@@ -210,7 +212,7 @@
 - https://github.com/ethereum/go-ethereum/wiki/Setting-up-monitoring-on-local-cluster
 - https://github.com/ethersphere/eth-utils
 
-### 11: RPC
+### Step 11: RPC
 *Example:*
     curl \
         -X POST \
