@@ -99,6 +99,8 @@
             --verbosity 3 &&\
     sudo docker logs -f geth_1
 
+*Important: Each node needs an own port! Also for RPC*
+
 **Full list of possible parameter**
 - https://github.com/ethereum/go-ethereum/wiki/Command-Line-Options
 - https://ethereum.gitbooks.io/frontier-guide/content/cli.html
