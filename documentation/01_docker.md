@@ -224,7 +224,7 @@
 
 ---
 
-**More Links:**
+**More links:**
 - https://www.polarsparc.com/xhtml/PrivateEthDocker.html
 - https://medium.com/@javahippie/building-a-local-ethereum-network-with-docker-and-geth-5b9326b85f37
 - https://github.com/ethereum/go-ethereum/wiki/Setting-up-private-network-or-local-cluster
