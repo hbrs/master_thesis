@@ -34,7 +34,7 @@
     cd /tmp && \
     nano /tmp/genesis.json
 
-    // content of `genesis.json`:
+    // content of `genesis.json`
     {
         "config": {
             "chainId": 32,
@@ -99,7 +99,10 @@
             --verbosity 3 &&\
     sudo docker logs -f geth_1
 
-Full list of possible parameter: [https://github.com/ethereum/go-ethereum/wiki/Command-Line-Options](https://github.com/ethereum/go-ethereum/wiki/Command-Line-Options)
+**Full list of possible parameter**
+- https://github.com/ethereum/go-ethereum/wiki/Command-Line-Options
+- https://ethereum.gitbooks.io/frontier-guide/content/cli.html
+- https://github.com/ethereum/go-ethereum/wiki/Management-APIs
 
 ### 07: Attach to node
     sudo docker run \
@@ -130,6 +133,9 @@ Full list of possible parameter: [https://github.com/ethereum/go-ethereum/wiki/C
     - first account is coinbase account
 - unlock account: `personal.unlockAccount("address", "pw")`
 - get account balance: `web3.fromWei(eth.getBalance(eth.coinbase), "ether")`
+
+**Links:**
+- https://github.com/ethereum/go-ethereum/wiki/Managing-your-accounts
 
 ### 10: Setup monitoring
     sudo docker run \
@@ -170,6 +176,8 @@ Full list of possible parameter: [https://github.com/ethereum/go-ethereum/wiki/C
 
     npm start
 
+*Content of `app.json`*
+
     {
         "name"              : "geth_1",
         "script"            : "app.js",
@@ -195,3 +203,19 @@ Full list of possible parameter: [https://github.com/ethereum/go-ethereum/wiki/C
 **Links:**
 - https://github.com/cubedro/eth-net-intelligence-api
 - https://github.com/cubedro/eth-netstats
+- https://github.com/ethereum/wiki/wiki/Network-Status
+- https://github.com/ethereum/go-ethereum/wiki/Setting-up-monitoring-on-local-cluster
+- https://github.com/ethersphere/eth-utils
+
+### 11: RPC
+
+- https://github.com/ethereum/wiki/wiki/JSON-RPC
+
+---
+
+**More Links:**
+- https://www.polarsparc.com/xhtml/PrivateEthDocker.html
+- https://medium.com/@javahippie/building-a-local-ethereum-network-with-docker-and-geth-5b9326b85f37
+- https://github.com/ethereum/go-ethereum/wiki/Setting-up-private-network-or-local-cluster
+- https://gist.github.com/fishbullet/04fcc4f7af90ee9fa6f9de0b0aa325ab
+- https://github.com/ethereum/go-ethereum/wiki/Connecting-to-the-network
