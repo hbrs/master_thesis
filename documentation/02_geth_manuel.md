@@ -21,7 +21,7 @@
     #wget https://dl.google.com/go/go1.11.4.linux-amd64.tar.gz &&\
     wget https://gethstore.blob.core.windows.net/builds/geth-alltools-linux-amd64-1.8.20-24d727b6.tar.gz &&\
 
-    tar -C /usr/local -xzf go1.11.4.linux-amd64.tar.gz &&\
+    #tar -C /usr/local -xzf go1.11.4.linux-amd64.tar.gz &&\
     tar -C /usr/local -xzf geth-alltools-linux-amd64-1.8.20-24d727b6.tar.gz &&\
 
     rm *.tar.gz &&\
