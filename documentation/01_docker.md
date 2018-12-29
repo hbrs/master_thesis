@@ -99,7 +99,7 @@
             --verbosity 3 &&\
     sudo docker logs -f geth_1
 
-*Important: Each node needs an own port! Also for RPC*
+*Important: Each node needs an own port! Also for RPC!*
 
 **Full list of possible parameter**
 - https://github.com/ethereum/go-ethereum/wiki/Command-Line-Options
@@ -129,12 +129,13 @@
     // show nodes blocknumber
     eth.blockNumber
 
-### 09: Setup node
+### 09: API commands
 - check accounts: `eth.accounts` 
 - create account: `personal.newAccount("12345678")`
     - first account is coinbase account
 - unlock account: `personal.unlockAccount("address", "pw")`
 - get account balance: `web3.fromWei(eth.getBalance(eth.coinbase), "ether")`
+- miner: `miner.start(<#threads>), miner.stop()`
 
 **Links:**
 - https://github.com/ethereum/go-ethereum/wiki/Managing-your-accounts
