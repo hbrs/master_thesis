@@ -1,4 +1,4 @@
-# Docker
+# Setup `geth` with Docker
 
 ### 01: Setup network
     sudo docker network create \
