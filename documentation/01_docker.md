@@ -181,7 +181,7 @@
 
     npm start
 
-*Content of `app.json`*
+*Content of `app.json`:*
 
     {
         "name"              : "geth_1",
