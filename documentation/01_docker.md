@@ -29,7 +29,7 @@
 **Links:**
 - https://hub.docker.com/r/ethereum/client-go
 
-### 03: Create genesis block
+### 04: Create genesis block
 
     cd /tmp && \
     nano /tmp/genesis.json
@@ -52,7 +52,7 @@
         "timestamp"     : "0x0"
     }
 
-### 04: Init blockchain
+### 05: Init blockchain
     sudo docker run \
         --rm \
         --volume /tmp/genesis.json:/tmp/genesis.json \
@@ -62,7 +62,7 @@
                 --datadir "/root" \
                 /tmp/genesis.json
     
-### 04: Run node
+### 06: Run node
     sudo docker stop geth_1 &&\
     sudo docker rm geth_1 &&\
     sudo docker run \
@@ -101,7 +101,7 @@
 
 Full list of possible parameter: [https://github.com/ethereum/go-ethereum/wiki/Command-Line-Options](https://github.com/ethereum/go-ethereum/wiki/Command-Line-Options)
 
-### 05: Attach to node
+### 07: Attach to node
     sudo docker run \
         -it \
         --rm \
@@ -111,7 +111,7 @@ Full list of possible parameter: [https://github.com/ethereum/go-ethereum/wiki/C
             --networkid 32 \
             attach
 
-### 07: Connect to node
+### 08: Connect to node
     // find out nodeId
     admin.nodeInfo
     
@@ -124,14 +124,14 @@ Full list of possible parameter: [https://github.com/ethereum/go-ethereum/wiki/C
     // show nodes blocknumber
     eth.blockNumber
 
-### 08: Setup node
+### 09: Setup node
 - check accounts: `eth.accounts` 
 - create account: `personal.newAccount("12345678")`
     - first account is coinbase account
 - unlock account: `personal.unlockAccount("address", "pw")`
 - get account balance: `web3.fromWei(eth.getBalance(eth.coinbase), "ether")`
 
-### 09: Setup monitoring
+### 10: Setup monitoring
     sudo docker run \
         -it \
         --rm \
