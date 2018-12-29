@@ -32,6 +32,9 @@
                 --datadir "/root" \
                 --password /tmp/password.txt
 
+**Links:**
+- https://hub.docker.com/r/ethereum/client-go
+
 ### 03: Create genesis block
 
     cd /tmp && \
@@ -195,6 +198,6 @@ Full list of possible parameter: [https://github.com/ethereum/go-ethereum/wiki/C
         }
     }
 
-**Sources:**
+**Links:**
 - https://github.com/cubedro/eth-net-intelligence-api
 - https://github.com/cubedro/eth-netstats
