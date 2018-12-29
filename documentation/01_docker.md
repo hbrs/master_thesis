@@ -212,6 +212,13 @@
 
 ### 11: RPC
 
+*Example:*
+    curl \
+        -X POST \
+        --header "Content-Type: application/json" \
+        --data '{"jsonrpc":"2.0","method":"eth_accounts","params":[],"id":1}' \
+        http://194.95.66.64:8545
+
 - https://github.com/ethereum/wiki/wiki/JSON-RPC
 
 ---
