@@ -30,8 +30,6 @@
 - https://hub.docker.com/r/ethereum/client-go
 
 ### Step 04: Create genesis block
-
-    cd /tmp && \
     nano /tmp/genesis.json
 
     // content of `genesis.json`
@@ -63,6 +61,8 @@
                 /tmp/genesis.json
     
 ### Step 06: Run node
+    export ETHERBASE=''
+    
     sudo docker stop geth_1 &&\
     sudo docker rm geth_1 &&\
     sudo docker run \
@@ -81,21 +81,27 @@
             --nousb \
             --networkid 32 \
             --identity "geth_1" \
+            \
             --unlock 0 \
-            --password /tmp/password.txt \
+            --password "/tmp/password.txt" \
+            \
             --rpc \
             --rpcaddr "0.0.0.0" \
             --rpcport 8545 \
-            --rpcapi "eth,net,web3,miner,rpc" \
+            --rpcapi "eth,net,web3,rpc" \
             --rpccorsdomain "*" \
+            \
             --port 30303 \
             --maxpeers 8 \
             --nat "any" \
             --nodiscover \
+            \
             --mine \
             --minerthreads 8 \
+            --etherbase $ETHERBASE \
             --targetgaslimit 4712388 \
             --gasprice 18000000000 \
+            \
             --verbosity 3 &&\
     sudo docker logs -f geth_1
 
