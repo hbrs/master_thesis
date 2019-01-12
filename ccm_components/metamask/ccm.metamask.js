@@ -1,5 +1,5 @@
 /**
- * @overview ccm component test
+ * @component ccm-web3
  * @author René Müller <rene.mueller@smail.inf.h-brs.de> 2019
  * @license MIT License
  * @version 1.0.0
@@ -8,6 +8,7 @@
 /**
  * MetaMask attributes, functions and events
  *
+ * @attribute: isMetaMask: bool
  * @attribute: networkVersion: string
  * @attribute: selectedAddress: string
  *
@@ -38,37 +39,41 @@
 
             /* Lifecycle */
 
-            this.init = async () => {
-                if (this.isMetaMask()) {
-                    this.connectToMetaMask();
-                    this.registerEvent('accountsChanged');
-                }
-            };
-
-            this.ready = async () => {
-                console.log("ready");
-            };
-
-            this.start = async () => {
-                console.log("start");
-            };
+            this.init   = async () => {};
+            this.ready  = async () => {};
+            this.start  = async () => {};
 
 
             /* Functions */
 
+            this.getProvider = () => {
+                return ethereum;
+            };
+
             this.isMetaMask = () => {
-                return !(typeof window['ethereum'] === 'undefined' ||
-                    typeof window['ethereum']['isMetaMask'] === 'undefined');
+                return !(
+                    typeof window['ethereum'] === 'undefined' ||
+                    typeof window['ethereum']['isMetaMask'] === 'undefined' ||
+                    ethereum.isConnected()
+                );
+            };
+
+            this.getNetworkVersion = () => {
+                return ethereum.networkVersion;
+            };
+
+            this.getSelectedAddress = () => {
+                return ethereum.selectedAddress;
             };
 
             this.connectToMetaMask = () => {
                 ethereum.enable()
                     .catch(reason => console.error(reason))
-                    .then(accounts => console.log(accounts));
+                    .then(accounts => this.connected = true);
             };
 
-            this.registerEvent = event => {
-                ethereum.on(event, accounts => console.log(accounts));
+            this.registerEvent = (event, callback) => {
+                ethereum.on(event, accounts => callback(accounts));
             };
         }
     };

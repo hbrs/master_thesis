@@ -1,30 +1,31 @@
 # Setup geth with Docker
 
 ### Step 01: Setup network
-    sudo docker network create \
-        --driver=bridge \
-        --subnet=172.22.0.0/24 \
-        --ip-range=172.22.0.254/24 \
-        --gateway=172.22.0.1 \
+    docker network create           \
+        --driver=bridge             \
+        --subnet=172.22.0.0/24      \
+        --ip-range=172.22.0.254/24  \
+        --gateway=172.22.0.1        \
         dockernet
 
 ### Step 02: Create volumn
-    sudo docker volume rm geth_1 && \
-    sudo docker volume create geth_1 && \
-    sudo docker volume ls
+    docker volume rm        v_geth1 && \
+    docker volume create    v_geth1 && \
+    docker volume ls
 
 ### Step 03: Create account
-    echo "12345678" > /tmp/password.txt &&\
+    head -200 /dev/urandom | cksum | cut -f1 -d " " | sha256sum | head -c 64 > /tmp/pw_geth1.txt &&\
 
-    sudo docker run \
-        -it \
-        --rm \
-        --volume /tmp/password.txt:/tmp/password.txt \
-        --volume geth_1:/root \
-        ethereum/client-go:stable \
-            account new \
-                --datadir "/root" \
-                --password /tmp/password.txt
+    docker run                                          \
+        --interactive                                   \
+        --tty                                           \
+        --rm                                            \
+        --volume /tmp/pw_geth1.txt:/tmp/pw_geth1.txt:ro \
+        --volume v_geth1:/root                          \
+        ethereum/client-go:stable                       \
+            account new                                 \
+                --datadir   "/root"                     \
+                --password  "/tmp/pw_geth1.txt"
 
 **Links:**
 - https://hub.docker.com/r/ethereum/client-go
@@ -34,27 +35,30 @@
 
     // content of `genesis.json`
     {
-        "config": {
-            "chainId": 32,
-            "homesteadBlock": 0,
-            "eip155Block": 0,
-            "eip158Block": 0
-        },
         "alloc"         : {},
-        "coinbase"      : "0x",
-        "difficulty"    : "0x2",
-        "gasLimit"      : "0x2fefd8",
-        "nonce"         : "0x6800300660911093",
+        "config"        : {
+            "chainId"           : 32,
+            "homesteadBlock"    : 0,
+            "eip155Block"       : 0,
+            "eip158Block"       : 0
+        },
+        "coinbase"      : "0x0000000000000000000000000000000000000000",
+        "difficulty"    : "0x200000000",
+        "gasLimit"      : "0x2100000",
         "mixhash"       : "0x0000000000000000000000000000000000000000000000000000000000000000",
+        "nonce"         : "0x6800300660911093238328572801093480347567800124857002634129481855",
         "parentHash"    : "0x0000000000000000000000000000000000000000000000000000000000000000",
-        "timestamp"     : "0x0"
+        "timestamp"     : "0x1547310609"
     }
 
+- Offical source: [https://github.com/ethereum/go-ethereum/wiki/Private-network](https://github.com/ethereum/go-ethereum/wiki/Private-network)
+- [https://arvanaghi.com/blog/explaining-the-genesis-block-in-ethereum/](https://arvanaghi.com/blog/explaining-the-genesis-block-in-ethereum/)
+
 ### Step 05: Init blockchain
-    sudo docker run \
+    docker run \
         --rm \
-        --volume /tmp/genesis.json:/tmp/genesis.json \
-        --volume geth_1:/root \
+        --volume /tmp/genesis.json:/tmp/genesis.json:ro \
+        --volume v_geth1:/root \
         ethereum/client-go:stable \
             init \
                 --datadir "/root" \
@@ -63,63 +67,64 @@
 ### Step 06: Run node
     export ETHERBASE=''
     
-    sudo docker stop geth_1 &&\
-    sudo docker rm geth_1 &&\
-    sudo docker run \
-        --detach \
-        --restart unless-stopped \
-        --name geth_1 \
-        --hostname geth_1 \
-        --net dockernet \
-        --ip 172.22.0.10 \
-        --volume /tmp/password.txt:/tmp/password.txt \
-        --volume geth_1:/root \
-        --publish 8545:8545 \
-        --publish 30303:30303 \
-        ethereum/client-go:stable \
-            --datadir "/root" \
-            --nousb \
-            --networkid 32 \
-            --identity "geth_1" \
-            \
-            --unlock 0 \
-            --password "/tmp/password.txt" \
-            \
-            --rpc \
-            --rpcaddr "0.0.0.0" \
-            --rpcport 8545 \
-            --rpcapi "eth,net,web3,rpc" \
-            --rpccorsdomain "*" \
-            \
-            --port 30303 \
-            --maxpeers 8 \
-            --nat "any" \
-            --nodiscover \
-            \
-            --mine \
-            --minerthreads 8 \
-            --etherbase $ETHERBASE \
-            --targetgaslimit 4712388 \
-            --gasprice 18000000000 \
-            \
-            --verbosity 3 &&\
-    sudo docker logs -f geth_1
+    docker pull                     ethereum/client-go:stable                   &&\
+    docker stop                     geth1                                       &&\
+    docker rm                       geth1                                       &&\
+    docker run                                                                  \
+        --detach                                                                \
+        --restart                   unless-stopped                              \
+        --name                      geth1                                       \
+        --hostname                  geth1                                       \
+        --net                       dockernet                                   \
+        --ip                        172.22.0.10                                 \
+        --volume                    /tmp/pw-geth1.txt:/tmp/pw-geth1.txt:ro      \
+        --volume                    v_geth1:/root                               \
+        ethereum/client-go:stable                                               \
+            --datadir               "/root"                                     \
+            --nousb                                                             \
+            --networkid             32                                          \
+            --identity              "geth1"                                     \
+                                                                                \
+            --unlock                $ETHERBASE                                  \
+            --password              "/tmp/pw_geth1.txt"                         \
+                                                                                \
+            --rpc                                                               \
+            --rpcaddr               "0.0.0.0"                                   \
+            --rpcport               8545                                        \
+            --rpcapi                "eth,net,web3,rpc"                          \
+            --rpccorsdomain         "*"                                         \
+            --rpcvhosts             "vm-2d05.inf.h-brs.de"                      \
+                                                                                \
+            --port                  30303                                       \
+            --maxpeers              8                                           \
+            --nat                   "any"                                       \
+            --nodiscover                                                        \
+                                                                                \
+            --mine                                                              \
+            --minerthreads          8                                           \
+            --etherbase             $ETHERBASE                                  \
+            --targetgaslimit        4712388                                     \
+            --gasprice              18000000000                                 \
+                                                                                \
+            --verbosity             3                                           &&\
+    docker logs -f                  geth_1
 
-*Important: Each node needs an own port! Also for RPC!*
+*Important: Each node needs an own port!*
 
 **Full list of possible parameter**
-- https://github.com/ethereum/go-ethereum/wiki/Command-Line-Options
-- https://ethereum.gitbooks.io/frontier-guide/content/cli.html
-- https://github.com/ethereum/go-ethereum/wiki/Management-APIs
+- [https://github.com/ethereum/go-ethereum/wiki/Command-Line-Options](https://github.com/ethereum/go-ethereum/wiki/Command-Line-Options)
+- [https://ethereum.gitbooks.io/frontier-guide/content/cli.html](https://ethereum.gitbooks.io/frontier-guide/content/cli.html)
+- [https://github.com/ethereum/go-ethereum/wiki/Management-APIs](https://github.com/ethereum/go-ethereum/wiki/Management-APIs)
 
 ### Step 07: Attach to node
-    sudo docker run \
-        -it \
-        --rm \
-        --volume geth_1:/root \
-        ethereum/client-go:stable \
-            --datadir "/root" \
-            --networkid 32 \
+    docker run                      \
+        --interactive               \
+        --tty                       \
+        --rm                        \
+        --volume geth_1:/root:ro    \
+        ethereum/client-go:stable   \
+            --datadir   "/root"     \
+            --networkid 32          \
             attach
 
 ### Step 08: Connect to node
@@ -147,43 +152,43 @@
 - https://github.com/ethereum/go-ethereum/wiki/Managing-your-accounts
 
 ### Step 10: Setup monitoring
-    sudo docker run \
-        -it \
-        --rm \
-        --name nodejs \
-        --publish 3000:3000 \
-        --hostname nodejs \
-        --net dockernet \
-        --ip 172.22.0.22 \
-        --workdir /usr/src/app \
-        node:latest \
+    docker run \
+        --interactive               \
+        --tty                       \
+        --rm                        \
+        --name      nodejs          \
+        --hostname  nodejs          \
+        --net       dockernet       \
+        --ip        172.22.0.22     \
+        --workdir   /usr/src/app    \
+        node:latest                 \
             /bin/bash
 
 *Run this script within the container:*
 
-    apt update &&\
-    apt install nano &&\
+    apt update                                                          &&\
+    apt install nano                                                    &&\
 
-    git clone https://github.com/cubedro/eth-net-intelligence-api.git &&\
-    git clone https://github.com/cubedro/eth-netstats.git &&\
+    git clone https://github.com/cubedro/eth-net-intelligence-api.git   &&\
+    git clone https://github.com/cubedro/eth-netstats.git               &&\
 
-    npm install -g pm2 &&\
-    npm install -g grunt-cli &&\
+    npm install -g pm2                                                  &&\
+    npm install -g grunt-cli                                            &&\
 
-    cd eth-net-intelligence-api &&\
+    cd eth-net-intelligence-api                                         &&\
 
-    npm install &&\
+    npm install                                                         &&\
 
-    nano app.json &&\
+    nano app.json                                                       &&\
 
-    pm2 start app.json &&\
+    pm2 start app.json                                                  &&\
 
-    cd ../eth-netstats && \
+    cd ../eth-netstats                                                  && \
 
-    npm install &&\
-    grunt all &&\
+    npm install                                                         &&\
+    grunt all                                                           &&\
 
-    export WS_SECRET=secret &&\
+    export WS_SECRET=secret                                             &&\
 
     npm start
 
@@ -224,7 +229,7 @@
         -X POST \
         --header "Content-Type: application/json" \
         --data '{"jsonrpc":"2.0","method":"eth_accounts","params":[],"id":1}' \
-        http://194.95.66.64:8545
+        https://vm-2d05.inf.h-brs.de
 
 - https://github.com/ethereum/wiki/wiki/JSON-RPC
 
