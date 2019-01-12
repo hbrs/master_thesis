@@ -27,16 +27,17 @@
 
 *Run within the cointainer:*
 
-    head -200 /dev/urandom      \
-        | cksum                 \
-        | cut -f1 -d " "        \
-        | sha256sum             \
-        | head -c 64 > pw_geth1.txt
+    head -200 /dev/urandom          \
+        | cksum                     \
+        | cut -f1 -d " "            \
+        | sha256sum                 \
+        | head -c 64 > pw_geth1.txt &&\
+    exit
 
 ### Step 04: Create account
     docker run                                          \
         --rm                                            \
-        --volume /tmp/pw_geth1.txt:/tmp/pw_geth1.txt:ro \
+        --volume v_keys:/tmp:ro                         \
         --volume v_geth1:/root                          \
         ethereum/client-go:stable                       \
             account new                                 \
@@ -62,7 +63,7 @@
         "difficulty"    : "0x200000000",
         "gasLimit"      : "0x2100000",
         "mixhash"       : "0x0000000000000000000000000000000000000000000000000000000000000000",
-        "nonce"         : "0x6800300660911093238328572801093480347567800124857002634129481855",
+        "nonce"         : "0x84335125cbae8587f4f64259ad0f8e45efdbd4e4b45d60377d69a043f0e60e60",
         "parentHash"    : "0x0000000000000000000000000000000000000000000000000000000000000000",
         "timestamp"     : "0x1547310609"
     }
@@ -71,13 +72,13 @@
 - [https://arvanaghi.com/blog/explaining-the-genesis-block-in-ethereum/](https://arvanaghi.com/blog/explaining-the-genesis-block-in-ethereum/)
 
 ### Step 06: Init blockchain
-    docker run \
-        --rm \
+    docker run                                          \
+        --rm                                            \
         --volume /tmp/genesis.json:/tmp/genesis.json:ro \
-        --volume v_geth1:/root \
-        ethereum/client-go:stable \
-            init \
-                --datadir "/root" \
+        --volume v_geth1:/root                          \
+        ethereum/client-go:stable                       \
+            init                                        \
+                --datadir "/root"                       \
                 /tmp/genesis.json
     
 ### Step 07: Run node
@@ -93,7 +94,7 @@
         --hostname                  geth1                                       \
         --net                       dockernet                                   \
         --ip                        172.22.0.10                                 \
-        --volume                    /tmp/pw-geth1.txt:/tmp/pw-geth1.txt:ro      \
+        --volume                    v_keys:/tmp:ro                              \
         --volume                    v_geth1:/root                               \
         ethereum/client-go:stable                                               \
             --datadir               "/root"                                     \
