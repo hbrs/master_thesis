@@ -18,6 +18,8 @@
 ### Step 03: Generate random keys
     docker run                  \
         --rm                    \
+        --interactive           \
+        --tty                   \
         --volume    v_keys:/opt \
         --workdir   /opt        \
         ubuntu:latest           \
