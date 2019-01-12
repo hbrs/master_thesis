@@ -9,16 +9,30 @@
         dockernet
 
 ### Step 02: Create volumn
-    docker volume rm        v_geth1 && \
-    docker volume create    v_geth1 && \
+    docker volume rm        v_keys  &&\
+    docker volume rm        v_geth1 &&\
+    docker volume create    v_keys  &&\
+    docker volume create    v_geth1 &&\
     docker volume ls
 
-### Step 03: Create account
-    head -200 /dev/urandom | cksum | cut -f1 -d " " | sha256sum | head -c 64 > /tmp/pw_geth1.txt &&\
+### Step 03: Generate random keys
+    docker run                  \
+        --rm                    \
+        --volume    v_keys:/opt \
+        --workdir   /opt        \
+        ubuntu:latest           \
+            bash
 
+*Run within the cointainer:*
+
+    head -200 /dev/urandom      \
+        | cksum                 \
+        | cut -f1 -d " "        \
+        | sha256sum             \
+        | head -c 64 > pw_geth1.txt
+
+### Step 03: Create account
     docker run                                          \
-        --interactive                                   \
-        --tty                                           \
         --rm                                            \
         --volume /tmp/pw_geth1.txt:/tmp/pw_geth1.txt:ro \
         --volume v_geth1:/root                          \
@@ -118,9 +132,9 @@
 
 ### Step 07: Attach to node
     docker run                      \
+        --rm                        \
         --interactive               \
         --tty                       \
-        --rm                        \
         --volume geth_1:/root:ro    \
         ethereum/client-go:stable   \
             --datadir   "/root"     \
@@ -153,9 +167,9 @@
 
 ### Step 10: Setup monitoring
     docker run \
+        --rm                        \
         --interactive               \
         --tty                       \
-        --rm                        \
         --name      nodejs          \
         --hostname  nodejs          \
         --net       dockernet       \
@@ -192,7 +206,7 @@
 
     npm start
 
-*Content of `app.json`:*
+*Content of `app.json`:*
 
     {
         "name"              : "geth_1",
