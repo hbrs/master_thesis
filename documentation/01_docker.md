@@ -16,13 +16,13 @@
     docker volume ls
 
 ### Step 03: Generate random keys
-    docker run                  \
-        --rm                    \
-        --interactive           \
-        --tty                   \
-        --volume    v_keys:/opt \
-        --workdir   /opt        \
-        ubuntu:latest           \
+    docker run                      \
+        --rm                        \
+        --interactive               \
+        --tty                       \
+        --volume        v_keys:/opt \
+        --workdir       /opt        \
+        ubuntu:latest               \
             bash
 
 *Run within the cointainer:*
@@ -37,12 +37,12 @@
 ### Step 04: Create account
     docker run                                          \
         --rm                                            \
-        --volume v_keys:/tmp:ro                         \
-        --volume v_geth1:/root                          \
+        --volume                    v_keys:/tmp:ro      \
+        --volume                    v_geth1:/root       \
         ethereum/client-go:stable                       \
             account new                                 \
-                --datadir   "/root"                     \
-                --password  "/tmp/pw_geth1.txt"
+                --datadir           "/root"             \
+                --password          "/tmp/pw_geth1.txt"
 
 **Links:**
 - https://hub.docker.com/r/ethereum/client-go
@@ -70,15 +70,16 @@
 
 - Offical source: [https://github.com/ethereum/go-ethereum/wiki/Private-network](https://github.com/ethereum/go-ethereum/wiki/Private-network)
 - [https://arvanaghi.com/blog/explaining-the-genesis-block-in-ethereum/](https://arvanaghi.com/blog/explaining-the-genesis-block-in-ethereum/)
+- [https://lightrains.com/blogs/genesis-json-parameter-explained-ethereum](https://lightrains.com/blogs/genesis-json-parameter-explained-ethereum)
 
 ### Step 06: Init blockchain
-    docker run                                          \
-        --rm                                            \
-        --volume /tmp/genesis.json:/tmp/genesis.json:ro \
-        --volume v_geth1:/root                          \
-        ethereum/client-go:stable                       \
-            init                                        \
-                --datadir "/root"                       \
+    docker run                                                              \
+        --rm                                                                \
+        --volume                    /tmp/genesis.json:/tmp/genesis.json:ro  \
+        --volume                    v_geth1:/root                           \
+        ethereum/client-go:stable                                           \
+            init                                                            \
+                --datadir           "/root"                                 \
                 /tmp/genesis.json
     
 ### Step 07: Run node
@@ -134,14 +135,14 @@
 - [https://github.com/ethereum/go-ethereum/wiki/Management-APIs](https://github.com/ethereum/go-ethereum/wiki/Management-APIs)
 
 ### Step 08: Attach to node
-    docker run                      \
-        --rm                        \
-        --interactive               \
-        --tty                       \
-        --volume geth_1:/root:ro    \
-        ethereum/client-go:stable   \
-            --datadir   "/root"     \
-            --networkid 32          \
+    docker run                                      \
+        --rm                                        \
+        --interactive                               \
+        --tty                                       \
+        --volume                    geth_1:/root:ro \
+        ethereum/client-go:stable                   \
+            --datadir               "/root"         \
+            --networkid             32              \
             attach
 
 ### Step 09: Connect to node
@@ -169,17 +170,17 @@
 - https://github.com/ethereum/go-ethereum/wiki/Managing-your-accounts
 
 ### Step 10: Setup monitoring
-    docker run \
-        --rm                        \
-        --interactive               \
-        --tty                       \
-        --name      nodejs          \
-        --hostname  nodejs          \
-        --net       dockernet       \
-        --ip        172.22.0.22     \
-        --workdir   /usr/src/app    \
-        node:latest                 \
-            /bin/bash
+    docker run                          \
+        --rm                            \
+        --interactive                   \
+        --tty                           \
+        --name          nodejs          \
+        --hostname      nodejs          \
+        --net           dockernet       \
+        --ip            172.22.0.22     \
+        --workdir       /usr/src/app    \
+        node:latest                     \
+            bash
 
 *Run this script within the container:*
 
