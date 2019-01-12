@@ -63,7 +63,7 @@
         "difficulty"    : "0x200000000",
         "gasLimit"      : "0x2100000",
         "mixhash"       : "0x0000000000000000000000000000000000000000000000000000000000000000",
-        "nonce"         : "0x84335125cbae8587f4f64259ad0f8e45efdbd4e4b45d60377d69a043f0e60e60",
+        "nonce"         : "0x0000000000000000000000000000000000000000000000000000000000000000",
         "parentHash"    : "0x0000000000000000000000000000000000000000000000000000000000000000",
         "timestamp"     : "0x1547310609"
     }
@@ -83,7 +83,7 @@
                 /tmp/genesis.json
     
 ### Step 07: Run node
-    export ETHERBASE=''
+    export ETHERBASE='0x'
     
     docker pull                     ethereum/client-go:stable                   &&\
     docker stop                     geth1                                       &&\
@@ -135,14 +135,14 @@
 - [https://github.com/ethereum/go-ethereum/wiki/Management-APIs](https://github.com/ethereum/go-ethereum/wiki/Management-APIs)
 
 ### Step 08: Attach to node
-    docker run                                      \
-        --rm                                        \
-        --interactive                               \
-        --tty                                       \
-        --volume                    geth_1:/root:ro \
-        ethereum/client-go:stable                   \
-            --datadir               "/root"         \
-            --networkid             32              \
+    docker run                                          \
+        --rm                                            \
+        --interactive                                   \
+        --tty                                           \
+        --volume                    v_geth1:/root:ro    \
+        ethereum/client-go:stable                       \
+            --datadir               "/root"             \
+            --networkid             32                  \
             attach
 
 ### Step 09: Connect to node
