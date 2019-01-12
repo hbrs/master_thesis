@@ -124,7 +124,7 @@
             --gasprice              18000000000                                 \
                                                                                 \
             --verbosity             3                                           &&\
-    docker logs -f                  geth_1
+    docker logs -f                  geth1
 
 *Important: Each node needs an own port!*
 
