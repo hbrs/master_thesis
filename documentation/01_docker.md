@@ -31,7 +31,7 @@
         | sha256sum             \
         | head -c 64 > pw_geth1.txt
 
-### Step 03: Create account
+### Step 04: Create account
     docker run                                          \
         --rm                                            \
         --volume /tmp/pw_geth1.txt:/tmp/pw_geth1.txt:ro \
@@ -44,7 +44,7 @@
 **Links:**
 - https://hub.docker.com/r/ethereum/client-go
 
-### Step 04: Create genesis block
+### Step 05: Create genesis block
     nano /tmp/genesis.json
 
     // content of `genesis.json`
@@ -68,7 +68,7 @@
 - Offical source: [https://github.com/ethereum/go-ethereum/wiki/Private-network](https://github.com/ethereum/go-ethereum/wiki/Private-network)
 - [https://arvanaghi.com/blog/explaining-the-genesis-block-in-ethereum/](https://arvanaghi.com/blog/explaining-the-genesis-block-in-ethereum/)
 
-### Step 05: Init blockchain
+### Step 06: Init blockchain
     docker run \
         --rm \
         --volume /tmp/genesis.json:/tmp/genesis.json:ro \
@@ -78,7 +78,7 @@
                 --datadir "/root" \
                 /tmp/genesis.json
     
-### Step 06: Run node
+### Step 07: Run node
     export ETHERBASE=''
     
     docker pull                     ethereum/client-go:stable                   &&\
@@ -130,7 +130,7 @@
 - [https://ethereum.gitbooks.io/frontier-guide/content/cli.html](https://ethereum.gitbooks.io/frontier-guide/content/cli.html)
 - [https://github.com/ethereum/go-ethereum/wiki/Management-APIs](https://github.com/ethereum/go-ethereum/wiki/Management-APIs)
 
-### Step 07: Attach to node
+### Step 08: Attach to node
     docker run                      \
         --rm                        \
         --interactive               \
@@ -141,7 +141,7 @@
             --networkid 32          \
             attach
 
-### Step 08: Connect to node
+### Step 09: Connect to node
     // find out nodeId
     admin.nodeInfo
     
