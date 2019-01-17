@@ -9,10 +9,12 @@
         dockernet
 
 ### Step 02: Create volumn
-    docker volume rm        v_keys  &&\
-    docker volume rm        v_geth1 &&\
-    docker volume create    v_keys  &&\
-    docker volume create    v_geth1 &&\
+    docker volume rm        v_keys          &&\
+    docker volume rm        v_geth1         &&\
+    docker volume rm        v_letsencrypt   &&\
+    docker volume create    v_keys          &&\
+    docker volume create    v_geth1         &&\
+    docker volume create    v_letsencrypt   &&\
     docker volume ls
 
 ### Step 03: Generate random keys
@@ -65,7 +67,7 @@
         "mixhash"       : "0x0000000000000000000000000000000000000000000000000000000000000000",
         "nonce"         : "0x0000000000000000000000000000000000000000000000000000000000000000",
         "parentHash"    : "0x0000000000000000000000000000000000000000000000000000000000000000",
-        "timestamp"     : "0x1547310609"
+        "timestamp"     : "0x0"
     }
 
 - Offical source: [https://github.com/ethereum/go-ethereum/wiki/Private-network](https://github.com/ethereum/go-ethereum/wiki/Private-network)
@@ -113,7 +115,7 @@
             --rpccorsdomain         "*"                                         \
             --rpcvhosts             "vm-2d05.inf.h-brs.de"                      \
                                                                                 \
-            --port                  30001                                       \
+            --port                  30303                                       \
             --maxpeers              8                                           \
             --nat                   "any"                                       \
             --nodiscover                                                        \
@@ -169,15 +171,69 @@
 **Links:**
 - https://github.com/ethereum/go-ethereum/wiki/Managing-your-accounts
 
+### Step 10: Get certificate from lets encrypte
+    docker stop    letsencrypt                          &&\
+    docker rm      letsencrypt                          && \
+    docker run                                          \
+        --interactive                                   \
+        --tty                                           \
+        --name          letsencrypt                     \
+        --hostname      letsencrypt                     \
+        --net           dockernet                       \
+        --ip            172.22.0.19                     \
+        --publish       80:80                           \
+        --volume        v_letsencrypt:/etc/letsencrypt  \
+        ubuntu:latest                                   \
+            bash
+
+*Run within the cointainer:*
+
+    apt update                                          && \
+    apt upgrade -y                                      && \
+    apt install         software-properties-common -y   && \
+    add-apt-repository  ppa:certbot/certbot             && \
+    apt update                                          && \
+    apt install         python-certbot-nginx -y
+
+    certbot certonly --rsa-key-size 4096 --authenticator standalone
+
+### Step 10: Setup reverse proxy
+    docker stop         nginx                               &&\
+    docker rm           nginx                               &&\
+    docker run                                              \
+        --detach                                            \
+        --restart       unless-stopped                      \
+        --name          nginx                               \
+        --hostname      nginx                               \
+        --net           dockernet                           \
+        --ip            172.22.0.20                         \
+        --publish       443:443                             \
+        --volume        v_letsencrypt:/etc/letsencrypt:ro   \
+        --volume        v_nginx:/etc/nginx/conf.d:ro        \
+        nginx:latest                                        &&\
+    docker logs -f      nginx
+
+*Within the host:*
+
+    docker run --rm -it -v /tmp:/tmp -w /tmp httpd:latest bash
+    htpasswd -c /tmp/.htpasswd admin
+    openssl dhparam -out /tmp/dhparams.pem 4096
+    
+    docker cp /tmp/.htpasswd     nginx:/opt/.htpasswd
+    docker cp /tmp/dhparams.pem nginx:/root/.nginx/dhparams.pem
+
+- [https://docs.nginx.com/nginx/admin-guide/security-controls/configuring-http-basic-authentication/](https://docs.nginx.com/nginx/admin-guide/security-controls/configuring-http-basic-authentication/)
+- [https://ethereum.stackexchange.com/questions/30357/restricted-access-authentication-for-a-remote-geth-node](https://ethereum.stackexchange.com/questions/30357/restricted-access-authentication-for-a-remote-geth-node)
+
 ### Step 10: Setup monitoring
     docker run                          \
-        --rm                            \
         --interactive                   \
         --tty                           \
+        --restart       unless-stopped  \
         --name          nodejs          \
         --hostname      nodejs          \
         --net           dockernet       \
-        --ip            172.22.0.22     \
+        --ip            172.22.0.30     \
         --workdir       /usr/src/app    \
         node:latest                     \
             bash
