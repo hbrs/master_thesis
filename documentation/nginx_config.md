@@ -21,9 +21,9 @@
             proxy_set_header    X-Forwarded-For     $proxy_add_x_forwarded_for;
             proxy_set_header    X-Forwarded-Proto   $scheme;
             proxy_set_header    Upgrade             $http_upgrade;
-            proxy_set_header    Connection          'upgrade';
+            proxy_set_header    Connection          "upgrade";
 
-            proxy_cache_bypass  $http_upgrade
+            proxy_cache_bypass  $http_upgrade;
             
             proxy_pass          http://172.22.0.30:3000;
         }
@@ -35,7 +35,7 @@
             }
             
             add_header          Access-Control-Allow-Origin  "$http_origin";
-            add_header          Access-Control-Allow-Headers "Authorization, Content-Type";
+            add_header          Access-Control-Allow-Headers "authorization, content-type";
             add_header          Access-Control-Allow-Methods "DELETE, GET, OPTIONS, POST, PUT, UPDATE";
 
             # to avoid double origin value what leads to an CORS error in the browser
@@ -46,6 +46,29 @@
             proxy_set_header    X-Forwarded-For     $proxy_add_x_forwarded_for;
             proxy_set_header    X-Forwarded-Proto   $scheme;
 
-            proxy_pass          http://172.22.0.10:8545;
+            proxy_pass          http://172.22.0.11:8545;
+        }
+
+        location /geth2 {
+
+            if ($request_method = OPTIONS) {
+                return 204;
+            }
+            
+            auth_basic          off;
+
+            add_header          Access-Control-Allow-Origin  "$http_origin";
+            add_header          Access-Control-Allow-Headers "authorization, content-type";
+            add_header          Access-Control-Allow-Methods "DELETE, GET, OPTIONS, POST, PUT, UPDATE";
+
+            # to avoid double origin value what leads to an CORS error in the browser
+            proxy_hide_header   Access-Control-Allow-Origin;
+
+            proxy_set_header    Host                $host;
+            proxy_set_header    X-Real-IP           $remote_addr;
+            proxy_set_header    X-Forwarded-For     $proxy_add_x_forwarded_for;
+            proxy_set_header    X-Forwarded-Proto   $scheme;
+
+            proxy_pass          http://172.22.0.12:8545;
         }
     }

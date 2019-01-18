@@ -97,7 +97,7 @@
         --name                      geth1                                       \
         --hostname                  geth1.vm-2d05.inf.h-brs.de                  \
         --net                       dockernet                                   \
-        --ip                        172.22.0.10                                 \
+        --ip                        172.22.0.11                                 \
         --volume                    v_keys:/tmp:ro                              \
         --volume                    v_geth1:/root                               \
         ethereum/client-go:stable                                               \
