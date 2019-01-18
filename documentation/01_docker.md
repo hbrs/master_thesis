@@ -13,6 +13,7 @@
     docker volume rm        v_geth1         &&\
     docker volume rm        v_letsencrypt   &&\
     docker volume create    v_keys          &&\
+    docker volume create    v_nginx         &&\
     docker volume create    v_geth1         &&\
     docker volume create    v_letsencrypt   &&\
     docker volume ls
@@ -94,7 +95,7 @@
         --detach                                                                \
         --restart                   unless-stopped                              \
         --name                      geth1                                       \
-        --hostname                  geth1                                       \
+        --hostname                  geth1.vm-2d05.inf.h-brs.de                  \
         --net                       dockernet                                   \
         --ip                        172.22.0.10                                 \
         --volume                    v_keys:/tmp:ro                              \
@@ -172,18 +173,18 @@
 - https://github.com/ethereum/go-ethereum/wiki/Managing-your-accounts
 
 ### Step 10: Get certificate from lets encrypte
-    docker stop    letsencrypt                          &&\
-    docker rm      letsencrypt                          && \
-    docker run                                          \
-        --interactive                                   \
-        --tty                                           \
-        --name          letsencrypt                     \
-        --hostname      letsencrypt                     \
-        --net           dockernet                       \
-        --ip            172.22.0.19                     \
-        --publish       80:80                           \
-        --volume        v_letsencrypt:/etc/letsencrypt  \
-        ubuntu:latest                                   \
+    docker stop    letsencrypt                              &&\
+    docker rm      letsencrypt                              && \
+    docker run                                              \
+        --interactive                                       \
+        --tty                                               \
+        --name          letsencrypt                         \
+        --hostname      letsencrypt.vm-2d05.inf.h-brs.de    \
+        --net           dockernet                           \
+        --ip            172.22.0.19                         \
+        --publish       80:80                               \
+        --volume        v_letsencrypt:/etc/letsencrypt      \
+        ubuntu:latest                                       \
             bash
 
 *Run within the cointainer:*
@@ -204,16 +205,16 @@
         --detach                                            \
         --restart       unless-stopped                      \
         --name          nginx                               \
-        --hostname      nginx                               \
+        --hostname      nginx.vm-2d05.inf.h-brs.de          \
         --net           dockernet                           \
         --ip            172.22.0.20                         \
         --publish       443:443                             \
         --volume        v_letsencrypt:/etc/letsencrypt:ro   \
         --volume        v_nginx:/etc/nginx/conf.d:ro        \
-        nginx:latest                                        &&\
+        nginx:stable                                        &&\
     docker logs -f      nginx
 
-*Within the host:*
+*Run:*
 
     docker run --rm -it -v /tmp:/tmp -w /tmp httpd:latest bash
     htpasswd -c /tmp/.htpasswd admin
@@ -226,16 +227,17 @@
 - [https://ethereum.stackexchange.com/questions/30357/restricted-access-authentication-for-a-remote-geth-node](https://ethereum.stackexchange.com/questions/30357/restricted-access-authentication-for-a-remote-geth-node)
 
 ### Step 10: Setup monitoring
-    docker run                          \
-        --interactive                   \
-        --tty                           \
-        --restart       unless-stopped  \
-        --name          nodejs          \
-        --hostname      nodejs          \
-        --net           dockernet       \
-        --ip            172.22.0.30     \
-        --workdir       /usr/src/app    \
-        node:latest                     \
+    docker run                                      \
+        --detach                                    \
+        --interactive                               \
+        --tty                                       \
+        --restart       unless-stopped              \
+        --name          nodejs                      \
+        --hostname      nodejs.vm-2d05.inf.h-brs.de \
+        --net           dockernet                   \
+        --ip            172.22.0.30                 \
+        --workdir       /usr/src/app                \
+        node:latest                                 \
             bash
 
 *Run this script within the container:*

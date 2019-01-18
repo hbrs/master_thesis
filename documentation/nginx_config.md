@@ -16,6 +16,19 @@
         ssl_trusted_certificate /etc/letsencrypt/live/vm-2d05.inf.h-brs.de/chain.pem;
 
         location / {
+            proxy_set_header    Host                $host;
+            proxy_set_header    X-Real-IP           $remote_addr;
+            proxy_set_header    X-Forwarded-For     $proxy_add_x_forwarded_for;
+            proxy_set_header    X-Forwarded-Proto   $scheme;
+            proxy_set_header    Upgrade             $http_upgrade;
+            proxy_set_header    Connection          'upgrade';
+
+            proxy_cache_bypass  $http_upgrade
+            
+            proxy_pass          http://172.22.0.30:3000;
+        }
+
+        location /geth1 {
 
             if ($request_method = OPTIONS) {
                 return 204;
