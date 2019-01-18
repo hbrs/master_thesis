@@ -271,7 +271,7 @@
 *Content of `app.json`:*
 
     {
-        "name"              : "geth_1",
+        "name"              : "geth1",
         "script"            : "app.js",
         "log_date_format"   : "YYYY-MM-DD HH:mm Z",
         "merge_logs"        : false,
@@ -284,8 +284,8 @@
             "RPC_HOST"        : "172.22.0.10",
             "RPC_PORT"        : "8545",
             "LISTENING_PORT"  : "30303",
-            "INSTANCE_NAME"   : "geth_1",
-            "CONTACT_DETAILS" : "",
+            "INSTANCE_NAME"   : "geth1",
+            "CONTACT_DETAILS" : "geth1",
             "WS_SERVER"       : "http://172.22.0.22:3000",
             "WS_SECRET"       : "secret",
             "VERBOSITY"       : 2
