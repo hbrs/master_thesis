@@ -15,7 +15,8 @@
     docker pull ethereum/client-go:stable           &&\
     docker pull ethereum/client-go:alltools-stable  &&\
     docker pull nginx:stable                        &&\
-    docker pull node:latest
+    docker pull node:latest                         &&\
+    docker pull httpd:latest
 
 ### Step 02: Create volumn
     docker volume rm        v_letsencrypt   &&\
@@ -250,12 +251,22 @@
 
 *Run:*
 
-    docker run --rm -it -v /tmp:/tmp -w /tmp httpd:latest bash
+    docker run              \
+        --rm                \
+        --interactive       \
+        --tty               \
+        -volume /tmp:/tmp   \
+        --workdir /tmp      \
+        httpd:latest        \
+            bash
+        
     htpasswd -c /tmp/.htpasswd admin
     openssl dhparam -out /tmp/dhparams.pem 4096
     
-    docker cp /tmp/.htpasswd     nginx:/opt/.htpasswd
+    docker cp /tmp/.htpasswd    nginx:/opt/.htpasswd
     docker cp /tmp/dhparams.pem nginx:/root/.nginx/dhparams.pem
+    
+    docker restart nginx
 
 - [https://docs.nginx.com/nginx/admin-guide/security-controls/configuring-http-basic-authentication/](https://docs.nginx.com/nginx/admin-guide/security-controls/configuring-http-basic-authentication/)
 - [https://ethereum.stackexchange.com/questions/30357/restricted-access-authentication-for-a-remote-geth-node](https://ethereum.stackexchange.com/questions/30357/restricted-access-authentication-for-a-remote-geth-node)
@@ -315,7 +326,7 @@
         "log_date_format"   : "YYYY-MM-DD HH:mm Z",
         "merge_logs"        : false,
         "watch"             : false,
-        "max_restarts"      : 4,
+        "max_restarts"      : 8,
         "exec_interpreter"  : "node",
         "exec_mode"         : "fork_mode",
         "env": {
