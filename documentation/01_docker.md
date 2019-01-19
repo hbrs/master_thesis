@@ -1,5 +1,7 @@
 # Setup geth with Docker
 
+- [https://hub.docker.com/r/ethereum/client-go/](https://hub.docker.com/r/ethereum/client-go/)
+
 ### Step 01: Setup network
     docker network create           \
         --driver=bridge             \
@@ -238,6 +240,11 @@
         --ip            172.22.0.30                 \
         --workdir       /usr/src/app                \
         node:latest                                 \
+            bash                                    &&\
+    docker exec                                     \
+        --interactive                               \
+        --tty                                       \
+        nodejs                                      \
             bash
 
 *Run this script within the container:*
