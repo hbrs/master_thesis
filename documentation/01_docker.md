@@ -10,22 +10,29 @@
         --gateway=172.22.0.1        \
         dockernet
 
+### Step 02: Update images
+    docker pull ubuntu:latest                       &&\
+    docker pull ethereum/client-go:stable           &&\
+    docker pull ethereum/client-go:alltools-stable  &&\
+    docker pull nginx:stable                        &&\
+    docker pull node:latest
+
 ### Step 02: Create volumn
     docker volume rm        v_letsencrypt   &&\
     docker volume rm        v_nginx         &&\
-    docker volume rm        v_nodes         &&\
+    docker volume rm        v_geth          &&\
     docker volume create    v_letsencrypt   &&\
     docker volume create    v_nginx         &&\
-    docker volume create    v_nodes         &&\
+    docker volume create    v_geth          &&\
     docker volume ls
 
-### Step 03: Generate random keys
+### Step 03: Generate random password
     docker run                          \
         --rm                            \
         --interactive                   \
         --tty                           \
-        --volume        v_nodes:/opt    \
-        --workdir       /opt/pws        \
+        --volume        v_geth:/opt     \
+        --workdir       /opt/geth1      \
         ubuntu:latest                   \
             bash
 
@@ -35,48 +42,75 @@
         | cksum                     \
         | cut -f1 -d " "            \
         | sha256sum                 \
-        | head -c 64 > pw_geth1.txt &&\
+        | head -c 64 > password.txt &&\
     exit
 
 ### Step 04: Create account
     docker run                                                  \
         --rm                                                    \
-        --volume                    v_nodes:/root               \
+        --volume                    v_geth:/root                \
         ethereum/client-go:stable                               \
             account new                                         \
                 --datadir           "/root/geth1"               \
-                --password          "/root/pws/pw_geth1.txt"
+                --password          "/root/geth1/password.txt"
 
 *Check results:*
 
-    docker run --rm -it -v v_nodes:/tmp -w /tmp ubuntu ls -la
+    docker run                  \
+        --rm                    \
+        --interactive           \
+        --tty                   \
+        --volume v_geth:/tmp    \
+        --workdir /tmp          \
+        ubuntu:latest           \
+            ls -la
 
 **Links:**
 - https://hub.docker.com/r/ethereum/client-go
 
 ### Step 05: Create genesis block
-    docker run --rm -it ethereum/client-go:alltools-latest puppeth
+    docker run                              \
+        --rm                                \
+        --interactive                       \
+        --tty                               \
+        --volume /tmp:/genesis              \
+        ethereum/client-go:alltools-latest  \
+            puppeth
 
-    nano /tmp/genesis.json
+*Proof-of-work:*
 
-    // content of `genesis.json`
-    {
-        "alloc"         : {},
-        "config"        : {
-            "chainId"           : 32,
-            "homesteadBlock"    : 0,
-            "eip155Block"       : 0,
-            "eip158Block"       : 0
-        },
-        "coinbase"      : "0x0000000000000000000000000000000000000000",
-        "difficulty"    : "0x200",
-        "gasLimit"      : "0x2100000",
-        "mixhash"       : "0x0000000000000000000000000000000000000000000000000000000000000000",
-        "nonce"         : "0x0000000000000000000000000000000000000000000000000000000000000000",
-        "parentHash"    : "0x0000000000000000000000000000000000000000000000000000000000000000",
-        "timestamp"     : "0x0"
-    }
+> genesis
+> 2
+> 1
+> 1
+> `account from step 04`
+> `[Enter]`
+> yes
+> 32
+> 2
+> 2
+> genesis
+> `Ctrl` + `C`
 
+*Proof-of-authority*
+
+> genesis
+> 2
+> 1
+> 2
+> 16
+> `account from step 04`
+> `[Enter]`
+> `account from step 04`
+> `[Enter]`
+> yes
+> 32
+> 2
+> 2
+> genesis
+> `Ctrl` + `C`
+
+- [https://hackernoon.com/setup-your-own-private-proof-of-authority-ethereum-network-with-geth-9a0a3750cda8](https://hackernoon.com/setup-your-own-private-proof-of-authority-ethereum-network-with-geth-9a0a3750cda8)
 - Offical source: [https://github.com/ethereum/go-ethereum/wiki/Private-network](https://github.com/ethereum/go-ethereum/wiki/Private-network)
 - [https://arvanaghi.com/blog/explaining-the-genesis-block-in-ethereum/](https://arvanaghi.com/blog/explaining-the-genesis-block-in-ethereum/)
 - [https://lightrains.com/blogs/genesis-json-parameter-explained-ethereum](https://lightrains.com/blogs/genesis-json-parameter-explained-ethereum)
@@ -85,7 +119,7 @@
     docker run                                                              \
         --rm                                                                \
         --volume                    /tmp/genesis.json:/tmp/genesis.json:ro  \
-        --volume                    v_nodes:/root                           \
+        --volume                    v_geth:/root                            \
         ethereum/client-go:stable                                           \
             init                                                            \
                 --datadir           "/root/geth1"                           \
@@ -93,10 +127,9 @@
     
 ### Step 07: Run node
     export ETHERBASE='0x'
-    
-    docker pull                     ethereum/client-go:stable                   &&\
-    docker stop                     geth1                                       &&\
-    docker rm                       geth1                                       &&\
+
+*Same for proof-of-work and proof-of-authority*
+
     docker run                                                                  \
         --detach                                                                \
         --restart                   unless-stopped                              \
@@ -104,7 +137,7 @@
         --hostname                  geth1.vm-2d05.inf.h-brs.de                  \
         --net                       dockernet                                   \
         --ip                        172.22.0.11                                 \
-        --volume                    v_nodes:/root                               \
+        --volume                    v_geth:/root                                \
         ethereum/client-go:stable                                               \
             --datadir               "/root/geth1"                               \
             --nousb                                                             \
@@ -112,7 +145,7 @@
             --identity              "geth1"                                     \
                                                                                 \
             --unlock                $ETHERBASE                                  \
-            --password              "/tmp/pw_geth1.txt"                         \
+            --password              "/root/geth1/password.txt"                  \
                                                                                 \
             --rpc                                                               \
             --rpcaddr               "0.0.0.0"                                   \
@@ -127,10 +160,7 @@
             --nodiscover                                                        \
                                                                                 \
             --mine                                                              \
-            --minerthreads          8                                           \
             --etherbase             $ETHERBASE                                  \
-            --targetgaslimit        4712388                                     \
-            --gasprice              18000000000                                 \
                                                                                 \
             --verbosity             3                                           &&\
     docker logs -f                  geth1
@@ -147,7 +177,7 @@
         --rm                                            \
         --interactive                                   \
         --tty                                           \
-        --volume                    v_nodes:/root:ro    \
+        --volume                    v_geth:/root:ro     \
         ethereum/client-go:stable                       \
             --datadir               "/root/geth1"       \
             --networkid             32                  \
@@ -178,8 +208,6 @@
 - https://github.com/ethereum/go-ethereum/wiki/Managing-your-accounts
 
 ### Step 10: Get certificate from lets encrypte
-    docker stop    letsencrypt                              &&\
-    docker rm      letsencrypt                              && \
     docker run                                              \
         --interactive                                       \
         --tty                                               \
@@ -204,8 +232,11 @@
     certbot certonly --rsa-key-size 4096 --authenticator standalone
 
 ### Step 10: Setup reverse proxy
-    docker stop         nginx                               &&\
-    docker rm           nginx                               &&\
+
+    sudo nano /var/lib/docker/volumes/v_nginx/_data/default.conf
+    
+    *Add this content*: [default.conf](./nginx_conf.md)
+
     docker run                                              \
         --detach                                            \
         --restart       unless-stopped                      \
