@@ -165,8 +165,6 @@
             --verbosity             3                                           &&\
     docker logs -f                  geth1
 
-*Important: Each node needs an own port!*
-
 **Full list of possible parameter**
 - [https://github.com/ethereum/go-ethereum/wiki/Command-Line-Options](https://github.com/ethereum/go-ethereum/wiki/Command-Line-Options)
 - [https://ethereum.gitbooks.io/frontier-guide/content/cli.html](https://ethereum.gitbooks.io/frontier-guide/content/cli.html)
@@ -235,7 +233,7 @@
 
     sudo nano /var/lib/docker/volumes/v_nginx/_data/default.conf
     
-    *Add this content*: [default.conf](./nginx_conf.md)
+*Add this content*: [default.conf](./nginx_conf.md)
 
     docker run                                              \
         --detach                                            \
