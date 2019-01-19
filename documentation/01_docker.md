@@ -173,8 +173,7 @@
                                                                                 \
             --mine                                                              \
             --etherbase             $ETHERBASE                                  \
-            --targetgaslimit        4712388                                     \
-            --gasprice              18000000000                                 \
+                                                                                \
             --verbosity             3                                           &&\
     docker logs -f                  geth1
 
