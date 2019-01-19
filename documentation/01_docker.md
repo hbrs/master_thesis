@@ -11,23 +11,22 @@
         dockernet
 
 ### Step 02: Create volumn
-    docker volume rm        v_keys          &&\
-    docker volume rm        v_geth1         &&\
     docker volume rm        v_letsencrypt   &&\
-    docker volume create    v_keys          &&\
-    docker volume create    v_nginx         &&\
-    docker volume create    v_geth1         &&\
+    docker volume rm        v_nginx         &&\
+    docker volume rm        v_nodes         &&\
     docker volume create    v_letsencrypt   &&\
+    docker volume create    v_nginx         &&\
+    docker volume create    v_nodes         &&\
     docker volume ls
 
 ### Step 03: Generate random keys
-    docker run                      \
-        --rm                        \
-        --interactive               \
-        --tty                       \
-        --volume        v_keys:/opt \
-        --workdir       /opt        \
-        ubuntu:latest               \
+    docker run                          \
+        --rm                            \
+        --interactive                   \
+        --tty                           \
+        --volume        v_nodes:/opt    \
+        --workdir       /opt/pws        \
+        ubuntu:latest                   \
             bash
 
 *Run within the cointainer:*
@@ -40,19 +39,24 @@
     exit
 
 ### Step 04: Create account
-    docker run                                          \
-        --rm                                            \
-        --volume                    v_keys:/tmp:ro      \
-        --volume                    v_geth1:/root       \
-        ethereum/client-go:stable                       \
-            account new                                 \
-                --datadir           "/root"             \
-                --password          "/tmp/pw_geth1.txt"
+    docker run                                                  \
+        --rm                                                    \
+        --volume                    v_nodes:/root               \
+        ethereum/client-go:stable                               \
+            account new                                         \
+                --datadir           "/root/geth1"               \
+                --password          "/root/pws/pw_geth1.txt"
+
+*Check results:*
+
+    docker run --rm -it -v v_nodes:/tmp -w /tmp ubuntu ls -la
 
 **Links:**
 - https://hub.docker.com/r/ethereum/client-go
 
 ### Step 05: Create genesis block
+    docker run --rm -it ethereum/client-go:alltools-latest puppeth
+
     nano /tmp/genesis.json
 
     // content of `genesis.json`
@@ -81,10 +85,10 @@
     docker run                                                              \
         --rm                                                                \
         --volume                    /tmp/genesis.json:/tmp/genesis.json:ro  \
-        --volume                    v_geth1:/root                           \
+        --volume                    v_nodes:/root                           \
         ethereum/client-go:stable                                           \
             init                                                            \
-                --datadir           "/root"                                 \
+                --datadir           "/root/geth1"                           \
                 /tmp/genesis.json
     
 ### Step 07: Run node
@@ -100,10 +104,9 @@
         --hostname                  geth1.vm-2d05.inf.h-brs.de                  \
         --net                       dockernet                                   \
         --ip                        172.22.0.11                                 \
-        --volume                    v_keys:/tmp:ro                              \
-        --volume                    v_geth1:/root                               \
+        --volume                    v_nodes:/root                               \
         ethereum/client-go:stable                                               \
-            --datadir               "/root"                                     \
+            --datadir               "/root/geth1"                               \
             --nousb                                                             \
             --networkid             32                                          \
             --identity              "geth1"                                     \
@@ -144,9 +147,9 @@
         --rm                                            \
         --interactive                                   \
         --tty                                           \
-        --volume                    v_geth1:/root:ro    \
+        --volume                    v_nodes:/root:ro    \
         ethereum/client-go:stable                       \
-            --datadir               "/root"             \
+            --datadir               "/root/geth1"       \
             --networkid             32                  \
             attach
 
