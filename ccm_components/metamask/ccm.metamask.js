@@ -41,7 +41,7 @@
 
             this.init   = async () => {};
             this.ready  = async () => {};
-            this.start  = async () => {};
+            this.start  = async () => {console.log("meta start");};
 
 
             /* Functions */

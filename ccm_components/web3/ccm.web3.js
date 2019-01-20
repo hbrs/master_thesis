@@ -20,7 +20,7 @@
         config: {
             Web3: ['ccm.load', 'https://cdn.jsdelivr.net/gh/ethereum/web3.js/dist/web3.min.js'],
 
-            metamask: ['ccm.component', 'metamask/ccm.metamask.js']
+            metamask: ['ccm.component', 'https://localhost/metamask/ccm.metamask.js']
         },
 
         Instance: function () {
@@ -28,19 +28,31 @@
             /* Lifecycle */
 
             this.init   = async () => {
-                //console.log(this.metamask.isMetaMask());
+                this.metamask.Instance();
 
-                this.metamask.isMetaMask((test) => {
-                    console.log("iwas?");
-                    console.log(test);
-                });
+                this.web3 = new Web3();
+                this.web3.setProvider(new this.web3.providers.HttpProvider("https://vm-2d05.inf.h-brs.de/geth1", 0, "admin", "6c854D9a", []));
 
+
+                //this.web3.setProvider(this.metamask.getProvider());
+
+                console.log(this.versionApi());
+                console.log(this.versionNode());
             };
             this.ready  = async () => {};
             this.start  = async () => {};
 
 
             /* Functions */
+
+            this.versionApi = () => {
+                return this.web3.version.api;
+            };
+
+            this.versionNode = () => {
+                this.web3.version.node((error, result) => { console.log(result); });
+                //return this.web3.version.node;
+            };
         }
     };
 

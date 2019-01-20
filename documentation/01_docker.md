@@ -266,7 +266,7 @@
         --rm                \
         --interactive       \
         --tty               \
-        -volume /tmp:/tmp   \
+        --volume /tmp:/tmp   \
         --workdir /tmp      \
         httpd:latest        \
             bash
