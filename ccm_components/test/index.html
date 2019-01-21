@@ -4,10 +4,42 @@
     <meta charset="UTF-8">
     <title>Component test</title>
 
-    <script src="../web3/ccm.web3.js"></script>
+    <!--<script src="../web3/ccm.web3.js"></script>-->
+    <script
+            src="https://code.jquery.com/jquery-3.3.1.min.js"
+            integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8="
+            crossorigin="anonymous"></script>
+    <script
+            src="https://ccmjs.github.io/ccm/versions/ccm-18.6.8.min.js"
+            integrity="sha384-PnqnIRmePKkglGAFgJCKvXYVLkMYjZ+kySHxtNQS0kH2dIXKwISMKu2irzx+YyCY"
+            crossorigin="anonymous">
+
+    </script>
+    <!--<script src="config/abiA.json"></script>-->
 </head>
 <body>
-    <ccm-web3></ccm-web3>
-    <!--<ccm-metamask></ccm-metamask>-->
+    <!--<ccm-web3 metamask="true" uri="https://vm-2d05.inf.h-brs.de/geth1" user="admin" password="6c854D9a"></ccm-web3>-->
+
+    <script>
+        ( async () => {
+            const config = {
+                metamask: true,
+                uri: 'https://vm-2d05.inf.h-brs.de/geth1',
+                user: 'admin',
+                password: '6c854D9a'
+                //abi: ['ccm.load', 'config/abiA.js']
+            };
+            const abi = await $.getJSON("config/abiA.json");
+
+            const web3 = await ccm.start("../web3/ccm.web3.js", config);
+
+            console.log(await web3.nodeVersion());
+
+            web3.setContract(abi);
+
+            console.log(abi);
+            web3.callContract('0x6D7d62dC2569329d7eacAE05797676a813695793', 'getA');
+        })();
+    </script>
 </body>
 </html>

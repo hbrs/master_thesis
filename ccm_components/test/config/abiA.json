@@ -1,0 +1,48 @@
+[
+    {
+        "constant": false,
+        "inputs": [
+            {
+                "name": "_a",
+                "type": "string"
+            }
+        ],
+        "name": "setA",
+        "outputs": [],
+        "payable": false,
+        "stateMutability": "nonpayable",
+        "type": "function"
+    },
+    {
+        "constant": true,
+        "inputs": [],
+        "name": "getA",
+        "outputs": [
+            {
+                "name": "_a",
+                "type": "string"
+            }
+        ],
+        "payable": false,
+        "stateMutability": "view",
+        "type": "function"
+    },
+    {
+        "inputs": [],
+        "payable": false,
+        "stateMutability": "nonpayable",
+        "type": "constructor"
+    },
+    {
+        "anonymous": false,
+        "inputs": [
+            {
+                "indexed": false,
+                "name": "_a",
+                "type": "string"
+            }
+        ],
+        "name": "eSet",
+        "type": "event"
+    }
+]

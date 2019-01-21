@@ -20,7 +20,7 @@
         config: {
             Web3: ['ccm.load', 'https://cdn.jsdelivr.net/gh/ethereum/web3.js/dist/web3.min.js'],
 
-            metamask: ['ccm.component', 'https://localhost/metamask/ccm.metamask.js']
+            ccmMetamask: ['ccm.component', 'https://localhost/metamask/ccm.metamask.js']
         },
 
         Instance: function () {
@@ -28,16 +28,23 @@
             /* Lifecycle */
 
             this.init   = async () => {
-                this.metamask.Instance();
+                this.ccmMetamask.Instance();
 
                 this.web3 = new Web3();
-                this.web3.setProvider(new this.web3.providers.HttpProvider("https://vm-2d05.inf.h-brs.de/geth1", 0, "admin", "6c854D9a", []));
 
+                if(this.metamask & this.ccmMetamask.isMetaMask()) {
+                    this.setProvider(this.ccmMetamask.getProvider());
+                    this.ccmMetamask.connectToMetaMask();
+                } else {
+                    this.setProvider(new this.web3.providers.HttpProvider(this.uri, 0, this.user, this.password, []));
+                }
 
-                //this.web3.setProvider(this.metamask.getProvider());
-
-                console.log(this.versionApi());
-                console.log(this.versionNode());
+                /*console.log(this.versionApi());
+                console.log(await this.nodeVersion());
+                console.log(await this.networkVersion());
+                console.log(await this.ethereumVersion());
+                //console.log(await this.whisperVersion());
+                console.log(await this.isConnected());*/
             };
             this.ready  = async () => {};
             this.start  = async () => {};
@@ -49,9 +56,53 @@
                 return this.web3.version.api;
             };
 
-            this.versionNode = () => {
-                this.web3.version.node((error, result) => { console.log(result); });
+            this.nodeVersion = () => {
                 //return this.web3.version.node;
+                return new Promise((resolve, reject) => {
+                    this.web3.version.getNode((error, result) => { resolve(result); })
+                });
+            };
+
+            this.networkVersion = () => {
+                //return this.web3.version.network;
+                return new Promise((resolve, reject) => {
+                    this.web3.version.getNetwork((error, result) => { resolve(result); })
+                });
+            };
+
+            this.ethereumVersion = () => {
+                //return this.web3.version.ethereum;
+                return new Promise((resolve, reject) => {
+                    this.web3.version.getEthereum((error, result) => { resolve(result); })
+                });
+            };
+
+            this.whisperVersion = () => {
+                //return this.web3.version.whisper;
+                return new Promise((resolve, reject) => {
+                    this.web3.version.getWhisper((error, result) => { resolve(result); })
+                });
+            };
+
+            this.isConnected = () => {
+                return this.web3.isConnected();
+            };
+
+            this.setProvider = (provider) => {
+                this.web3.setProvider(provider);
+            };
+
+            this.setContract= (abi) => {
+                this.contract = this.web3.eth.contract(abi);
+            };
+
+            this.callContract = (address, f) => {
+                this.contract.at(address)[f]( (error, result) => {
+                    if (!error)
+                        console.log(result);
+                    else
+                        console.error(error);
+                });
             };
         }
     };

@@ -31,9 +31,7 @@
             crossorigin: 'anonymous'
         },
 
-        config: {
-            connected: false
-        },
+        config: {},
 
         Instance: function () {
 
@@ -54,7 +52,7 @@
                 return !(
                     typeof window['ethereum'] === 'undefined' ||
                     typeof window['ethereum']['isMetaMask'] === 'undefined' ||
-                    ethereum.isConnected()
+                    !ethereum.isConnected()
                 );
             };
 
@@ -69,7 +67,7 @@
             this.connectToMetaMask = () => {
                 ethereum.enable()
                     .catch(reason => console.error(reason))
-                    .then(accounts => this.connected = true);
+                    .then(accounts => console.log(accounts));
             };
 
             this.registerEvent = (event, callback) => {

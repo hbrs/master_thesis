@@ -122,6 +122,8 @@
 > genesis
 > `Ctrl` + `C`
 
+    sudo cp /tmp/genesis.json /var/lib/docker/volumes/v_geth/_data/genesis.json
+
 - [https://hackernoon.com/setup-your-own-private-proof-of-authority-ethereum-network-with-geth-9a0a3750cda8](https://hackernoon.com/setup-your-own-private-proof-of-authority-ethereum-network-with-geth-9a0a3750cda8)
 - Offical source: [https://github.com/ethereum/go-ethereum/wiki/Private-network](https://github.com/ethereum/go-ethereum/wiki/Private-network)
 - [https://arvanaghi.com/blog/explaining-the-genesis-block-in-ethereum/](https://arvanaghi.com/blog/explaining-the-genesis-block-in-ethereum/)
@@ -130,12 +132,11 @@
 ### Step 06: Init blockchain
     docker run                                                              \
         --rm                                                                \
-        --volume                    /tmp/genesis.json:/tmp/genesis.json:ro  \
         --volume                    v_geth:/root                            \
         ethereum/client-go:stable                                           \
             init                                                            \
                 --datadir           "/root/geth1"                           \
-                /tmp/genesis.json
+                /root/genesis.json
     
 ### Step 07: Run node
     export ETHERBASE='0x'
@@ -154,6 +155,7 @@
             --datadir               "/root/geth1"                               \
             --nousb                                                             \
             --networkid             32                                          \
+            --syncmode              "full"                                      \
             --identity              "geth1"                                     \
                                                                                 \
             --unlock                $ETHERBASE                                  \
@@ -173,6 +175,8 @@
                                                                                 \
             --mine                                                              \
             --etherbase             $ETHERBASE                                  \
+            --targetgaslimit        4712388                                     \
+            --gasprice              18000000000                                 \
                                                                                 \
             --verbosity             3                                           &&\
     docker logs -f                  geth1
@@ -192,6 +196,8 @@
             --datadir               "/root/geth1"       \
             --networkid             32                  \
             attach
+
+- https://github.com/ethereum/go-ethereum/wiki/JavaScript-Console
 
 ### Step 09: Connect to node
     // find out nodeId
