@@ -56,10 +56,6 @@
                 --datadir           "/root/geth1"               \
                 --password          "/root/geth1/password.txt"
 
-*Check results:*
-
-    sudo tree -L 3 /var/lib/docker/volumes/v_geth/_data 
-
 **Links:**
 - https://hub.docker.com/r/ethereum/client-go
 
@@ -168,3 +164,6 @@
 
 Next: [Running the blockchian](./03_run_blockchain.md)
 Clean blockchain: [Clean blockchain](./02_clean_blockchain.md)
+
+### 09: Check setup
+    sudo tree -L 3 /var/lib/docker/volumes/v_geth/_data 
