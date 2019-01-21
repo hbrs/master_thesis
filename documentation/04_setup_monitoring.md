@@ -1,9 +1,11 @@
 # Setup monitoring
 
-Prev: [Setup blockchain](./02_run_blockchain.md)
-Clean blockchain: [Clean blockchain](./02_clean_blockchain.md)
+- Prev: [Setup blockchain](./03_run_blockchain.md)
+- Clean blockchain: [Clean blockchain](./02_clean_blockchain.md)
 
-### Step 07: Get certificate from lets encrypte
+---
+
+### Step 01: Get certificate from lets encrypte
     docker run                                              \
         --interactive                                       \
         --tty                                               \
@@ -27,7 +29,7 @@ Clean blockchain: [Clean blockchain](./02_clean_blockchain.md)
 
     certbot certonly --rsa-key-size 4096 --authenticator standalone
 
-### Step 10: Setup reverse proxy
+### Step 02: Setup reverse proxy
 
     sudo nano /var/lib/docker/volumes/v_nginx/_data/default.conf
 
@@ -68,7 +70,7 @@ Clean blockchain: [Clean blockchain](./02_clean_blockchain.md)
 - [https://docs.nginx.com/nginx/admin-guide/security-controls/configuring-http-basic-authentication/](https://docs.nginx.com/nginx/admin-guide/security-controls/configuring-http-basic-authentication/)
 - [https://ethereum.stackexchange.com/questions/30357/restricted-access-authentication-for-a-remote-geth-node](https://ethereum.stackexchange.com/questions/30357/restricted-access-authentication-for-a-remote-geth-node)
 
-### Step 10: Setup monitoring
+### Step 03: Setup monitoring
     docker run                                      \
         --detach                                    \
         --interactive                               \
