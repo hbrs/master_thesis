@@ -160,10 +160,10 @@
                 -nodekey /root/boot.key     \
                 -writeaddress
 
+### 09: Check setup
+    sudo tree -L 3 /var/lib/docker/volumes/v_geth/_data 
+
 ---
 
 Next: [Running the blockchian](./03_run_blockchain.md)
 Clean blockchain: [Clean blockchain](./02_clean_blockchain.md)
-
-### 09: Check setup
-    sudo tree -L 3 /var/lib/docker/volumes/v_geth/_data 
