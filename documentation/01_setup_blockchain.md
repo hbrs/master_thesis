@@ -165,5 +165,5 @@
 
 ---
 
-Next: [Running the blockchian](./03_run_blockchain.md)
-Clean blockchain: [Clean blockchain](./02_clean_blockchain.md)
+- Next: [Running the blockchian](./03_run_blockchain.md)
+- Clean blockchain: [Clean blockchain](./02_clean_blockchain.md)
