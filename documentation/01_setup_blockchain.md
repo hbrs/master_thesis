@@ -58,14 +58,7 @@
 
 *Check results:*
 
-    docker run                  \
-        --rm                    \
-        --interactive           \
-        --tty                   \
-        --volume v_geth:/tmp    \
-        --workdir /tmp          \
-        ubuntu:latest           \
-            ls -la
+    sudo tree -L 3 /var/lib/docker/volumes/v_geth/_data 
 
 **Links:**
 - https://hub.docker.com/r/ethereum/client-go
