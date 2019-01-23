@@ -13,11 +13,7 @@
 
         name: 'web3',
 
-        ccm: {
-            url: 'https://ccmjs.github.io/ccm/versions/ccm-18.6.8.min.js',
-            integrity: 'sha384-PnqnIRmePKkglGAFgJCKvXYVLkMYjZ+kySHxtNQS0kH2dIXKwISMKu2irzx+YyCY',
-            crossorigin: 'anonymous'
-        },
+        ccm: 'https://ccmjs.github.io/ccm/versions/ccm-18.6.8.min.js',
 
         config: {
             Web3: ['ccm.load', 'https://cdn.jsdelivr.net/gh/ethereum/web3.js/dist/web3.min.js'],
