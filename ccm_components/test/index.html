@@ -32,8 +32,8 @@
 
             const abi = await $.getJSON("config/abiA.json");
 
-            const metamask = await ccm.start("../metamask/ccm.metamask.js", {});
-            const web3 = await ccm.start("../web3/ccm.web3.js", config);
+            const metamask = await ccm.start("https://cdn.jsdelivr.net/gh/hbrs/master_thesis@latest/ccm_components/metamask/ccm.metamask.js", {});
+            const web3 = await ccm.start("https://cdn.jsdelivr.net/gh/hbrs/master_thesis@latest/ccm_components/web3/ccm.web3.min.js", config);
 
             web3.provider.setMetamask(metamask.getProvider());
             //web3.provider.setWithAuthentication("https://vm-2d05.inf.h-brs.de/geth1", "admin", "6c854D9a");
