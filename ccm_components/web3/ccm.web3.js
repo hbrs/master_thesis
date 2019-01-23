@@ -5,7 +5,9 @@
  * @version 1.0.0
  */
 
-( function () {
+"use strict";
+
+( () => {
 
     const component = {
 
@@ -19,8 +21,7 @@
 
         config: {
             Web3: ['ccm.load', 'https://cdn.jsdelivr.net/gh/ethereum/web3.js/dist/web3.min.js'],
-
-            ccmMetamask: ['ccm.component', 'https://localhost/metamask/ccm.metamask.js']
+            units: ['wei', 'Gwei', 'Kwei', 'Mwei', 'nanoether', 'microether', 'milliether', 'ether']
         },
 
         Instance: function () {
@@ -28,23 +29,7 @@
             /* Lifecycle */
 
             this.init   = async () => {
-                this.ccmMetamask.Instance();
-
                 this.web3 = new Web3();
-
-                if(this.metamask & this.ccmMetamask.isMetaMask()) {
-                    this.setProvider(this.ccmMetamask.getProvider());
-                    this.ccmMetamask.connectToMetaMask();
-                } else {
-                    this.setProvider(new this.web3.providers.HttpProvider(this.uri, 0, this.user, this.password, []));
-                }
-
-                /*console.log(this.versionApi());
-                console.log(await this.nodeVersion());
-                console.log(await this.networkVersion());
-                console.log(await this.ethereumVersion());
-                //console.log(await this.whisperVersion());
-                console.log(await this.isConnected());*/
             };
             this.ready  = async () => {};
             this.start  = async () => {};
@@ -52,58 +37,224 @@
 
             /* Functions */
 
-            this.versionApi = () => {
-                return this.web3.version.api;
+            this.version = {
+                api: () => {
+                    return this.web3.version.api;
+                },
+                node: async () => {
+                    //return this.web3.version.node;
+                    return new Promise((resolve, reject) => {
+                        this.web3.version.getNode((error, result) => resolve(result));
+                    });
+                },
+                network: () => {
+                    //return this.web3.version.network;
+                    return new Promise((resolve, reject) => {
+                        this.web3.version.getNetwork((error, result) => resolve(result));
+                    });
+                },
+                ethereum: () => {
+                    //return this.web3.version.ethereum;
+                    return new Promise((resolve, reject) => {
+                        this.web3.version.getEthereum((error, result) => resolve(result));
+                    });
+                },
+                whisper: () => {
+                    //return this.web3.version.whisper;
+                    return new Promise((resolve, reject) => {
+                        this.web3.version.getWhisper((error, result) => resolve(result));
+                    });
+                }
             };
 
-            this.nodeVersion = () => {
-                //return this.web3.version.node;
-                return new Promise((resolve, reject) => {
-                    this.web3.version.getNode((error, result) => { resolve(result); })
-                });
+            this.net = {
+                isListening: () => {
+                    //return this.web3.net.listening;
+                    return new Promise((resolve, reject) => {
+                        this.web3.net.getListening((error, result) => resolve(result));
+                    });
+                },
+                peerCount: () => {
+                    //return this.web3.net.peerCount;
+                    return new Promise((resolve, reject) => {
+                        this.web3.net.getPeerCount((error, result) => resolve(result));
+                    });
+                }
             };
 
-            this.networkVersion = () => {
-                //return this.web3.version.network;
-                return new Promise((resolve, reject) => {
-                    this.web3.version.getNetwork((error, result) => { resolve(result); })
-                });
+            this.eth = {
+                defaultAccount: () => {
+                    return this.web3.eth.defaultAccount;
+                },
+                coinbase: () => {
+                    //return this.web3.eth.coinbase;
+                    return new Promise((resolve, reject) => {
+                        this.web3.eth.getCoinbase((error, result) => resolve(result));
+                    });
+                },
+                isMining: () => {
+                    //return this.web3.eth.mining;
+                    return new Promise((resolve, reject) => {
+                        this.web3.eth.getMining((error, result) => resolve(result));
+                    });
+                },
+                hashrate: () => {
+                    //return this.web3.eth.hashrate;
+                    return new Promise((resolve, reject) => {
+                        this.web3.eth.getHashrate((error, result) => resolve(result));
+                    });
+                },
+                gasPrice: () => {
+                    //return this.web3.eth.gasPrice;
+                    return new Promise((resolve, reject) => {
+                        this.web3.eth.getGasPrice((error, result) => resolve(result));
+                    });
+                },
+                accounts: () => {
+                    //return this.web3.eth.accounts;
+                    return new Promise((resolve, reject) => {
+                        this.web3.eth.getAccounts((error, result) => resolve(result));
+                    });
+                },
+                blockNumber: () => {
+                    //return this.web3.eth.blockNumber;
+                    return new Promise((resolve, reject) => {
+                        this.web3.eth.getBlockNumber((error, result) => resolve(result));
+                    });
+                },
+                getBalance: (address) => {
+                    //return this.web3.eth.getBalance(address);
+                    return new Promise((resolve, reject) => {
+                        this.web3.eth.getBalance(address, (error, result) => resolve(result));
+                    });
+                },
+                getBlock: (blockHashOrNumber, transactionObjects = false) => {
+                    //return this.web3.eth.getBlock(blockHashOrNumber);
+                    return new Promise((resolve, reject) => {
+                        this.web3.eth.getBlock(blockHashOrNumber, transactionObjects, (error, result) => resolve(result));
+                    });
+                },
+                getBlockTransactionCount: (blockHashOrNumber) => {
+                    //return this.web3.eth.getBlockTransactionCount(blockHashOrNumber);
+                    return new Promise((resolve, reject) => {
+                        this.web3.eth.getBlockTransactionCount(blockHashOrNumber, (error, result) => resolve(result));
+                    });
+                },
+                getTransaction: (transactionHash) => {
+                    //return this.web3.eth.getTransaction(transactionHash);
+                    return new Promise((resolve, reject) => {
+                        this.web3.eth.getTransaction(transactionHash, (error, result) => resolve(result));
+                    });
+                },
+                getTransactionReceipt: (hashString) => {
+                    //return this.web3.eth.getTransactionReceipt(hashString);
+                    return new Promise((resolve, reject) => {
+                        this.web3.eth.getTransactionReceipt(hashString, (error, result) => resolve(result));
+                    });
+                },
+                getTransactionCount: (addressHexString) => {
+                    //return this.web3.eth.getTransactionCount(addressHexString);
+                    return new Promise((resolve, reject) => {
+                        this.web3.eth.getTransactionCount(addressHexString, (error, result) => resolve(result));
+                    });
+                },
+                sendTransaction: (from, to, value, data = "") => {
+                    //return this.web3.eth.getTransactionCount(addressHexString);
+                    return new Promise((resolve, reject) => {
+                        this.web3.eth.sendTransaction({
+                            from: from,
+                            to: to,
+                            value: value,
+                            data: data
+                        }, (error, result) => resolve(result));
+                    });
+                }
+
+                // web3.eth.defaultBlock
+                // web3.eth.syncing
+                // web3.eth.isSyncing(callback)
+                // web3.eth.getStorageAt
+                // web3.eth.getCode
+                // web3.eth.getUncle
+                // web3.eth.getTransactionFromBlock
+                // web3.eth.sendRawTransaction
+                // web3.eth.sign
+                // web3.eth.call
+                // web3.eth.estimateGas
+                // web3.eth.filter !!!
             };
 
-            this.ethereumVersion = () => {
-                //return this.web3.version.ethereum;
-                return new Promise((resolve, reject) => {
-                    this.web3.version.getEthereum((error, result) => { resolve(result); })
-                });
+            this.contract = {
+                call: (abi, address, f) => {
+                    return new Promise((resolve, reject) => {
+                        this.web3.eth.contract(abi).at(address)[f].call((error, result) => resolve(result));
+                    });
+                },
+                sendTransaction: (abi, address, f, args) => {
+                    return new Promise((resolve, reject) => {
+                        this.web3.eth.contract(abi).at(address)[f].sendTransaction(...args, (error, result) => resolve(result));
+                    });
+                },
+                registerFilter: (abi, address, event, filter, callback) => {
+                    return this.web3.eth.contract(abi).at(address)[event](callback);
+                },
+                unregisterFilter: (filter) => {
+                    filter.stopWatching();
+                }
+
+                // allEvents
             };
 
-            this.whisperVersion = () => {
-                //return this.web3.version.whisper;
-                return new Promise((resolve, reject) => {
-                    this.web3.version.getWhisper((error, result) => { resolve(result); })
-                });
+            this.provider = {
+                setMetamask: (metamask) =>
+                    this.web3.setProvider(metamask),
+                setByUri: (uri) =>
+                    this.web3.setProvider(new this.web3.providers.HttpProvider(uri)),
+                setWithAuthentication: (uri, user, password) =>
+                    this.web3.setProvider(new this.web3.providers.HttpProvider(uri, 0, user, password, [])),
+                current: () =>
+                    this.web3.currentProvider
             };
 
             this.isConnected = () => {
                 return this.web3.isConnected();
             };
 
-            this.setProvider = (provider) => {
-                this.web3.setProvider(provider);
+            this.reset = (keepIsSyncing) => {
+                this.web3.reset(keepIsSyncing);
             };
 
-            this.setContract= (abi) => {
-                this.contract = this.web3.eth.contract(abi);
+            /**
+             * Expects a value in Wei and returns a value in the given unit.
+             * @param {number} value - An amount of Wei.
+             * @param {string} unit - A unit.
+             * @return {number} The value in the given unit.
+             */
+            this.fromWei = (value, unit) => {
+                return this.web3.fromWei(value, unit);
             };
 
-            this.callContract = (address, f) => {
-                this.contract.at(address)[f]( (error, result) => {
-                    if (!error)
-                        console.log(result);
-                    else
-                        console.error(error);
-                });
+            /**
+             * Expects a value and a unit. Returns the value converted to Wei.
+             * @param {number} value - An amount.
+             * @param {string} unit - The unit.
+             * @return {number} The value converted to Wei.
+             */
+            this.toWei = (value, unit) => {
+                return this.web3.toWei(value, unit);
             };
+
+            this.isAddress = (hexString) => {
+                return this.web3.isAddress(hexString);
+            };
+
+            // web3.sha3
+            // web3.toHex
+            // web3.toAscii
+            // web3.fromAscii
+            // web3.toDecimal
+            // web3.fromDecimal
+            // web3.toBigNumber
         }
     };
 
