@@ -1,5 +1,5 @@
 /**
- * @component ccm-metamask
+ * @component ccm-web3
  * @author René Müller <rene.mueller@smail.inf.h-brs.de> 2019
  * @license MIT License
  * @version 1.0.0
@@ -24,9 +24,7 @@
 
             /* Lifecycle */
 
-            this.init   = async () => {
-                this.web3 = new Web3();
-            };
+            this.init   = async () => this.web3 = new Web3();
             this.ready  = async () => {};
             this.start  = async () => {};
 
@@ -181,14 +179,30 @@
             };
 
             this.contract = {
-                call: (abi, address, f) => {
+                call: (abi, address, f, args) => {
                     return new Promise((resolve, reject) => {
-                        this.web3.eth.contract(abi).at(address)[f].call((error, result) => resolve(result));
+                        this.web3
+                            .eth
+                            .contract(abi)
+                            .at(address)
+                            [f]
+                            .call(
+                                ...args,
+                                (error, result) => resolve(result)
+                            );
                     });
                 },
                 sendTransaction: (abi, address, f, args) => {
                     return new Promise((resolve, reject) => {
-                        this.web3.eth.contract(abi).at(address)[f].sendTransaction(...args, (error, result) => resolve(result));
+                        this.web3
+                            .eth
+                            .contract(abi)
+                            .at(address)
+                            [f]
+                            .sendTransaction(
+                                ...args,
+                                (error, result) => resolve(result)
+                            );
                     });
                 },
                 registerFilter: (abi, address, event, filter, callback) => {
@@ -202,8 +216,8 @@
             };
 
             this.provider = {
-                setMetamask: (metamask) =>
-                    this.web3.setProvider(metamask),
+                setProvider: (provider) =>
+                    this.web3.setProvider(provider),
                 setByUri: (uri) =>
                     this.web3.setProvider(new this.web3.providers.HttpProvider(uri)),
                 setWithAuthentication: (uri, user, password) =>
@@ -212,13 +226,10 @@
                     this.web3.currentProvider
             };
 
-            this.isConnected = () => {
-                return this.web3.isConnected();
-            };
-
-            this.reset = (keepIsSyncing) => {
-                this.web3.reset(keepIsSyncing);
-            };
+            this.isConnected = () => this.web3.isConnected();
+            this.reset = (keepIsSyncing) => this.web3.reset(keepIsSyncing);
+            this.sha3 = (value, options) => this.web3.sha3(value, options);
+            this.toHex = (value) => this.web3.toHex(value);
 
             /**
              * Expects a value in Wei and returns a value in the given unit.
@@ -226,9 +237,7 @@
              * @param {string} unit - A unit.
              * @return {number} The value in the given unit.
              */
-            this.fromWei = (value, unit) => {
-                return this.web3.fromWei(value, unit);
-            };
+            this.fromWei = (value, unit) => this.web3.fromWei(value, unit);
 
             /**
              * Expects a value and a unit. Returns the value converted to Wei.
@@ -236,16 +245,10 @@
              * @param {string} unit - The unit.
              * @return {number} The value converted to Wei.
              */
-            this.toWei = (value, unit) => {
-                return this.web3.toWei(value, unit);
-            };
+            this.toWei = (value, unit) => this.web3.toWei(value, unit);
 
-            this.isAddress = (hexString) => {
-                return this.web3.isAddress(hexString);
-            };
+            this.isAddress = (hexString) => this.web3.isAddress(hexString);
 
-            // web3.sha3
-            // web3.toHex
             // web3.toAscii
             // web3.fromAscii
             // web3.toDecimal

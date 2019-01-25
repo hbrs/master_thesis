@@ -25,7 +25,11 @@
 
         name: 'metamask',
 
-        ccm: 'https://ccmjs.github.io/ccm/versions/ccm-18.6.8.min.js',
+        ccm: {
+            url: 'https://ccmjs.github.io/ccm/versions/ccm-18.6.8.min.js',
+            integrity: 'sha384-PnqnIRmePKkglGAFgJCKvXYVLkMYjZ+kySHxtNQS0kH2dIXKwISMKu2irzx+YyCY',
+            crossorigin: 'anonymous'
+        },
 
         config: {},
 

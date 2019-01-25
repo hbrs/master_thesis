@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>Component test</title>
+    <title>Test - ccm.web3.js</title>
 
     <!--<script src="../web3/ccm.web3.js"></script>-->
     <script
@@ -33,9 +33,9 @@
             const abi = await $.getJSON("config/abiA.json");
 
             const metamask = await ccm.start("https://cdn.jsdelivr.net/gh/hbrs/master_thesis@latest/ccm_components/metamask/ccm.metamask.js", {});
-            const web3 = await ccm.start("https://cdn.jsdelivr.net/gh/hbrs/master_thesis@latest/ccm_components/web3/ccm.web3.min.js", config);
+            const web3 = await ccm.start("../web3/ccm.web3.js", config);
 
-            web3.provider.setMetamask(metamask.getProvider());
+            web3.provider.setProvider(metamask.getProvider());
             //web3.provider.setWithAuthentication("https://vm-2d05.inf.h-brs.de/geth1", "admin", "6c854D9a");
             //web3.provider.setByUri("https://vm-2d05.inf.h-brs.de/geth2");
 
@@ -71,19 +71,19 @@
 
             let te;
 
-            const f = async (error, result) => {
+            /*const f = async (error, result) => {
                 console.log(result);
                 document.querySelector("#one").innerHTML = result.blockNumber;
 
                 web3.contract.unregisterFilter(te);
 
                 console.log("setA(): " + await web3.contract.sendTransaction(abi, "0x8eb6c7fee8e6a56ae8d6b2750d9d57e58cbad5fc", "setA", ["js9"]));
-            };
+            };*/
 
             te = web3.contract.registerFilter(abi, "0x8eb6c7fee8e6a56ae8d6b2750d9d57e58cbad5fc", "eSet", {address: "0x29e9b32211f3a488d7d281a867fc21fe2920a89c4f3a6f0b9c184b8c24500eef"}, f);
 
             console.log("getA(): " + await web3.contract.call(abi, "0x8eb6c7fee8e6a56ae8d6b2750d9d57e58cbad5fc", "getA"));
-            console.log("setA(): " + await web3.contract.sendTransaction(abi, "0x8eb6c7fee8e6a56ae8d6b2750d9d57e58cbad5fc", "setA", ["js8"]));
+            //console.log("setA(): " + await web3.contract.sendTransaction(abi, "0x8eb6c7fee8e6a56ae8d6b2750d9d57e58cbad5fc", "setA", ["js8"]));
         })();
     </script>
 </body>
