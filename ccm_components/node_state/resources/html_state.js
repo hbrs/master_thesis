@@ -1,7 +1,7 @@
 ccm.files['html_state.js'] = {
     class: "toast",
     id: "toast",
-    style: "position: absolute; top: 0; right: 0;",
+    style: "position: absolute; top: 0; right: 0; z-index: 100;",
     "data-autohide": "false",
     inner: [
         {
@@ -10,7 +10,7 @@ ccm.files['html_state.js'] = {
                 {
                     tag: "img",
                     class: "rounded mr-2",
-                    src: "#",
+                    src: "https://i.ibb.co/Y2jtfk0/logo.png",
                     width: "32px",
                     alt: "logo"
                 },
