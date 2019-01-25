@@ -23,7 +23,9 @@
 <button id="show_node_state_geth2">Node status: geth2</button>
 <button id="show_node_state_metamask">Node status: metamask</button>
 
-<!--<script src="../node_state/ccm.node_state.js"></script>-->
+<ccm-node_state-1-0-0 selector="#show_node_state_geth2" provider="https://vm-2d05.inf.h-brs.de/geth2"></ccm-node_state-1-0-0>
+
+<script src="../node_state/versions/ccm.node_state-1.0.0.js"></script>
 <script>
     ( async () => {
         const config = {
@@ -35,11 +37,11 @@
 
         //const abi = await $.getJSON("config/abiA.json");
 
-        ccm.start("../node_state/ccm.node_state.js", {
+        /*ccm.start("../node_state/versions/ccm.node_state-1.0.0.js", {
             root: document.querySelector('#node_state_geth2'),
             selector: '#show_node_state_geth2',
             provider: 'https://vm-2d05.inf.h-brs.de/geth2'
-        });
+        });*/
 
         ccm.start("../node_state/ccm.node_state.js", {
             root: document.querySelector('#node_state_metamask'),
