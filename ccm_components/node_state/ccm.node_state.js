@@ -25,7 +25,7 @@
             web3: ['ccm.instance', 'https://cdn.jsdelivr.net/gh/hbrs/master_thesis@latest/ccm_components/web3/ccm.web3.min.js'],
             metamask: ['ccm.instance', 'https://cdn.jsdelivr.net/gh/hbrs/master_thesis@latest/ccm_components/metamask/ccm.metamask.min.js'],
 
-            html: ['ccm.load', 'https://cdn.jsdelivr.net/gh/hbrs/master_thesis@latest/ccm_components/node_state/resources/html_state.js']
+            html: ['ccm.load', 'https://cdn.jsdelivr.net/gh/hbrs/master_thesis@latest/ccm_components/node_state/resources/html_state.min.js']
         },
 
         Instance: function () {
