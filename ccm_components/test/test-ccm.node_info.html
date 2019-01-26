@@ -23,7 +23,7 @@
 <button id="show_node_state_geth2">Node status: geth2</button>
 <button id="show_node_state_metamask">Node status: metamask</button>
 
-<ccm-node_state-1-0-0 selector="#show_node_state_geth2" provider="https://vm-2d05.inf.h-brs.de/geth2"></ccm-node_state-1-0-0>
+<!--<ccm-node_state-1-0-0 selector="#show_node_state_geth2" provider="https://vm-2d05.inf.h-brs.de/geth2"></ccm-node_state-1-0-0>-->
 
 <script src="../node_state/versions/ccm.node_state-1.0.0.js"></script>
 <script>
@@ -34,6 +34,10 @@
             user: 'admin',
             password: '6c854D9a'
         };
+
+        const metamask = await ccm.start('../metamask/ccm.metamask.js', {});
+
+        console.log(metamask.getProvider());
 
         //const abi = await $.getJSON("config/abiA.json");
 

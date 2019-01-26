@@ -44,9 +44,8 @@
 
             /* Functions */
 
-            this.getProvider = () => {
-                return ethereum;
-            };
+            this.getProvider = () =>
+                this.isMetaMask() ? window['ethereum'] : false;
 
             this.isMetaMask = () => {
                 return !(
