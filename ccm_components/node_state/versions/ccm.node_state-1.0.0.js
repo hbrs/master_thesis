@@ -23,10 +23,10 @@
         config: {
             css: ['ccm.load', 'https://stackpath.bootstrapcdn.com/bootstrap/4.2.1/css/bootstrap.min.css'],
             js: ['ccm.load', ['https://code.jquery.com/jquery-3.3.1.min.js', 'https://stackpath.bootstrapcdn.com/bootstrap/4.2.1/js/bootstrap.min.js']],
-            web3: ['ccm.instance', 'https://cdn.jsdelivr.net/gh/hbrs/master_thesis/ccm_components/web3/ccm.web3.min.js'],
-            metamask: ['ccm.instance', 'https://cdn.jsdelivr.net/gh/hbrs/master_thesis/ccm_components/metamask/ccm.metamask.min.js'],
+            web3: ['ccm.instance', 'https://cdn.jsdelivr.net/gh/hbrs/master_thesis@master/ccm_components/web3/ccm.web3.min.js'],
+            metamask: ['ccm.instance', 'https://cdn.jsdelivr.net/gh/hbrs/master_thesis@master/ccm_components/metamask/ccm.metamask.min.js'],
 
-            html: ['ccm.load', 'https://cdn.jsdelivr.net/gh/hbrs/master_thesis/ccm_components/node_state/resources/html_state.min.js']
+            html: ['ccm.load', 'https://cdn.jsdelivr.net/gh/hbrs/master_thesis@master/ccm_components/node_state/resources/html_state.min.js']
         },
 
         Instance: function () {
