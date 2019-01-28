@@ -54,7 +54,7 @@
                 // check if the connection to Metamask was successful
                 // if not show an error and stop rendering this component
                 if (!this.web3.isConnected()) {
-                    this.element.innerHTML = '<div style="color: red;">Not connected!<br />Make sure <a href="https://metamask.io/">Metamask</a> is installed</div>';
+                    this.element.innerHTML = '<div style="color: red;">Not connected!<br />Make sure <a href="https://metamask.io/">Metamask</a> is installed!</div>';
                     return;
                 }
 
@@ -72,6 +72,7 @@
                     (error, result) => {
 
                         this.setJackpot(result.args._jackpot.toString());
+                        this.element.querySelector('#play').innerHTML = 'Play now';
 
                         if (!result.args._result) {
                             this.addResult(number);
@@ -112,6 +113,9 @@
                             [number],
                             this.web3.toWei(0.01, 'ether')
                         );
+
+                        this.element.querySelector('#play').innerHTML =
+                            '<img src="https://hbrs.github.io/master_thesis/ccm_components/lottery/resources/loader.png" style="width: 2rem;" />';
                     }
                 }));
             };
