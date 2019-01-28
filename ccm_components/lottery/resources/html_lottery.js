@@ -32,6 +32,7 @@ ccm.files['html_lottery.js'] = {
                             tag: "button",
                             class: "btn btn-primary",
                             id: "play",
+                            style: "width: 8.2rem; height: 4rem;",
                             inner: "Play now",
                             onclick: "%play%"
                         }
