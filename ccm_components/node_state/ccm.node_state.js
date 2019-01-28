@@ -1,5 +1,5 @@
 /**
- * @component ccm-node_info
+ * @component ccm-node_state
  * @author René Müller <rene.mueller@smail.inf.h-brs.de> 2019
  * @license MIT License
  * @version 1.0.0

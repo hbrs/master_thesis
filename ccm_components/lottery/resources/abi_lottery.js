@@ -1,3 +1,10 @@
+/**
+ * @component ccm-lottery
+ * @author René Müller <rene.mueller@smail.inf.h-brs.de> 2019
+ * @license MIT License
+ * @version 1.0.0
+ */
+
 ccm.files['abi_lottery.js'] = [
     {
         "constant": true,

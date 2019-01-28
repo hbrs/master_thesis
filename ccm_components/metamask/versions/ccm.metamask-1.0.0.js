@@ -1,5 +1,5 @@
 /**
- * @component ccm-web3
+ * @component ccm-metamask
  * @author René Müller <rene.mueller@smail.inf.h-brs.de> 2019
  * @license MIT License
  * @version 1.0.0

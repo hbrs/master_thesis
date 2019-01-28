@@ -1,3 +1,10 @@
+/**
+ * @component ccm-node_state
+ * @author René Müller <rene.mueller@smail.inf.h-brs.de> 2019
+ * @license MIT License
+ * @version 1.0.0
+ */
+
 ccm.files['html_state.js'] = {
     class: "toast",
     id: "toast",
@@ -10,7 +17,7 @@ ccm.files['html_state.js'] = {
                 {
                     tag: "img",
                     class: "rounded mr-2",
-                    src: "https://i.ibb.co/Y2jtfk0/logo.png",
+                    src: "https://hbrs.github.io/master_thesis/ccm_components/node_state/resources/logo.png",
                     width: "32px",
                     alt: "logo"
                 },
