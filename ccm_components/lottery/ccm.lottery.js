@@ -115,7 +115,7 @@
                         );
 
                         this.element.querySelector('#play').innerHTML =
-                            '<img src="https://hbrs.github.io/master_thesis/ccm_components/lottery/resources/loader.png" style="width: 2rem;" />';
+                            '<img src="https://hbrs.github.io/master_thesis/ccm_components/lottery/resources/loader.gif" style="width: 2rem;" />';
                     }
                 }));
             };
