@@ -23,19 +23,19 @@
             css: ['ccm.load', 'https://stackpath.bootstrapcdn.com/bootstrap/4.2.1/css/bootstrap.min.css'],
             web3: [
                 'ccm.instance',
-                '../web3/ccm.web3.js'
+                'https://hbrs.github.io/master_thesis/ccm_components/web3/ccm.web3.js'
             ],
             metamask: [
                 'ccm.instance',
-                'https://cdn.jsdelivr.net/gh/hbrs/master_thesis@master/ccm_components/metamask/ccm.metamask.min.js'
+                'https://hbrs.github.io/master_thesis/ccm_components/metamask/ccm.metamask.js'
             ],
             html: [
                 'ccm.load',
-                '../lottery/resources/html_lottery.js'
+                'https://hbrs.github.io/master_thesis/ccm_components/lottery/resources/html_lottery.js'
             ],
             abi: [
                 'ccm.load',
-                '../lottery/resources/abi_lottery.js'
+                'https://hbrs.github.io/master_thesis/ccm_components/lottery/resources/abi_lottery.js'
             ]
         },
 
