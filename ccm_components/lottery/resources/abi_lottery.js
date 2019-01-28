@@ -83,7 +83,7 @@ ccm.files['abi_lottery.js'] = [
                 "type": "bytes32"
             }
         ],
-        "payable": false,
+        "payable": true,
         "stateMutability": "nonpayable",
         "type": "constructor"
     },

@@ -55,7 +55,7 @@
                 // check if the connection to Metamask was successful
                 // if not show an error and stop rendering this component
                 if (!this.web3.isConnected()) {
-                    this.element.innerHTML = 'Not connected!';
+                    this.element.innerHTML = '<div style="color: red;">Not connected!<br />Make sure <a href="https://metamask.io/">Metamask</a> is installed</div>';
                     return;
                 }
 
