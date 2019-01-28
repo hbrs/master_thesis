@@ -37,7 +37,7 @@ ccm.files['html_lottery.js'] = {
                         }
                     },
                     {
-                        class: "text-info",
+                        class: "text-primary",
                         inner: "Each game costs 0.01 ether."
                     }
                 ]
