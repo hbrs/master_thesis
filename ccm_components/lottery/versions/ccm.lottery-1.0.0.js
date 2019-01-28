@@ -73,6 +73,7 @@
                     (error, result) => {
 
                         this.setJackpot(result.args._jackpot.toString());
+                        this.element.querySelector('#play').innerHTML = 'Play now';
 
                         if (!result.args._result) {
                             this.addResult(number);
@@ -113,6 +114,9 @@
                             [number],
                             this.web3.toWei(0.01, 'ether')
                         );
+
+                        this.element.querySelector('#play').innerHTML =
+                            '<img src="https://hbrs.github.io/master_thesis/ccm_components/lottery/resources/loader.png" style="width: 2rem;" />';
                     }
                 }));
             };
