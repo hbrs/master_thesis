@@ -5,6 +5,8 @@
  * @version 1.0.0
  */
 
+//TODO documentation
+
 "use strict";
 
 ( () => {
@@ -179,7 +181,7 @@
             };
 
             this.contract = {
-                call: (abi, address, f, args) => {
+                call: (abi, address, f, args = []) => {
                     return new Promise((resolve, reject) => {
                         this.web3
                             .eth
@@ -192,7 +194,7 @@
                             );
                     });
                 },
-                sendTransaction: (abi, address, f, args) => {
+                sendTransaction: (abi, address, f, args = [], value = 0) => {
                     return new Promise((resolve, reject) => {
                         this.web3
                             .eth
@@ -201,12 +203,17 @@
                             [f]
                             .sendTransaction(
                                 ...args,
+                                {value: value},
                                 (error, result) => resolve(result)
                             );
                     });
                 },
                 registerFilter: (abi, address, event, filter, callback) => {
-                    return this.web3.eth.contract(abi).at(address)[event](callback);
+                    return this.web3
+                        .eth
+                        .contract(abi)
+                        .at(address)
+                        [event](callback);
                 },
                 unregisterFilter: (filter) => {
                     filter.stopWatching();
@@ -226,10 +233,36 @@
                     this.web3.currentProvider
             };
 
-            this.isConnected = () => this.web3.isConnected();
-            this.reset = (keepIsSyncing) => this.web3.reset(keepIsSyncing);
-            this.sha3 = (value, options) => this.web3.sha3(value, options);
-            this.toHex = (value) => this.web3.toHex(value);
+            /**
+             * Check if web3 is connected to a node.
+             * @return {boolean} Is connected.
+             */
+            this.isConnected = () =>
+                this.web3.isConnected();
+
+            /**
+             * Rest web3.
+             * @param {string} keepIsSyncing
+             */
+            this.reset = (keepIsSyncing) =>
+                this.web3.reset(keepIsSyncing);
+
+            /**
+             * Expects a value in Wei and returns a value in the given unit.
+             * @param {string} value - An amount of Wei.
+             * @param {object} options - A unit.
+             * @return {number} The value in the given unit.
+             */
+            this.sha3 = (value, options) =>
+                this.web3.sha3(value, options);
+
+            /**
+             * Expects a value in Wei and returns a value in the given unit.
+             * @param {number} value - An amount of Wei.
+             * @return {number} The value in the given unit.
+             */
+            this.toHex = (value) =>
+                this.web3.toHex(value);
 
             /**
              * Expects a value in Wei and returns a value in the given unit.
@@ -237,7 +270,8 @@
              * @param {string} unit - A unit.
              * @return {number} The value in the given unit.
              */
-            this.fromWei = (value, unit) => this.web3.fromWei(value, unit);
+            this.fromWei = (value, unit) =>
+                this.web3.fromWei(value, unit);
 
             /**
              * Expects a value and a unit. Returns the value converted to Wei.
@@ -245,9 +279,11 @@
              * @param {string} unit - The unit.
              * @return {number} The value converted to Wei.
              */
-            this.toWei = (value, unit) => this.web3.toWei(value, unit);
+            this.toWei = (value, unit) =>
+                this.web3.toWei(value, unit);
 
-            this.isAddress = (hexString) => this.web3.isAddress(hexString);
+            this.isAddress = (hexString) =>
+                this.web3.isAddress(hexString);
 
             // web3.toAscii
             // web3.fromAscii

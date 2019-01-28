@@ -60,9 +60,10 @@
 
 
                 this.ccm.helper.setContent(this.element, this.ccm.helper.html(this.html, {}));
-                //this.ccm.helper.setContent(this.element, `<span style="font-size: 1em; color: red;"><i class="fas fa-check-circle"></i></span>`);
 
-                this.showToast(document.querySelector(this.selector));
+                if(this.selector !== 'undefined') {
+                    this.showToast(document.querySelector(this.selector));
+                }
             };
 
 

@@ -37,15 +37,17 @@
 
         const metamask = await ccm.start('../metamask/ccm.metamask.js', {});
 
-        console.log(metamask.getProvider());
+        const web3 = await ccm.start('../web3/ccm.web3.js', {});
+
+        console.log(web3.sha3("32"));
 
         //const abi = await $.getJSON("config/abiA.json");
 
-        /*ccm.start("../node_state/versions/ccm.node_state-1.0.0.js", {
+        ccm.start("../node_state/versions/ccm.node_state-1.0.0.js", {
             root: document.querySelector('#node_state_geth2'),
             selector: '#show_node_state_geth2',
             provider: 'https://vm-2d05.inf.h-brs.de/geth2'
-        });*/
+        });
 
         ccm.start("../node_state/ccm.node_state.js", {
             root: document.querySelector('#node_state_metamask'),
