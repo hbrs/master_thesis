@@ -12,6 +12,7 @@
     const component = {
 
         name: 'lottery',
+        version: [1, 0, 0],
 
         ccm: {
             url: 'https://ccmjs.github.io/ccm/versions/ccm-18.6.8.min.js',

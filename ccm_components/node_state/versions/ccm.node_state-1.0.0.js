@@ -22,11 +22,25 @@
 
         config: {
             css: ['ccm.load', 'https://stackpath.bootstrapcdn.com/bootstrap/4.2.1/css/bootstrap.min.css'],
-            js: ['ccm.load', ['https://code.jquery.com/jquery-3.3.1.min.js', 'https://stackpath.bootstrapcdn.com/bootstrap/4.2.1/js/bootstrap.min.js']],
-            web3: ['ccm.instance', 'https://cdn.jsdelivr.net/gh/hbrs/master_thesis@master/ccm_components/web3/ccm.web3.min.js'],
-            metamask: ['ccm.instance', 'https://cdn.jsdelivr.net/gh/hbrs/master_thesis@master/ccm_components/metamask/ccm.metamask.min.js'],
+            js: [
+                'ccm.load', [
+                    'https://code.jquery.com/jquery-3.3.1.min.js',
+                    'https://stackpath.bootstrapcdn.com/bootstrap/4.2.1/js/bootstrap.min.js'
+                ]
+            ],
+            web3: [
+                'ccm.instance',
+                'https://hbrs.github.io/master_thesis/ccm_components/web3/versions/ccm.web3-1.0.0.js'
+            ],
+            metamask: [
+                'ccm.instance',
+                'https://hbrs.github.io/master_thesis/ccm_components/metamask/versions/ccm.metamask-1.0.0.js'
+            ],
 
-            html: ['ccm.load', 'https://cdn.jsdelivr.net/gh/hbrs/master_thesis@master/ccm_components/node_state/resources/html_state.min.js']
+            html: [
+                'ccm.load',
+                'https://hbrs.github.io/master_thesis/ccm_components/node_state/resources/html_state.js'
+            ]
         },
 
         Instance: function () {
@@ -60,10 +74,9 @@
 
 
                 this.ccm.helper.setContent(this.element, this.ccm.helper.html(this.html, {}));
+                //this.ccm.helper.setContent(this.element, `<span style="font-size: 1em; color: red;"><i class="fas fa-check-circle"></i></span>`);
 
-                if(this.selector !== 'undefined') {
-                    this.showToast(document.querySelector(this.selector));
-                }
+                this.showToast(document.querySelector(this.selector));
             };
 
 
