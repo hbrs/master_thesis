@@ -1,7 +1,8 @@
 # Run the blockchain
 
-Prev: [Setup blockchain](./01_setup_blockchain.md)
-Clean blockchain: [Clean blockchain](./02_clean_blockchain.md)
+- Prev prev: [Setup blockchain](./01_setup_blockchain.md)
+- Prev: [Clean blockchain](./02_clean_blockchain.md)
+- Next: [Setup monitoring](./04_setup_monitoring.md)
 
 ### Step 01: Start the bootnode
     docker run                                                              \
@@ -160,8 +161,3 @@ Clean blockchain: [Clean blockchain](./02_clean_blockchain.md)
 - https://github.com/ethereum/go-ethereum/wiki/Setting-up-private-network-or-local-cluster
 - https://gist.github.com/fishbullet/04fcc4f7af90ee9fa6f9de0b0aa325ab
 - https://github.com/ethereum/go-ethereum/wiki/Connecting-to-the-network
-
----
-
-- Prev: [Clean blockchain](./02_clean_blockchain.md)
-- Next: [Setup monitoring](./04_setup_monitoring.md)
