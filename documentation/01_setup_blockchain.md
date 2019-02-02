@@ -65,7 +65,7 @@
         --interactive                       \
         --tty                               \
         --volume /tmp:/genesis              \
-        ethereum/client-go:alltools-latest  \
+        ethereum/client-go:alltools-stable  \
             puppeth
 
 *Proof-of-work:*
