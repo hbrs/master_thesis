@@ -50,7 +50,7 @@
             --rpc                                                               \
             --rpcaddr               "0.0.0.0"                                   \
             --rpcport               8545                                        \
-            --rpcapi                "eth,net,web3,rpc"                          \
+            --rpcapi                "eth,net,web3"                              \
             --rpccorsdomain         "*"                                         \
             --rpcvhosts             "vm-2d05.inf.h-brs.de"                      \
                                                                                 \
@@ -73,6 +73,7 @@
 - [https://github.com/ethereum/go-ethereum/wiki/Management-APIs](https://github.com/ethereum/go-ethereum/wiki/Management-APIs)
 
 ### Step 03: Run secondary node
+    export ETHERBASE='0x'
     export BOOTNODE='enode://<pubkey>@<ip>:<port>'
 
 *Same for proof-of-work and proof-of-authority*
@@ -95,7 +96,7 @@
             --rpc                                                               \
             --rpcaddr               "0.0.0.0"                                   \
             --rpcport               8545                                        \
-            --rpcapi                "eth,net,web3,rpc"                          \
+            --rpcapi                "eth,net,web3"                              \
             --rpccorsdomain         "*"                                         \
             --rpcvhosts             "vm-2d05.inf.h-brs.de"                      \
                                                                                 \
