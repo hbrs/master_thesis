@@ -4,6 +4,8 @@
 - Prev: [Clean blockchain](./02_clean_blockchain.md)
 - Next: [Setup monitoring](./04_setup_monitoring.md)
 
+---
+
 ### Step 01: Start the bootnode
     docker run                                                              \
         --detach                                                            \
