@@ -17,7 +17,7 @@ ccm.files['html_state.js'] = {
                 {
                     tag: "img",
                     class: "rounded mr-2",
-                    src: "https://hbrs.github.io/master_thesis/ccm_components/node_state/resources/logo.png",
+                    src: "https://ccmjs.github.io/rmueller-components/node_state/resources/logo.png",
                     width: "32px",
                     alt: "logo"
                 },

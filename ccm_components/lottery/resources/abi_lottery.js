@@ -92,12 +92,12 @@ ccm.files['abi_lottery.js'] = [
         "inputs": [
             {
                 "indexed": false,
-                "name": "_result",
+                "name": "result",
                 "type": "bool"
             },
             {
                 "indexed": false,
-                "name": "_jackpot",
+                "name": "jackpot",
                 "type": "uint256"
             }
         ],

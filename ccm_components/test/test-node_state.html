@@ -4,10 +4,7 @@
     <meta charset="UTF-8">
     <title>Test - ccm.node_state.js</title>
 
-    <script
-            src="https://ccmjs.github.io/ccm/versions/ccm-18.6.8.min.js"
-            integrity="sha384-PnqnIRmePKkglGAFgJCKvXYVLkMYjZ+kySHxtNQS0kH2dIXKwISMKu2irzx+YyCY"
-            crossorigin="anonymous"></script>
+    <script src="https://ccmjs.github.io/ccm/versions/ccm-20.0.0.min.js"></script>
 </head>
 <body>
 
@@ -16,21 +13,30 @@
 <button id="show_node_state_geth2">Node status: geth2</button>
 <button id="show_node_state_metamask">Node status: metamask</button>
 
-<!--<ccm-node_state-1-0-0 selector="#show_node_state_geth2" provider="https://vm-2d05.inf.h-brs.de/geth2"></ccm-node_state-1-0-0>-->
+<!--<ccm-node_state selector="#show_node_state_geth2" provider="https://vm-2d05.inf.h-brs.de/geth2"></ccm-node_state>-->
 
-<!--<script src="https://hbrs.github.io/master_thesis/ccm_components/node_state/versions/ccm.node_state-1.0.0.js"></script>-->
+<!--<script src="../node_state/ccm.node_state.js"></script>-->
+
 <script>
     ( async () => {
-        const metamask = await ccm.start('../metamask/versions/ccm.metamask-1.0.0.js', {});
-        const web3 = await ccm.start('../web3/versions/ccm.web3-1.0.0.js', {});
 
-        ccm.start("../node_state/versions/ccm.node_state-1.0.0.js", {
+        const metamask = await ccm.start(
+            'https://ccmjs.github.io/rmueller-components/metamask/versions/ccm.metamask-1.0.0.js',
+            {}
+        );
+
+        const web3 = await ccm.start(
+            'https://ccmjs.github.io/rmueller-components/web3/versions/ccm.web3-1.0.0.js',
+            {}
+        );
+
+        ccm.start('../node_state/ccm.node_state.js', {
             root: document.querySelector('#node_state_geth2'),
             selector: '#show_node_state_geth2',
             provider: 'https://vm-2d05.inf.h-brs.de/geth2'
         });
 
-        ccm.start("../node_state/versions/ccm.node_state-1.0.0.js", {
+        ccm.start('../node_state/ccm.node_state.js', {
             root: document.querySelector('#node_state_metamask'),
             selector: '#show_node_state_metamask',
             provider: 'metamask'

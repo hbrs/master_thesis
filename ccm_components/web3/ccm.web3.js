@@ -14,11 +14,10 @@
     const component = {
 
         name: 'web3',
-
-        ccm: 'https://ccmjs.github.io/ccm/versions/ccm-18.6.8.min.js',
+        ccm: 'https://ccmjs.github.io/ccm/versions/ccm-20.0.0.min.js',
 
         config: {
-            Web3: ['ccm.load', 'https://cdn.jsdelivr.net/gh/ethereum/web3.js/dist/web3.min.js'],
+            Web3: ['ccm.load', '../web3/resources/bundle.js'],
             units: ['wei', 'Gwei', 'Kwei', 'Mwei', 'nanoether', 'microether', 'milliether', 'ether']
         },
 
@@ -155,7 +154,7 @@
                     });
                 },
                 sendTransaction: (from, to, value, data = "") => {
-                    //return this.web3.eth.getTransactionCount(addressHexString);
+                    //return this.web3.eth.sendTransaction();
                     return new Promise((resolve, reject) => {
                         this.web3.eth.sendTransaction({
                             from: from,
@@ -194,7 +193,7 @@
                             );
                     });
                 },
-                sendTransaction: (abi, address, f, args = [], value = 0) => {
+                sendTransaction: (abi, address, f, args = [], sender = this.defaultAccount(), value = 0) => {
                     return new Promise((resolve, reject) => {
                         this.web3
                             .eth
@@ -203,7 +202,10 @@
                             [f]
                             .sendTransaction(
                                 ...args,
-                                {value: value},
+                                {
+                                    from: sender,
+                                    value: value
+                                },
                                 (error, result) => resolve(result)
                             );
                     });

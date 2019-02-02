@@ -13,30 +13,28 @@
 
         name: 'lottery',
         version: [1, 0, 0],
-
-        ccm: {
-            url: 'https://ccmjs.github.io/ccm/versions/ccm-18.6.8.min.js',
-            integrity: 'sha384-PnqnIRmePKkglGAFgJCKvXYVLkMYjZ+kySHxtNQS0kH2dIXKwISMKu2irzx+YyCY',
-            crossorigin: 'anonymous'
-        },
+        ccm: 'https://ccmjs.github.io/ccm/versions/ccm-20.0.0.min.js',
 
         config: {
-            css: ['ccm.load', 'https://stackpath.bootstrapcdn.com/bootstrap/4.2.1/css/bootstrap.min.css'],
             web3: [
                 'ccm.instance',
-                'https://hbrs.github.io/master_thesis/ccm_components/web3/versions/ccm.web3-1.0.0.js'
+                'https://ccmjs.github.io/rmueller-components/web3/versions/ccm.web3-1.0.0.js'
             ],
             metamask: [
                 'ccm.instance',
-                'https://hbrs.github.io/master_thesis/ccm_components/web3/versions/ccm.web3-1.0.0.js'
+                'https://ccmjs.github.io/rmueller-components/metamask/versions/ccm.metamask-1.0.0.js'
             ],
             html: [
                 'ccm.load',
-                'https://hbrs.github.io/master_thesis/ccm_components/lottery/resources/html_lottery.js'
+                'https://ccmjs.github.io/rmueller-components/lottery/resources/html_lottery.js'
             ],
             abi: [
                 'ccm.load',
-                'https://hbrs.github.io/master_thesis/ccm_components/lottery/resources/abi_lottery.js'
+                'https://ccmjs.github.io/rmueller-components/lottery/resources/abi_lottery.js'
+            ],
+            css: [
+                'ccm.load',
+                'https://stackpath.bootstrapcdn.com/bootstrap/4.2.1/css/bootstrap.min.css'
             ]
         },
 
@@ -50,7 +48,11 @@
 
                 let number;
 
-                this.web3.provider.setProvider(window['ethereum']);
+                if (this.metamask.isMetaMask()) {
+                    this.web3.provider.setProvider(this.metamask.getProvider());
+                } else {
+                    console.error ('metamask not installed!');
+                }
 
                 // check if the connection to Metamask was successful
                 // if not show an error and stop rendering this component
@@ -65,22 +67,20 @@
 
                 this.web3.contract.registerFilter(
                     this.abi,
-                    "0x" + this.contract,
-                    "ePlay",
-                    {
-
-                    },
+                    '0x' + this.contract,
+                    'ePlay',
+                    {},
                     (error, result) => {
 
-                        this.setJackpot(result.args._jackpot.toString());
+                        this.setJackpot(result.args.jackpot.toString());
                         this.element.querySelector('#play').innerHTML = 'Play now';
 
-                        if (!result.args._result) {
+                        if (!result.args.result) {
                             this.addResult(number);
                         } else {
-                            this.element.querySelector("#winner").innerHTML =
-                                `Congratulations you won ${this.web3.fromWei(result.args._jackpot.toString(), 'ether')} ether!`;
-                            this.element.querySelector("#winner").parentNode.style = "display: block;";
+                            this.element.querySelector('#winner').innerHTML =
+                                `Congratulations you won ${this.web3.fromWei(result.args.jackpot.toString(), 'ether')} ether!`;
+                            this.element.querySelector('#winner').parentNode.style = 'display: block;';
                         }
                     });
 
@@ -91,18 +91,18 @@
                         number = this.element.querySelector('#number').value;
 
                         if (!this.web3.isAddress(this.contract)) {
-                            this.element.querySelector("#error").innerHTML = 'Invalid contract address!';
-                            this.element.querySelector("#error").parentNode.style = "display: block;";
+                            this.element.querySelector('#error').innerHTML = 'Invalid contract address!';
+                            this.element.querySelector('#error').parentNode.style = 'display: block;';
 
                             return;
                         } else if (isNaN(number) || number == 0) {
-                            this.element.querySelector("#error").innerHTML = 'Invalid number!';
-                            this.element.querySelector("#error").parentNode.style = "display: block;";
+                            this.element.querySelector('#error').innerHTML = 'Invalid number!';
+                            this.element.querySelector('#error').parentNode.style = 'display: block;';
 
                             return;
-                        } else if (!await this.web3.contract.call(this.abi, this.contract, "isOpen", [])) {
-                            this.element.querySelector("#error").innerHTML = 'This lottery is already over!';
-                            this.element.querySelector("#error").parentNode.style = "display: block;";
+                        } else if (!await this.web3.contract.call(this.abi, this.contract, 'isOpen', [])) {
+                            this.element.querySelector('error').innerHTML = 'This lottery is already over!';
+                            this.element.querySelector('error').parentNode.style = 'display: block;';
 
                             return;
                         }
@@ -110,13 +110,13 @@
                         this.web3.contract.sendTransaction (
                             this.abi,
                             this.contract,
-                            "play",
+                            'play',
                             [number],
                             this.web3.toWei(0.01, 'ether')
                         );
 
                         this.element.querySelector('#play').innerHTML =
-                            '<img src="https://hbrs.github.io/master_thesis/ccm_components/lottery/resources/loader.gif" style="width: 2rem;" />';
+                            '<img src="https://ccmjs.github.io/rmueller-components/lottery/resources/loader.gif" style="width: 2rem;" />';
                     }
                 }));
             };
@@ -135,7 +135,7 @@
                 span.appendChild(document.createTextNode(number + ", "));
                 span.style = 'text-decoration: line-through; color: red;';
 
-                this.element.querySelector("#results")
+                this.element.querySelector('#results')
                     .appendChild(span);
             };
         }

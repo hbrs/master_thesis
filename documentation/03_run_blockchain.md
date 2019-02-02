@@ -72,7 +72,7 @@ Clean blockchain: [Clean blockchain](./02_clean_blockchain.md)
 ### Step 03: Run secondary node
     export BOOTNODE='enode://<pubkey>@<ip>:<port>'
 
-    *Same for proof-of-work and proof-of-authority*
+*Same for proof-of-work and proof-of-authority*
 
     docker run                                                                  \
         --detach                                                                \
@@ -160,3 +160,8 @@ Clean blockchain: [Clean blockchain](./02_clean_blockchain.md)
 - https://github.com/ethereum/go-ethereum/wiki/Setting-up-private-network-or-local-cluster
 - https://gist.github.com/fishbullet/04fcc4f7af90ee9fa6f9de0b0aa325ab
 - https://github.com/ethereum/go-ethereum/wiki/Connecting-to-the-network
+
+---
+
+- Prev: [Clean blockchain](./02_clean_blockchain.md)
+- Next: [Setup monitoring](./04_setup_monitoring.md)

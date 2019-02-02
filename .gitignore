@@ -49,3 +49,6 @@ crashlytics-build.properties
 # edit
 
 .DS_Store
+metamask/resources/
+notary/versions/
+web3/resources/

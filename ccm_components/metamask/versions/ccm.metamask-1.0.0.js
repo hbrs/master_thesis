@@ -15,22 +15,17 @@
  * @function: isConnected: bool
  * @function: enable: Promise
  *
- * @events: accountsChanged
+ * @event: accountsChanged
  *
  */
 
-( function () {
+( () => {
 
     const component = {
 
         name: 'metamask',
         version: [1, 0, 0],
-
-        ccm: {
-            url: 'https://ccmjs.github.io/ccm/versions/ccm-18.6.8.min.js',
-            integrity: 'sha384-PnqnIRmePKkglGAFgJCKvXYVLkMYjZ+kySHxtNQS0kH2dIXKwISMKu2irzx+YyCY',
-            crossorigin: 'anonymous'
-        },
+        ccm: 'https://ccmjs.github.io/ccm/versions/ccm-20.0.0.min.js',
 
         config: {},
 
@@ -48,31 +43,34 @@
             this.getProvider = () =>
                 this.isMetaMask() ? window['ethereum'] : false;
 
+            this.enable = (callback) =>
+                window['ethereum'].enable()
+                    .catch(reason => console.error(reason))
+                    .then(accounts => callback(accounts));
+
+            this.networkVersion = () =>
+                window['ethereum'].networkVersion;
+
+            this.selectedAddress = () =>
+                window['ethereum'].selectedAddress;
+
+            this.isConnected = () =>
+                window['ethereum'].isConnected();
+
             this.isMetaMask = () => {
-                return !(
-                    typeof window['ethereum'] === 'undefined' ||
-                    typeof window['ethereum']['isMetaMask'] === 'undefined' ||
-                    !ethereum.isConnected()
+                return (
+                    typeof window['ethereum'] !== 'undefined' &&
+                    typeof window['ethereum']['isMetaMask'] !== 'undefined' &&
+                    window['ethereum'].isMetaMask
                 );
             };
 
-            this.getNetworkVersion = () => {
-                return ethereum.networkVersion;
-            };
+            this.onAccountsChanged = (callback) =>
+                window['ethereum']
+                    .on('accountsChanged', accounts => callback(accounts));
 
-            this.getSelectedAddress = () => {
-                return ethereum.selectedAddress;
-            };
-
-            this.connectToMetaMask = () => {
-                ethereum.enable()
-                    .catch(reason => console.error(reason))
-                    .then(accounts => console.log(accounts));
-            };
-
-            this.registerEvent = (event, callback) => {
-                ethereum.on(event, accounts => callback(accounts));
-            };
+            this.removeAllListeners = () =>
+                window['ethereum'].removeAllListeners();
         }
     };
 

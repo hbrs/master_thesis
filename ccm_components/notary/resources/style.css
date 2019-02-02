@@ -1,0 +1,19 @@
+.display-none { display: none; }
+
+.display-inline-block-min-width-4-rem {
+    display: inline-block;
+    min-width: 4rem;
+}
+
+
+/* bootstrap */
+
+.card {
+    width: 32rem;
+    margin: 0 auto;
+}
+
+
+/* dropzone*/
+
+.dz-progress { display: none !important; }

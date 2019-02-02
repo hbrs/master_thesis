@@ -4,87 +4,84 @@
     <meta charset="UTF-8">
     <title>Test - ccm.web3.js</title>
 
-    <!--<script src="../web3/ccm.web3.js"></script>-->
     <script
             src="https://code.jquery.com/jquery-3.3.1.min.js"
             integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8="
             crossorigin="anonymous"></script>
-    <script
-            src="https://ccmjs.github.io/ccm/versions/ccm-18.6.8.min.js"
-            integrity="sha384-PnqnIRmePKkglGAFgJCKvXYVLkMYjZ+kySHxtNQS0kH2dIXKwISMKu2irzx+YyCY"
-            crossorigin="anonymous">
+    <script src="https://ccmjs.github.io/ccm/versions/ccm-20.0.0.min.js">
 
     </script>
-    <!--<script src="config/abiA.json"></script>-->
 </head>
 <body>
-<div>Result: <span id="one">#</span></div>
-    <!--<ccm-web3 metamask="true" uri="https://vm-2d05.inf.h-brs.de/geth1" user="admin" password="6c854D9a"></ccm-web3>-->
+<div>Result: <span id="result">#</span></div>
 
-    <script>
-        ( async () => {
-            const config = {
-                metamask: true,
-                uri: 'https://vm-2d05.inf.h-brs.de/geth1',
-                user: 'admin',
-                password: '6c854D9a'
-            };
+<!--<ccm-web3 metamask="true" uri="https://vm-2d05.inf.h-brs.de/geth1" user="admin" password="6c854D9a"></ccm-web3>-->
 
-            const abi = await $.getJSON("config/abiA.json");
+<script>
+    ( async () => {
 
-            const metamask = await ccm.start("https://cdn.jsdelivr.net/gh/hbrs/master_thesis@latest/ccm_components/metamask/ccm.metamask.js", {});
-            const web3 = await ccm.start("../web3/ccm.web3.js", config);
+        const abi = await $.getJSON('config/abiA.json');
 
-            web3.provider.setProvider(metamask.getProvider());
-            //web3.provider.setWithAuthentication("https://vm-2d05.inf.h-brs.de/geth1", "admin", "6c854D9a");
-            //web3.provider.setByUri("https://vm-2d05.inf.h-brs.de/geth2");
+        const metamask = await ccm.start(
+            'https://ccmjs.github.io/rmueller-components/metamask/versions/ccm.metamask-1.0.0.js',
+            {}
+        );
+        const web3 = await ccm.start(
+            '../web3/ccm.web3.js',
+            { uri: 'https://admin:6c854D9a@vm-2d05.inf.h-brs.de/geth1' }
+        );
 
-            console.log(web3.provider.current());
+        //web3.provider.setProvider(metamask.getProvider());
+        //web3.provider.setWithAuthentication("https://vm-2d05.inf.h-brs.de/geth1", "admin", "6c854D9a");
+        //web3.provider.setByUri("https://vm-2d05.inf.h-brs.de/geth2");
 
-            console.log("version.api:" + web3.version.api());
-            console.log("version.node:" + await web3.version.node());
-            console.log("version.network: " + await web3.version.network());
-            console.log("version.ethereum: " + await web3.version.ethereum());
+        console.log(web3.provider.current());
 
-            console.log("net.listening: " + await web3.net.isListening());
-            console.log("net.peers: " + await web3.net.peerCount());
+        console.log('version.api: ' + web3.version.api());
+        console.log('version.node: ' + await web3.version.node());
+        console.log('version.network: ' + await web3.version.network());
+        console.log('version.ethereum: ' + await web3.version.ethereum());
 
-            console.log("eth.defaultAccount: " + web3.eth.defaultAccount());
-            console.log("eth.coinbase: " + await web3.eth.coinbase());
-            console.log("eth.isMining: " + await web3.eth.isMining());
-            console.log("eth.hashrate: " + await web3.eth.hashrate());
-            console.log("eth.gasPrice: " + await web3.eth.gasPrice());
-            console.log("eth.accounts: " + await web3.eth.accounts());
-            console.log("eth.blockNumber: " + await web3.eth.blockNumber());
-            console.log("eth.getBalance: " + await web3.eth.getBalance(web3.eth.defaultAccount()));
-            console.log("eth.getBlock: " + await web3.eth.getBlock(5011));
-            console.log("eth.getBlockTransactionCount: " + await web3.eth.getBlockTransactionCount(5011));
-            console.log("eth.getTransaction: " + await web3.eth.getTransaction("0x69dd46668f0fa61fd4cd70044ba8e05be304c8ea8ebf5db6a30deadda25ab878"));
-            console.log("eth.getTransactionCount: " + web3.eth.getTransactionCount(web3.eth.defaultAccount()));
-            /*console.log("eth.sendTransaction: " +
-                await web3.eth.sendTransaction(
-                    web3.eth.defaultAccount(),
-                    "0xc125e54b75e51A2B7c95884B8a9bC93a481a0840", // metamask Firefox
-                    web3.toWei(0.01, "ether")
-                )
-            );*/
+        console.log('net.listening: ' + await web3.net.isListening());
+        console.log('net.peers: ' + await web3.net.peerCount());
 
-            let te;
+        console.log('eth.defaultAccount: ' + web3.eth.defaultAccount());
+        console.log('eth.coinbase: ' + await web3.eth.coinbase());
+        console.log('eth.isMining: ' + await web3.eth.isMining());
+        console.log('eth.hashrate: ' + await web3.eth.hashrate());
+        console.log('eth.gasPrice: ' + await web3.eth.gasPrice());
+        console.log('eth.accounts: ' + await web3.eth.accounts());
+        console.log('eth.blockNumber: ' + await web3.eth.blockNumber());
+        console.log('eth.getBalance: ' + await web3.eth.getBalance(web3.eth.defaultAccount()));
+        console.log('eth.getBlock: ' + await web3.eth.getBlock(5011));
+        console.log('eth.getBlockTransactionCount: ' + await web3.eth.getBlockTransactionCount(5011));
+        console.log('eth.getTransaction: ' + await web3.eth.getTransaction("0x69dd46668f0fa61fd4cd70044ba8e05be304c8ea8ebf5db6a30deadda25ab878"));
+        console.log('eth.getTransactionCount: ' + web3.eth.getTransactionCount(web3.eth.defaultAccount()));
+        console.log('eth.sendTransaction: ' +
+            await web3.eth.sendTransaction(
+                web3.eth.defaultAccount(),
+                '0xc125e54b75e51A2B7c95884B8a9bC93a481a0840', // metamask Firefox
+                web3.toWei(0.01, "ether")
+            )
+        );
 
-            /*const f = async (error, result) => {
-                console.log(result);
-                document.querySelector("#one").innerHTML = result.blockNumber;
+        let filter;
 
-                web3.contract.unregisterFilter(te);
+        const callback = async (error, result) => {
+            console.log(result);
+            document.querySelector('#result').innerHTML = result.blockNumber;
 
-                console.log("setA(): " + await web3.contract.sendTransaction(abi, "0x8eb6c7fee8e6a56ae8d6b2750d9d57e58cbad5fc", "setA", ["js9"]));
-            };*/
+            web3.contract.unregisterFilter(filter);
 
-            te = web3.contract.registerFilter(abi, "0x8eb6c7fee8e6a56ae8d6b2750d9d57e58cbad5fc", "eSet", {address: "0x29e9b32211f3a488d7d281a867fc21fe2920a89c4f3a6f0b9c184b8c24500eef"}, f);
+            console.log('setA(): ' + await web3.contract.sendTransaction(abi, '0x8eb6c7fee8e6a56ae8d6b2750d9d57e58cbad5fc', 'setA', ['js9']));
+        };
 
-            console.log("getA(): " + await web3.contract.call(abi, "0x8eb6c7fee8e6a56ae8d6b2750d9d57e58cbad5fc", "getA"));
-            //console.log("setA(): " + await web3.contract.sendTransaction(abi, "0x8eb6c7fee8e6a56ae8d6b2750d9d57e58cbad5fc", "setA", ["js8"]));
-        })();
-    </script>
+        filter = web3.contract.registerFilter(abi, '0x8eb6c7fee8e6a56ae8d6b2750d9d57e58cbad5fc', 'eSet', {address: '0x29e9b32211f3a488d7d281a867fc21fe2920a89c4f3a6f0b9c184b8c24500eef'}, callback);
+
+        console.log('getA(): ' + await web3.contract.call(abi, '0x8eb6c7fee8e6a56ae8d6b2750d9d57e58cbad5fc', 'getA'));
+        console.log('setA(): ' + await web3.contract.sendTransaction(abi, '0x8eb6c7fee8e6a56ae8d6b2750d9d57e58cbad5fc', 'setA', ['js8']));
+    })();
+</script>
+
 </body>
 </html>

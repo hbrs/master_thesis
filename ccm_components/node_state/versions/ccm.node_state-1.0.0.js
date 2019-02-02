@@ -13,33 +13,31 @@
 
         name: 'node_state',
         version: [1, 0, 0],
-
-        ccm: {
-            url: 'https://ccmjs.github.io/ccm/versions/ccm-18.6.8.min.js',
-            integrity: 'sha384-PnqnIRmePKkglGAFgJCKvXYVLkMYjZ+kySHxtNQS0kH2dIXKwISMKu2irzx+YyCY',
-            crossorigin: 'anonymous'
-        },
+        ccm: 'https://ccmjs.github.io/ccm/versions/ccm-20.0.0.min.js',
 
         config: {
-            css: ['ccm.load', 'https://stackpath.bootstrapcdn.com/bootstrap/4.2.1/css/bootstrap.min.css'],
+            web3: [
+                'ccm.instance',
+                'https://ccmjs.github.io/rmueller-components/web3/versions/ccm.web3-1.0.0.js'
+            ],
+            metamask: [
+                'ccm.instance',
+                'https://ccmjs.github.io/rmueller-components/metamask/versions/ccm.metamask-1.0.0.js'
+            ],
+
+            html: [
+                'ccm.load',
+                'https://ccmjs.github.io/rmueller-components/node_state/resources/html_state.js'
+            ],
+            css: [
+                'ccm.load',
+                'https://stackpath.bootstrapcdn.com/bootstrap/4.2.1/css/bootstrap.min.css'
+            ],
             js: [
                 'ccm.load', [
                     'https://code.jquery.com/jquery-3.3.1.min.js',
                     'https://stackpath.bootstrapcdn.com/bootstrap/4.2.1/js/bootstrap.min.js'
                 ]
-            ],
-            web3: [
-                'ccm.instance',
-                'https://hbrs.github.io/master_thesis/ccm_components/web3/versions/ccm.web3-1.0.0.js'
-            ],
-            metamask: [
-                'ccm.instance',
-                'https://hbrs.github.io/master_thesis/ccm_components/metamask/versions/ccm.metamask-1.0.0.js'
-            ],
-
-            html: [
-                'ccm.load',
-                'https://hbrs.github.io/master_thesis/ccm_components/node_state/resources/html_state.js'
             ]
         },
 
