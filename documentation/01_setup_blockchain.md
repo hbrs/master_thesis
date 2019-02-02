@@ -146,7 +146,7 @@
     docker run                              \
         --rm                                \
         --volume v_geth:/root               \
-        ethereum/client-go:alltools-latest  \
+        ethereum/client-go:alltools-stable  \
             bootnode                        \
                 -genkey /root/boot.key
 
@@ -155,7 +155,7 @@
     docker run                              \
         --rm                                \
         --volume v_geth:/root               \
-        ethereum/client-go:alltools-latest  \
+        ethereum/client-go:alltools-stable  \
             bootnode                        \
                 -nodekey /root/boot.key     \
                 -writeaddress
