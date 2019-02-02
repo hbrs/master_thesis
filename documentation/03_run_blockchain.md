@@ -15,7 +15,7 @@
         --net                               dockernet                       \
         --ip                                172.22.0.10                     \
         --volume                            v_geth:/root:ro                 \
-        ethereum/client-go:alltools-latest                                  \
+        ethereum/client-go:alltools-stable                                  \
             bootnode                                                        \
                 -addr                       ":30301"                        \
                 -nodekey                    "/root/boot.key"                \
