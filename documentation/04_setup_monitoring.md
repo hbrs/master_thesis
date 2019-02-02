@@ -1,6 +1,6 @@
 # Setup monitoring
 
-- Prev: [Setup blockchain](./03_run_blockchain.md)
+- Prev: [Run blockchain](./03_run_blockchain.md)
 - Clean blockchain: [Clean blockchain](./02_clean_blockchain.md)
 
 ---
