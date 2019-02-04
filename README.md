@@ -16,4 +16,6 @@ All files which belong to my master thesis.
 
 - Monitoring: https://admin:un21n77w@vm-2d05.inf.h-brs.de/
 - Geth 01: https://admin:un21n77w@vm-2d05.inf.h-brs.de/geth1
+    - Authority node
+    - Main account unlock
 - Geth 02: https://admin:un21n77w@vm-2d05.inf.h-brs.de/geth2
