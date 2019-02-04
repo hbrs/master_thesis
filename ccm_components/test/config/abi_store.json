@@ -3,11 +3,11 @@
         "constant": false,
         "inputs": [
             {
-                "name": "_a",
+                "name": "_store",
                 "type": "string"
             }
         ],
-        "name": "setA",
+        "name": "setStore",
         "outputs": [],
         "payable": false,
         "stateMutability": "nonpayable",
@@ -16,10 +16,10 @@
     {
         "constant": true,
         "inputs": [],
-        "name": "getA",
+        "name": "getStore",
         "outputs": [
             {
-                "name": "_a",
+                "name": "",
                 "type": "string"
             }
         ],
@@ -38,11 +38,11 @@
         "inputs": [
             {
                 "indexed": false,
-                "name": "_a",
+                "name": "store",
                 "type": "string"
             }
         ],
-        "name": "eSet",
+        "name": "eStored",
         "type": "event"
     }
 ]

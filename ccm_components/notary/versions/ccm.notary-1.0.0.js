@@ -12,6 +12,7 @@
     const component = {
 
         name: 'notary',
+        version: [1, 0, 0],
         ccm: 'https://ccmjs.github.io/ccm/versions/ccm-20.0.0.min.js',
 
         config: {
@@ -63,6 +64,7 @@
                     this.metamask.onAccountsChanged(this.setOwner);
 
                 } else {
+
                     console.error ('metamask not installed!');
 
                     this.element.innerHTML =
@@ -159,7 +161,8 @@
 
                 }).on('removedfile', file => {
                     this.hash = undefined;
-                    this.element.querySelector('#sha256').innerHTML = "No document dropped yet";
+                    this.element.querySelector('#sha256').innerHTML =
+                        "No document dropped yet";
                 });
             };
 
@@ -169,13 +172,15 @@
             this.setOwner = accounts => {
                 this.owner = accounts[0];
 
-                this.element.querySelector('#owner').innerHTML = this.owner;
+                this.element.querySelector('#owner').innerHTML =
+                    this.owner;
             };
 
             this.fileChanged = fileContent => {
                 this.hash = '0x' + CryptoJS.SHA256(fileContent).toString();
 
-                this.element.querySelector('#sha256').innerHTML = this.hash;
+                this.element.querySelector('#sha256').innerHTML =
+                    this.hash;
             };
 
             this.toggleButton = () => {

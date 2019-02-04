@@ -17,7 +17,7 @@
         config: {
             web3: [
                 'ccm.instance',
-                'https://ccmjs.github.io/rmueller-components/web3/versions/ccm.web3-1.0.0.js'
+                'https://ccmjs.github.io/rmueller-components/web3/versions/ccm.web3-2.0.0.js'
             ],
             metamask: [
                 'ccm.instance',
@@ -40,40 +40,31 @@
 
             this.init   = async () => {};
             this.ready  = async () => {};
-            this.start  = async () =>
-                this.web3.provider
-                    .setWithAuthentication('https://vm-2d05.inf.h-brs.de/geth1', this.user, this.password);
+
+            this.start  = async () => {
+                this.web3.setProvider('https://admin:un21n77w@vm-2d05.inf.h-brs.de/geth1');
+
+                this.contract = this.web3.eth.contract.new (this.abi, this.contractAddress);
+            };
 
 
             /* Functions */
 
-            this.registerCallback = (callback) => {
-                this.web3.contract.registerFilter (
-                    this.abi,
-                    this.contract,
-                    'eStored',
-                    {},
-                    (error, result) => callback (error, result));
-            };
-
             this.setStore = async (value) => {
-                return this.web3.contract.sendTransaction (
-                    this.abi,
+
+                return this.web3.eth.contract.send (
                     this.contract,
-                    'setStore',
+                    'setStore(string)',
                     [value],
-                    await this.web3.eth.coinbase()
+                    {
+                        from:   "0x6c20d41bd843f7d6b9025639453cb2970e0253f0",
+                        value:  0
+                    }
                 );
             };
 
-            this.getStore = () => {
-                return this.web3.contract.call (
-                    this.abi,
-                    this.contract,
-                    'getStore',
-                    []
-                );
-            };
+            this.getStore = () =>
+                this.web3.eth.contract.call(this.contract, 'getStore');
         }
     };
 

@@ -1,22 +1,17 @@
 /**
- * @component ccm-notary
+ * @component ccm-faucet
  * @author René Müller <rene.mueller@smail.inf.h-brs.de> 2019
  * @license MIT License
  * @version 1.0.0
  */
 
-ccm.files['html_notary.js'] = {
+ccm.files['html_faucet.js'] = {
     class: "card",
+    style: "width: 16rem; margin: 0 auto;",
     inner: [
         {
             class: "card-header",
-            inner: "Notary"
-        },
-        {
-            class: "card-body text-center",
-            inner: {
-                class: "dropzone"
-            }
+            inner: "Faucet"
         },
         {
             class: "card-body",
@@ -32,12 +27,12 @@ ccm.files['html_notary.js'] = {
                     inner: [
                         {
                             tag: "strong",
-                            inner: "Owner"
+                            inner: "Address"
                         },
                         {
                             tag: "code",
-                            class: "display-block",
-                            id: "owner",
+                            style: "display: block;",
+                            id: "address",
                             inner: ""
                         }
                     ]
@@ -48,25 +43,25 @@ ccm.files['html_notary.js'] = {
                     inner: [
                         {
                             tag: "strong",
-                            inner: "SHA256"
+                            inner: "Balance"
                         },
                         {
                             tag: "code",
-                            class: "display-block",
-                            id: "sha256",
-                            inner: "No document dropped yet"
+                            style: "display: block;",
+                            id: "balance",
+                            inner: ""
                         }
                     ]
                 },
                 {
                     tag: "button",
-                    onclick: "%upload%",
+                    onclick: "%request%",
                     class: "btn btn-primary",
-                    inner: "Claim ownership"
+                    inner: "Request 1 ether"
                 },
                 {
                     id: "loader",
-                    class: "display-none",
+                    style: "display: none;",
                     inner: [
                         {
                             tag: "span",
@@ -80,28 +75,6 @@ ccm.files['html_notary.js'] = {
                     ]
                 }
             ]
-        },
-        {
-            tag: "ul",
-            class: "list-group list-group-flush",
-            inner: [
-                {
-                    tag: "li",
-                    class: "list-group-item list-group-item-danger display-none",
-                    id: "error",
-                    inner: ""
-                },
-                {
-                    tag: "li",
-                    class: "list-group-item list-group-item-success display-none",
-                    id: "success",
-                    inner: ""
-                }
-            ]
-        },
-        {
-            class: "card-footer",
-            inner: "Contract: <code>%contract%</code>"
         }
     ]
 };

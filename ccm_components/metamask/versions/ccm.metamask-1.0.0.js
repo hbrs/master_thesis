@@ -45,8 +45,8 @@
 
             this.enable = (callback) =>
                 window['ethereum'].enable()
-                    .catch(reason => console.error(reason))
-                    .then(accounts => callback(accounts));
+                    .catch(console.error)
+                    .then(callback);
 
             this.networkVersion = () =>
                 window['ethereum'].networkVersion;
@@ -65,9 +65,9 @@
                 );
             };
 
-            this.onAccountsChanged = (callback) =>
+            this.onAccountsChanged = callback =>
                 window['ethereum']
-                    .on('accountsChanged', accounts => callback(accounts));
+                    .on('accountsChanged', callback);
 
             this.removeAllListeners = () =>
                 window['ethereum'].removeAllListeners();

@@ -2,7 +2,7 @@
  * @component ccm-web3
  * @author René Müller <rene.mueller@smail.inf.h-brs.de> 2019
  * @license MIT License
- * @version 1.0.0
+ * @version 2.0.0
  */
 
 "use strict";
@@ -12,6 +12,7 @@
     const component = {
 
         name: 'web3',
+        version: [2, 0, 0],
         ccm: 'https://ccmjs.github.io/ccm/versions/ccm-20.0.0.min.js',
 
         config: {

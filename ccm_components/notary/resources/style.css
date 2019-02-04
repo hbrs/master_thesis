@@ -1,9 +1,5 @@
-.display-none { display: none; }
-
-.display-inline-block-min-width-4-rem {
-    display: inline-block;
-    min-width: 4rem;
-}
+.display-none   { display: none; }
+.display-block  { display: block; }
 
 
 /* bootstrap */
@@ -16,4 +12,4 @@
 
 /* dropzone*/
 
-.dz-progress { display: none !important; }
+.dz-progress    { display: none !important; }

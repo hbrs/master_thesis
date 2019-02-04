@@ -13,10 +13,7 @@
     ( async () => {
 
         const config = {
-            url: 'https://vm-2d05.inf.h-brs.de/geth1',
-            user: 'admin',
-            password: '6c854D9a',
-            contract: '0xFdc6404453a09D6A6868e979E4Ba642475404fF5'
+            contractAddress: 'FA286dEF376b2405110bb96924F8bb2428b2d7a4'
         };
 
         const store = await ccm.start(
@@ -24,11 +21,8 @@
             config
         );
 
-        console.log('getStore: ' + await store.getStore ());
-
-        store.registerCallback((error, result) => console.log(`value ${result.args.store} stored!`));
-
-        console.log('setStore: ' + await store.setStore ("js1"));
+        console.log ('getStore: ' + await store.getStore ());
+        console.log (await store.setStore ("ccm"));
     })();
 </script>
 

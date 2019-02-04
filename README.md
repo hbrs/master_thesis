@@ -12,4 +12,4 @@ All files which belong to my master thesis.
 
 ## Network plan
 
-![Network plan](./documentation/images/network.png)
+![Network plan](./documentation/images/backend.png)
