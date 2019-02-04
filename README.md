@@ -10,6 +10,10 @@ All files which belong to my master thesis.
 	- [04.1 - Nginx config](./documentation/04_1_nginx_conf.md)
 - [05 - Truffle](./documentation/05_truffle.md)
 
-## Network plan
+## Backend
 
 ![Network plan](./documentation/images/backend.png)
+
+- Monitoring: https://admin:un21n77w@vm-2d05.inf.h-brs.de/
+- Geth 01: https://admin:un21n77w@vm-2d05.inf.h-brs.de/geth1
+- Geth 02: https://admin:un21n77w@vm-2d05.inf.h-brs.de/geth2
