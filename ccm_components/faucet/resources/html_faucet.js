@@ -69,7 +69,7 @@ ccm.files['html_faucet.js'] = {
                         },
                         {
                             tag: "img",
-                            src: "https://ccmjs.github.io/rmueller-components/notary/resources/loader.gif",
+                            src: "https://ccmjs.github.io/rmueller-components/faucet/resources/loader.gif",
                             width: "12px"
                         }
                     ]

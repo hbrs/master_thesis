@@ -26,11 +26,6 @@
             abi: [
                 'ccm.load',
                 'https://ccmjs.github.io/rmueller-components/store/resources/abi_store.js'
-            ],
-            css: [
-                'ccm.load', [
-                    'https://stackpath.bootstrapcdn.com/bootstrap/4.2.1/css/bootstrap.min.css'
-                ]
             ]
         },
 

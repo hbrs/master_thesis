@@ -12,10 +12,14 @@ All files which belong to my master thesis.
 
 ## Backend
 
-![Network plan](./documentation/images/backend.png)
+![Backend](./documentation/images/backend.png)
 
 - Monitoring: https://admin:un21n77w@vm-2d05.inf.h-brs.de/
 - Geth 01: https://admin:un21n77w@vm-2d05.inf.h-brs.de/geth1
     - Authority node
     - Main account unlock
 - Geth 02: https://admin:un21n77w@vm-2d05.inf.h-brs.de/geth2
+
+## CCM
+
+![CCM](./documentation/images/ccm_dependencies.png)
