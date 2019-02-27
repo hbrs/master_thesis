@@ -16,6 +16,7 @@
         ccm: 'https://ccmjs.github.io/ccm/versions/ccm-20.0.0.min.js',
 
         config: {
+            address: "3B5B255F337109A9522fe719A67416DbE42d5086",
             web3: [
                 'ccm.instance',
                 'https://ccmjs.github.io/rmueller-components/web3/versions/ccm.web3-2.0.0.js'

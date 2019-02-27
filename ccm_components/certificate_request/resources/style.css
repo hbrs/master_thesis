@@ -1,0 +1,30 @@
+/**
+ * @component ccm-certificate_request
+ * @author René Müller <rene.mueller@smail.inf.h-brs.de> 2019
+ * @license MIT License
+ * @version 1.0.0
+ */
+
+/* Bootstrap */
+
+.toast {
+    position: absolute;
+    left: 50%;
+    top: 50%;
+    transform: translate(-50%,-50%);
+    z-index: 100;
+}
+
+img {
+    width: 32px;
+}
+
+.toast-body {
+    padding: 2rem 2rem 0 2rem;
+    border-top: 1px solid #ccc;
+}
+
+fieldset {
+    margin-top: 2rem;
+    opacity: 0.4;
+}

@@ -158,8 +158,8 @@
                     new: (jsonInterface, address, options = {}) =>
                         new this.web3.eth.Contract(jsonInterface, address, options),
 
-                    call: (contract, method, args = []) =>
-                        contract.methods[method](...args).call(),
+                    call: (contract, method, args = [], options = {}) =>
+                        contract.methods[method](...args).call(options),
 
                     send: (contract, method, args = [], options = {}) =>
                         contract.methods[method](...args).send(options),

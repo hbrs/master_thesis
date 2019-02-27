@@ -4,9 +4,7 @@ contract Store {
 
     event eStored(string store);
 
-    string store;
-
-    constructor() public {}
+    string private store;
 
     function setStore (string memory _store) public {
         store = _store;

@@ -141,6 +141,40 @@
         }
     }
 
+### Step 04: Block explorer
+
+    docker volume rm v_mongo
+    docker volume create v_mongo
+
+    docker rm -f mongo
+
+    docker run                                      \
+        --detach                                    \
+        --restart       unless-stopped              \
+        --name          mongo                       \
+        --hostname      mongo.vm-2d05.inf.h-brs.de  \
+        --net           dockernet                   \
+        --ip            172.22.0.50                 \
+        --volume        v_mongo:/data/db            \
+        --env MONGO_INITDB_ROOT_USERNAME=root       \
+        --env MONGO_INITDB_ROOT_PASSWORD=un21n77w   \
+        mongo:latest
+
+*Install the tool*
+
+    docker exec -it nodejs bash
+
+    git clone https://github.com/ethersocial/explorer.git
+
+*edit:*
+
+- config.json
+    - geth2
+- app.js
+    - port
+- db.js
+    - mongodb://root:un21n77w@172.22.0.50:27017/blockDB2?authMechanism=SCRAM-SHA-1&authSource=admin
+
 **Links:**
 - https://github.com/cubedro/eth-net-intelligence-api
 - https://github.com/cubedro/eth-netstats

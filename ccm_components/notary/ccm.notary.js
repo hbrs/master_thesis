@@ -76,7 +76,8 @@
                     return;
                 }
 
-                this.contract = this.web3.eth.contract.new (this.abi, this.contractAddress);
+                this.contract =
+                    this.web3.eth.contract.new (this.abi, this.contractAddress);
 
                 this.web3.eth.contract.events(this.contract, 'eDocumentAdded', { fromBlock: 'latest' })
                     .on('data', data => {
