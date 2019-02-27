@@ -12,7 +12,7 @@ All files which belong to my master thesis.
 
 ## Backend
 
-![Backend](./documentation/images/backend.png)
+![Backend](./documentation/images/blockchain_v1.jpg)
 
 - Monitoring: https://admin:un21n77w@vm-2d05.inf.h-brs.de/
 - Geth 01: https://admin:un21n77w@vm-2d05.inf.h-brs.de/geth1
