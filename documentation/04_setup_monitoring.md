@@ -143,6 +143,8 @@
 
 ### Step 04: Block explorer
 
+*Run mongoDB:*
+
     docker volume rm v_mongo
     docker volume create v_mongo
 
@@ -160,13 +162,13 @@
         --env MONGO_INITDB_ROOT_PASSWORD=un21n77w   \
         mongo:latest
 
-*Install the tool*
+*Install the block explorer:*
 
     docker exec -it nodejs bash
 
     git clone https://github.com/ethersocial/explorer.git
 
-*edit:*
+*Edit this files:*
 
 - config.json
     - geth2
