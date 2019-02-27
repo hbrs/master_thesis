@@ -175,7 +175,7 @@
 - app.js
     - port
 - db.js
-    - `mongodb://root:un21n77w@172.22.0.50:27017/blockDB2?authMechanism=SCRAM-SHA-1&authSource=admin`
+    - `mongodb://root:un21n77w@172.22.0.50:27017/blockDB?authMechanism=SCRAM-SHA-1&authSource=admin`
 
 **Links:**
 - https://github.com/cubedro/eth-net-intelligence-api
