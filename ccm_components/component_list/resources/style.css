@@ -1,0 +1,5 @@
+button { margin: 0.2rem !important; }
+
+/* Bootstrap fixes */
+.close { padding: 0 !important; }
+.modal-title { font-weight: bold; }

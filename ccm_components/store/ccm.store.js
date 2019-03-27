@@ -19,10 +19,6 @@
                 'ccm.instance',
                 'https://ccmjs.github.io/rmueller-components/web3/versions/ccm.web3-2.0.0.js'
             ],
-            metamask: [
-                'ccm.instance',
-                'https://ccmjs.github.io/rmueller-components/metamask/versions/ccm.metamask-1.0.0.js'
-            ],
             abi: [
                 'ccm.load',
                 'https://ccmjs.github.io/rmueller-components/store/resources/abi_store.js'
@@ -39,13 +35,13 @@
             this.start  = async () => {
                 this.web3.setProvider('https://admin:un21n77w@vm-2d05.inf.h-brs.de/geth1');
 
-                this.contract = this.web3.eth.contract.new (this.abi, this.contractAddress);
+                this.contract = this.web3.eth.contract.new (this.abi, this.contract_address);
             };
 
 
             /* Functions */
 
-            this.setStore = async (value) => {
+            this.setStore = async value => {
 
                 return this.web3.eth.contract.send (
                     this.contract,

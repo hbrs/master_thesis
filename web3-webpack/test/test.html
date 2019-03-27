@@ -1,0 +1,141 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Test</title>
+    <script src="../build/web3.min.js"></script>
+</head>
+<body>
+
+<script>
+
+    "use strict";
+
+    const deploy = {
+        "abi": [
+            {
+                "constant": true,
+                "inputs": [],
+                "name": "getName",
+                "outputs": [
+                    {
+                        "name": "",
+                        "type": "string"
+                    }
+                ],
+                "payable": false,
+                "stateMutability": "view",
+                "type": "function"
+            },
+            {
+                "constant": true,
+                "inputs": [],
+                "name": "getRequirements",
+                "outputs": [
+                    {
+                        "name": "",
+                        "type": "string"
+                    }
+                ],
+                "payable": false,
+                "stateMutability": "view",
+                "type": "function"
+            },
+            {
+                "inputs": [
+                    {
+                        "name": "_name",
+                        "type": "string"
+                    },
+                    {
+                        "name": "_requirements",
+                        "type": "string"
+                    }
+                ],
+                "payable": false,
+                "stateMutability": "nonpayable",
+                "type": "constructor"
+            }
+        ],
+        "bytecode": "0x608060405234801561001057600080fd5b506040516103833803806103838339810180604052604081101561003357600080fd5b81019080805164010000000081111561004b57600080fd5b8201602081018481111561005e57600080fd5b815164010000000081118282018710171561007857600080fd5b5050929190602001805164010000000081111561009457600080fd5b820160208101848111156100a757600080fd5b81516401000000008111828201871017156100c157600080fd5b505084519093506100db92506000915060208501906100f7565b5080516100ef9060019060208401906100f7565b505050610192565b828054600181600116156101000203166002900490600052602060002090601f016020900481019282601f1061013857805160ff1916838001178555610165565b82800160010185558215610165579182015b8281111561016557825182559160200191906001019061014a565b50610171929150610175565b5090565b61018f91905b80821115610171576000815560010161017b565b90565b6101e2806101a16000396000f3fe608060405234801561001057600080fd5b50600436106100365760003560e01c806317d7de7c1461003b5780637ae42ff9146100b8575b600080fd5b6100436100c0565b6040805160208082528351818301528351919283929083019185019080838360005b8381101561007d578181015183820152602001610065565b50505050905090810190601f1680156100aa5780820380516001836020036101000a031916815260200191505b509250505060405180910390f35b610043610156565b60008054604080516020601f600260001961010060018816150201909516949094049384018190048102820181019092528281526060939092909183018282801561014c5780601f106101215761010080835404028352916020019161014c565b820191906000526020600020905b81548152906001019060200180831161012f57829003601f168201915b5050505050905090565b60018054604080516020601f6002600019610100878916150201909516949094049384018190048102820181019092528281526060939092909183018282801561014c5780601f106101215761010080835404028352916020019161014c56fea165627a7a72305820e7fcc84e13ecf56cbaa95272490a1c0bb6a0c75f6f973e0720cf75ec653115f30029"
+    };
+
+    //const web3 = new Web3 (window ['ethereum']);
+    const web3 = new Web3('https://admin:un21n77w@vm-2d05.inf.h-brs.de/geth1');
+
+    console.log (web3.version);
+
+    //const contract = new web3.eth.Contract (deploy.abi, "0xd3fc95065c0b5dc2ecb3cfb07425a95a9aa721ed");
+    const contract = new web3.eth.Contract (deploy.abi);
+
+    //const keystore = '{"address":"5fba9fd7abdcba62777d27366d4c47f5e3538143","crypto":{"cipher":"aes-128-ctr","ciphertext":"e0ce3645dd62d3757c587e0221a161b98aa8bf4459e1a6026b8becdb4422876c","cipherparams":{"iv":"a6a0f1a18752344c84c75e6a0cb390d3"},"kdf":"scrypt","kdfparams":{"dklen":32,"n":262144,"p":1,"r":8,"salt":"0cdc6676e48914774e7cdd341265928bcb33e5947b5e9a3ef2a4134e6941df0e"},"mac":"d5c33fc46d0ae1c40d36ccd8dc699f2a33be1eff500ea857f6a032ee2025acd9"},"id":"78de512b-a2b3-4701-9b7c-4599548a1879","version":3}';
+    //console.log (keystore);
+
+    //const decryptedAccount = web3.eth.accounts.decrypt(keystore, '1234abcd');
+    //console.log (decryptedAccount);
+
+    //const account = web3.eth.accounts.privateKeyToAccount ('0x1d46e058379b124789e4a563f5fa39e00c36303b3173c5a9e5d4876f3497b173');
+
+    console.log (account);
+
+    const rawTransaction = {
+        "from": "0x5fba9fd7abdcba62777d27366d4c47f5e3538143",
+        "to": "0xAb1b08151ECfE6F2bA4018F5b096A9a26F315D8f",
+        "value": web3.utils.toHex(web3.utils.toWei("0.1", "ether")),
+        "gas": 200000,
+        "chainId": 32
+    };
+
+    web3.eth.accounts.signTransaction({
+        to: '0xAb1b08151ECfE6F2bA4018F5b096A9a26F315D8f',
+        value: web3.utils.toHex(web3.utils.toWei("0.1", "ether")),
+        gas: 2000000
+    }, '0x1d46e058379b124789e4a563f5fa39e00c36303b3173c5a9e5d4876f3497b173')
+        .then(console.log);
+
+
+    window ['ethereum'].enable()
+        .catch (console.error)
+        .then (accounts => {
+
+            /*contract.deploy({
+                data: deploy.bytecode,
+                arguments: [
+                    "Component name",
+                    JSON.stringify (["req1", "req2", "req3"])
+                ]
+            })
+            .send ({
+                from: accounts[0]
+            })
+            .on ('error',           console.error)
+            .on ('transactionHash', console.log)
+            .on ('receipt',         console.log);*/
+
+            /*const c = contract.deploy({
+                data: deploy.bytecode,
+                arguments: [
+                    "Component name",
+                    JSON.stringify (["req1", "req2", "req3"])
+                ]
+            })
+                .estimateGas()
+                .then (console.log);
+
+            console.log (c);*/
+        });
+
+    /*window ['ethereum']
+        .on ('accountsChanged', accounts => {
+            console.log (accounts);
+        });*/
+
+    /*contract.methods ['getRequirements']()
+        .call()
+        .then (JSON.parse)
+            .then (console.log);*/
+
+</script>
+
+</body>
+</html>

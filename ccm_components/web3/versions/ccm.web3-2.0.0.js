@@ -16,7 +16,7 @@
         ccm: 'https://ccmjs.github.io/ccm/versions/ccm-20.0.0.min.js',
 
         config: {
-            Web3: ['ccm.load', 'https://cdn.jsdelivr.net/gh/ethereum/web3.js@1.0.0-beta.37/dist/web3.min.js'],
+            Web3: ['ccm.load', 'https://cdn.jsdelivr.net/gh/ethereum/web3.js@1.0.0-beta.35/dist/web3.min.js'],
             units: {
                 wei:        'wei',
                 gwei:       'Gwei',
@@ -165,7 +165,10 @@
                         contract.methods[method](...args).send(options),
 
                     events: (contract, event, options = {}) =>
-                        contract.events[event](options)
+                        contract.events[event](options),
+
+                    once: (contract, event, options = {}, callback) =>
+                        contract.once(event, options, callback)
 
                     // web3.eth.contract.estimateGas
                     // web3.eth.contract.encodeABI
