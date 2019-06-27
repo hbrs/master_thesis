@@ -81,8 +81,7 @@
         --net           dockernet                   \
         --ip            172.22.0.30                 \
         --workdir       /usr/src/app                \
-        node:latest                                 \
-            bash                                    &&\
+        node:latest                               &&\
     docker exec                                     \
         --interactive                               \
         --tty                                       \
