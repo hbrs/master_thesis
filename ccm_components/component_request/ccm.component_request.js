@@ -2,7 +2,6 @@
  * @component ccm-component_request
  * @author René Müller <rene.mueller@smail.inf.h-brs.de> 2019
  * @license MIT License
- * @version 1.0.0
  */
 
 "use strict";
@@ -12,7 +11,7 @@
     const component = {
 
         name: 'component_request',
-        ccm: 'https://ccmjs.github.io/ccm/versions/ccm-20.0.0.min.js',
+        ccm: 'https://ccmjs.github.io/ccm/versions/ccm-21.1.0.min.js',
 
         config: {
             web3: [
@@ -25,7 +24,7 @@
             ],
             html: [
                 'ccm.load',
-                '../component_request/resources/html.js'
+                'https://ccmjs.github.io/rmueller-components/component_request/resources/html.js'
             ],
             deploy: [
                 'ccm.load',
@@ -35,7 +34,8 @@
                 'ccm.load',
                 'https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css'
             ],
-            store: [ "ccm.store", { "name": "req_components", "url": "http://localhost:8080" } ]
+            store: [ "ccm.store", { "name": "rmuel12s_components" } ],
+            toggle: false
         },
 
         Instance: function () {
@@ -45,69 +45,24 @@
             this.init   = async () => {};
             this.ready  = async () => {};
             this.start  = async () => {
+                !this.metamask.isMetaMask() && console.error ('MetaMask is required!', 'https://metamask.io/');
+                !this.storeUri              && console.error ('Store URI is missing!');
 
-                if (!this.metamask.isMetaMask()) {
+                this.store.url = this.storeUri;
 
-                    console.error ('metamask not installed!');
-                    return;
-                }
-
-                this.web3.setProvider (this.metamask.getProvider());
+                this.web3.setProvider (this.metamask.getProvider(), {transactionConfirmationBlocks: 1});
 
                 this.metamask.enable            (this.accountChanged);
                 this.metamask.onAccountsChanged (this.accountChanged);
 
-                this.contract =
-                    this.web3.eth.contract.new (this.deploy.abi);
+                this.contract = this.web3.eth.contract.new (this.deploy.abi);
 
-                this.ccm.helper.setContent (this.element, this.ccm.helper.html(this.html [0], {
+                this.ccm.helper.setContent (this.element, this.ccm.helper.html(this.html.main, {
                     more: () =>
                         this.element.querySelector ('span')
-                            .appendChild (this.ccm.helper.html (this.html[1], {})),
-                    send: () => {
+                            .appendChild (this.ccm.helper.html (this.html.requirement, {})),
 
-                        const name          = this.element.querySelector ('input[name=name]');
-                        const fund          = this.element.querySelector ('input[name=fund]');
-                        const description   = this.element.querySelector ('textarea');
-                        const requirements  = this.element.querySelector ('span').querySelectorAll ('input');
-
-                        if (this.validate (name, fund, requirements)) {
-
-                            this.toggleSpinner (true);
-
-                            this.web3.eth.contract.deploy.send (this.contract, {
-                                data: this.deploy.bytecode,
-                                arguments: [
-                                    name.value,
-                                    JSON.stringify (Array.from (requirements).map (input => input.value))
-                                ]
-                            }, {
-                                from:   this.account,
-                                value:  this.web3.utils.toWei (fund.value, 'ether')
-                            })
-                            .then (newContractInstance => {
-
-                                this.ccm.helper.setContent (this.element.querySelector ('.list-group'), this.ccm.helper.html (this.html [2], {
-                                    component: name.value
-                                }));
-
-                                return this.store.set ({
-                                    name:           name.value,
-                                    funder:         this.account,
-                                    fund:           fund.value,
-                                    description:    description.value,
-                                    requirements:   Array.from(requirements).map (input => input.value),
-                                    address:        newContractInstance.options.address,
-                                    approved:       false
-                                });
-                            })
-                            .then (console.log)
-                            .catch (console.error);
-                            //.finally (this.toggleSpinner);
-                        } else {
-                            console.error ('Validation failed!');
-                        }
-                    }
+                    send: () => this.createComponent()
                 }));
             };
 
@@ -115,43 +70,86 @@
             /* Functions */
 
             this.accountChanged = accounts => {
+                this.initiator = accounts [0];
 
-                this.account = accounts [0];
-
-                this.element.querySelector ('input[name=funder]').value = this.account;
+                this.element.querySelector ('input[name=initiator]').value = this.initiator;
             };
 
-            this.validate = (name, fund, requirements) => {
+            this.createComponent = () => {
+                this.name          = this.element.querySelector ('input[name=name]');
+                this.fund          = this.element.querySelector ('input[name=fund]');
+                this.description   = this.element.querySelector ('textarea');
+                this.requirements  = this.element.querySelector ('span').querySelectorAll ('input');
 
-                name.value ?
-                    name.classList.remove ('is-invalid') : name.classList.add ('is-invalid');
+                if (this.isValidate ()) {
 
-                fund.value ?
-                    fund.classList.remove ('is-invalid') : fund.classList.add ('is-invalid');
+                    this.toggleSpinner ();
 
-                requirements.forEach (input => {
+                    this.web3.eth.contract.deploy.send (this.contract, {
+                        data: this.deploy.bytecode.object,
+                        arguments: [
+                            this.name.value,
+                            JSON.stringify (Array.from (this.requirements).map (input => input.value)),
+                            this.description.value || ""
+                        ]
+                    }, {
+                        from:   this.initiator,
+                        value:  this.web3.utils.toWei (this.fund.value, 'ether')
+                    })
+                        .then (this.handleResult)
+                        .catch (console.error);
+
+                }
+            };
+
+            this.isValidate = () => {
+
+                this.name.value ?
+                    this.name.classList.remove ('is-invalid') : this.name.classList.add ('is-invalid');
+
+                this.fund.value ?
+                    this.fund.classList.remove ('is-invalid') : this.fund.classList.add ('is-invalid');
+
+                this.requirements.forEach (input => {
                     input.value ?
                         input.classList.remove ('is-invalid') : input.classList.add ('is-invalid');
                 });
 
-                return name.value && fund.value && this.web3.utils.isAddress (this.account);
+                return this.name.value && this.fund.value && this.web3.utils.isAddress (this.initiator);
             };
 
-            this.toggleSpinner = toggle => {
+            this.handleResult = result => {
 
-                if (toggle) {
-                    this.element.querySelector ('.btn-primary')
-                        .setAttribute ('disabled', 'disabled');
+                this.ccm.helper.setContent (
+                    this.element.querySelector ('.list-group'),
+                    this.ccm.helper.html (this.html.done, {
+                            component: this.name.value
+                        }
+                    ));
 
-                    this.element.querySelector ('.spinner-border')
-                        .classList.remove ('d-none');
+                return this.store.set ({
+                    key             : result.options.address,
+                    name            : this.name.value,
+                    initiator       : this.initiator,
+                    fund            : this.fund.value,
+                    description     : this.description.value,
+                    requirements    : Array.from(this.requirements).map (input => input.value),
+                    status          : 0
+                });
+
+            };
+
+            this.toggleSpinner = () => {
+                if (this.toggle) {
+                    this.element.querySelector ('.btn-primary').removeAttribute ('disabled');
+                    this.element.querySelector ('.spinner-border').classList.add ('d-none');
                 } else {
                     this.element.querySelector ('.btn-primary')
-                        .removeAttribute ('disabled');
-
-                    this.element.querySelector ('.spinner-border')
-                        .classList.add ('d-none');
+                        .setAttribute ('disabled', 'disabled');
+                    this.element.querySelector ('.spinner-border').classList.remove ('d-none');
                 }
+
+                this.toggle = !this.toggle;
             };
         }
     };

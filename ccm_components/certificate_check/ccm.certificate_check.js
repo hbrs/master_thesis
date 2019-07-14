@@ -2,7 +2,7 @@
  * @component ccm-certificate_check
  * @author René Müller <rene.mueller@smail.inf.h-brs.de> 2019
  * @license MIT License
- * @version 1.0.0
+ * @version 2.0.0
  */
 
 "use strict";
@@ -23,13 +23,9 @@
                 'ccm.instance',
                 'https://ccmjs.github.io/rmueller-components/web3/versions/ccm.web3-2.0.0.js'
             ],
-            abiCertificate: [
+            abi: [
                 'ccm.load',
-                'https://ccmjs.github.io/rmueller-components/certificate_check/resources/abi_certificate.js'
-            ],
-            abiStudent: [
-                'ccm.load',
-                'https://ccmjs.github.io/rmueller-components/certificate_check/resources/abi_student.js'
+                'https://ccmjs.github.io/rmueller-components/certificate_check/resources/abi.js'
             ],
             html: [
                 'ccm.load',
@@ -63,43 +59,53 @@
 
                 this.web3.setProvider('https://admin:un21n77w@vm-2d05.inf.h-brs.de/geth2');
 
-                this.certificateContract = this.web3.eth.contract.new (
-                    this.abiCertificate,
+                this.certificate = this.web3.eth.contract.new (
+                    this.abi.certificate,
                     this.contractAddress
                 );
 
-                this.studentContract = this.web3.eth.contract.new (
-                    this.abiStudent,
-                    '0x' + this.student_contract_address
+                this.student = this.web3.eth.contract.new (
+                    this.abi.student,
+                    this.studentContract
                 );
 
-                this.web3.eth.contract.call(this.certificateContract, 'getCertificate', [], {from: this.graduateAddress})
-                    .catch(console.error)
-                    .then(result => {
+                this.certificateName =
+                    await this.web3.eth.contract.call (this.certificate, 'getCertificateName', []);
 
-                        if (result.passed) {
-                            this.imageSrc = 'check.svg';
-                            this.message  = 'Certificate valid!';
-                            this.html.inner[2].class = 'card-body text-success';
-                        }
-
-                        this.web3.eth.contract.call(this.studentContract, 'getStudent', [], {from: this.graduateAddress})
-                            .catch(console.error)
-                            .then(result => {
-
-                                this.ccm.helper.setContent (this.element, this.ccm.helper.html(this.html, {
-                                    graduate:   `${result.firstname} ${result.lastname}`,
-                                    graduate_address:      this.graduateAddress,
-                                    contract:   this.contractAddress,
-                                    src:        this.imageSrc,
-                                    message:    this.message
-                                }));
-                            });
-                    });
+                this.web3.eth.contract.call (this.certificate, 'getCertificate', [], {from: this.graduateAddress})
+                    .catch (console.error)
+                    .then (this.validation);
             };
 
 
             /* Functions */
+
+            this.validation = result => {
+
+                if (result.passed) {
+                    this.imageSrc = 'check.svg';
+                    this.message  = 'Certificate valid!';
+                    this.html.inner[2].class = 'card-body text-success';
+                }
+
+                this.web3.eth.contract.call (this.student, 'getStudent', [this.graduateAddress])
+                    .catch(console.error)
+                    .then(this.renderCheckResult);
+
+            };
+
+            this.renderCheckResult = result => {
+
+                this.ccm.helper.setContent (this.element, this.ccm.helper.html (this.html, {
+                    graduate:           `${result.firstname} ${result.lastname}`,
+                    graduate_address:   this.graduateAddress,
+                    certificate:        this.certificateName,
+                    contract:           this.contractAddress,
+                    src:                this.imageSrc,
+                    message:            this.message
+                }));
+
+            };
         }
     };
 

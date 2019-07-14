@@ -5,6 +5,15 @@
  * @version 1.0.0
  */
 
+img         { width: 32px; }
+.blur-off   { opacity: 1 !important; }
+
+fieldset {
+    margin-top: 2rem;
+    opacity: 0.4;
+}
+
+
 /* Bootstrap */
 
 .toast {
@@ -15,16 +24,7 @@
     z-index: 100;
 }
 
-img {
-    width: 32px;
-}
-
 .toast-body {
     padding: 2rem 2rem 0 2rem;
     border-top: 1px solid #ccc;
-}
-
-fieldset {
-    margin-top: 2rem;
-    opacity: 0.4;
 }

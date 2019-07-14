@@ -2,7 +2,6 @@
  * @component ccm-web3
  * @author René Müller <rene.mueller@smail.inf.h-brs.de> 2019
  * @license MIT License
- * @version 3.0.0
  */
 
 "use strict";
@@ -12,11 +11,10 @@
     const component = {
 
         name: 'web3',
-        ccm: 'https://ccmjs.github.io/ccm/versions/ccm-20.0.0.min.js',
+        ccm: 'https://ccmjs.github.io/ccm/versions/ccm-21.1.0.min.js',
 
         config: {
-            //Web3: ['ccm.load', 'https://cdn.jsdelivr.net/gh/ethereum/web3.js@1.0.0-beta.35/dist/web3.min.js'],
-            Web3: ['ccm.load', '../web3/resources/web3-1.0.0-beta.46.min.js'],
+            Web3: ['ccm.load', 'https://ccmjs.github.io/rmueller-components/web3/resources/web3-1.0.0-beta.46.min.js'],
             units: {
                 wei:        'wei',
                 gwei:       'Gwei',
@@ -48,7 +46,7 @@
             /* Functions */
 
             this.setProvider = (provider = '', options = {}) =>
-                this.web3 = new Web3(provider, options);
+                this.web3 = new Web3(provider, null, options);
 
             this.givenProvider = () =>
                 this.web3.givenProvider;
@@ -158,11 +156,8 @@
                     new: (jsonInterface, address = '', options = {}) =>
                         new this.web3.eth.Contract(jsonInterface, address, options),
 
-                    deploy: (contract, options) =>
-                        contract.deploy(options),
-
-                    call: (contract, method, args = []) =>
-                        contract.methods[method](...args).call(),
+                    call: (contract, method, args = [], options = {}) =>
+                        contract.methods[method](...args).call(options),
 
                     send: (contract, method, args = [], options = {}) =>
                         contract.methods[method](...args).send(options),
@@ -171,10 +166,20 @@
                         contract.events[event](options),
 
                     once: (contract, event, options = {}, callback) =>
-                        contract.once(event, options, callback)
+                        contract.once(event, options, callback),
 
-                    // web3.eth.contract.estimateGas
-                    // web3.eth.contract.encodeABI
+                    deploy: {
+
+                        send: (contract, options, options_send) =>
+                            contract.deploy(options).send(options_send),
+
+                        encodeABI: (contract, options) =>
+                            contract.deploy(options).encodeABI(),
+
+                        estimateGas: (contract, options, c) =>
+                            contract.deploy(options).estimateGas(c)
+                    }
+
                     // web3.eth.contract.allEvents
                     // web3.eth.contract.getPastEvents
                 },

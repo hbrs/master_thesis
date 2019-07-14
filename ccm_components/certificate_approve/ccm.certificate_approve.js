@@ -17,17 +17,11 @@
         config: {
             web3: [
                 'ccm.instance',
-                'https://ccmjs.github.io/rmueller-components/web3/versions/ccm.web3-2.0.0.js'
+                'https://ccmjs.github.io/rmueller-components/web3/versions/ccm.web3-3.0.0.js'
             ],
             metamask: [
                 'ccm.instance',
                 'https://ccmjs.github.io/rmueller-components/metamask/versions/ccm.metamask-1.0.0.js'
-            ],
-            student: [
-                'ccm.start',
-                'https://ccmjs.github.io/rmueller-components/certificate_student/versions/ccm.certificate_student-1.0.0.js', {
-                    'contract_address': '0x3B0Bf3F9700Bad447D944924731Ba357905F47AC'
-                }
             ],
             html: [
                 'ccm.load',
@@ -42,7 +36,8 @@
                     'https://stackpath.bootstrapcdn.com/bootstrap/4.2.1/css/bootstrap.min.css',
                     'https://ccmjs.github.io/rmueller-components/certificate_approve/resources/style.css'
                 ]
-            ]
+            ],
+            store: ["ccm.store", {'name': 'rmuel12s_certificates'}]
         },
 
         Instance: function () {
@@ -53,109 +48,117 @@
             this.ready  = async () => {};
             this.start  = async () => {
 
-                if (this.metamask.isMetaMask()) {
+                !this.metamask.isMetaMask() && console.error ('This component requires MetaMask', 'https://metamask.io/');
+                !this.storeUri              && console.error ('Store uri missing!');
+                !this.studentContract       && console.error ('Student contract address missing!');
 
-                    this.web3.setProvider(this.metamask.getProvider());
+                this.store.url = this.storeUri;
 
-                    this.metamask.enable(
-                        accounts =>
-                            this.approver = accounts[0]
-                    );
+                this.web3.setProvider (this.metamask.getProvider());
 
-                    this.metamask.onAccountsChanged(
-                        accounts =>
-                            this.approver = accounts[0]
-                    );
+                this.metamask.enable            (this.accountChanged);
+                this.metamask.onAccountsChanged (this.accountChanged);
 
-                } else {
-                    console.error ('metamask not installed!');
-                    return;
-                }
+                this.student = this.web3.eth.contract.new (
+                    this.abi.student,
+                    this.studentContract
+                );
 
-                if (this.metamask.networkVersion() === "1")     this.certificates = this.mainnet.certificates;
-                if (this.metamask.networkVersion() === "4")     this.certificates = this.rinkeby.certificates;
-                if (this.metamask.networkVersion() === "32")    this.certificates = this.geth2.certificates;
-                if (this.metamask.networkVersion() === "42")    this.certificates = this.kovan.certificates;
+                this.ccm.helper.setContent (this.element, this.ccm.helper.html (this.html, {
 
-                this.ccm.helper.setContent (this.element, this.ccm.helper.html(this.html, {
                     change: event => {
 
                         const select = this.element.querySelector('select');
 
-                        this.contract = this.web3.eth.contract.new (
-                            this.abi,
+                        this.certificate = this.web3.eth.contract.new (
+                            this.abi.certificate,
                             select.options[select.selectedIndex].value
                         );
 
-                        this.web3.eth.contract.events(this.contract, 'eWorkApproved', { fromBlock: 'latest' })
-                            .on('error', console.error)
-                            .on('data', data => {
-
-                                this.element.querySelector('.spinner-border')
-                                    .classList.add('d-none');
-
-                                this.element.querySelector('button')
-                                    .removeAttribute('disabled');
-
-                                this.readCertificate();
-                            });
-
                         this.readCertificate();
                     },
+
                     keyup: event => {
                         this.graduate = event.path[0].value;
-
                         this.readCertificate();
                     },
+
                     approve: event => {
-                        if (this.web3.utils.isAddress(this.graduate) && this.contract) {
+
+                        if (this.web3.utils.isAddress (this.graduate) && this.certificate) {
 
                             this.web3.eth.contract.send (
-                                this.contract,
+                                this.certificate,
                                 'approveWork(address,uint256,bool)',
                                 [this.graduate, 0, true],
                                 {
                                     from:   this.approver,
                                     value:  0
                                 }
-                            );
+                            )
+                                .then (receipt => {
+                                    this.element.querySelector('.spinner-border')
+                                        .classList.add('d-none');
+
+                                    this.element.querySelector('button')
+                                        .removeAttribute('disabled');
+                                });
 
                             this.element.querySelector('button').setAttribute('disabled', 'disabled');
                             this.element.querySelector('.spinner-border').classList.remove('d-none');
                         }
                     }
+
                 }));
 
-                this.certificates.map(certificate => {
-
-                    const option = document
-                        .createElement('option');
-
-                    option.value        = certificate.address;
-                    option.innerText    = certificate.name;
-
-                    this.element.querySelector('select')
-                        .appendChild(option);
-                });
+                this.store
+                    .get    ()
+                    .then   (this.setOptions);
             };
 
 
             /* Functions */
 
+            this.accountChanged = accounts =>
+                this.approver = accounts [0];
+
+            this.setOptions = data => {
+
+                data.forEach (certificate => {
+
+                    const option = document.createElement ('option');
+
+                    option.value        = certificate.key;
+                    option.innerText    = certificate.name;
+
+                    this.element.querySelector ('select').appendChild (option);
+                });
+            };
+
             this.readCertificate = () => {
-                if (this.web3.utils.isAddress(this.graduate) && this.contract) {
 
-                    this.web3.eth.contract.call(this.contract, 'getCertificate', [], {from: this.graduate})
-                        .catch(console.error)
-                        .then(result => {
+                console.log (this.web3.utils.isAddress (this.graduate) && this.certificate);
 
-                            const code = this.element.querySelectorAll('code');
+                if (this.web3.utils.isAddress (this.graduate) && this.certificate) {
 
-                            code[0].innerText = `${this.student.firstname} ${this.student.lastname}`;
-                            code[1].innerText = result.submission;
-                            code[2].innerText = new Date(parseInt(result.timestamp) * 1000).toLocaleString();
-                            code[3].innerText = result.passed;
+                    this.web3.eth.contract.call (this.certificate, 'getCertificate', [], {from: this.graduate})
+                        .catch (console.error)
+                        .then (result => {
+
+                            this.web3.eth.contract.call (this.student, 'getStudent', [this.graduate])
+                                .catch (console.error)
+                                .then (result2 => {
+
+                                    const code = this.element.querySelectorAll ('code');
+
+                                    code[0].innerText = `${result2.firstname} ${result2.lastname}`;
+                                    code[1].innerText = result.submission;
+                                    code[2].innerText = new Date (parseInt (result.timestamp) * 1000).toLocaleString();
+                                    code[3].innerText = result.passed;
+                                });
+
                         });
+
                 } else {
 
                     this.element.querySelectorAll('code')[0].innerText = '-';
@@ -163,6 +166,7 @@
                     this.element.querySelectorAll('code')[2].innerText = '-';
                     this.element.querySelectorAll('code')[3].innerText = '-';
                 }
+
             };
         }
     };

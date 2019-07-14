@@ -2,19 +2,10 @@
  * @component ccm-component_list
  * @author René Müller <rene.mueller@smail.inf.h-brs.de> 2019
  * @license MIT License
- * @version 1.0.0
+ * @version 2.0.0
  */
 
 ccm.files['abi.js'] = [
-    {
-        "constant": false,
-        "inputs": [],
-        "name": "setApproved",
-        "outputs": [],
-        "payable": false,
-        "stateMutability": "nonpayable",
-        "type": "function"
-    },
     {
         "constant": true,
         "inputs": [],
@@ -44,13 +35,46 @@ ccm.files['abi.js'] = [
         "type": "function"
     },
     {
-        "constant": true,
-        "inputs": [],
-        "name": "isApproved",
+        "constant": false,
+        "inputs": [
+            {
+                "name": "_sufficient",
+                "type": "bool"
+            }
+        ],
+        "name": "approveComponent",
         "outputs": [
             {
                 "name": "",
-                "type": "bool"
+                "type": "uint8"
+            }
+        ],
+        "payable": false,
+        "stateMutability": "nonpayable",
+        "type": "function"
+    },
+    {
+        "constant": true,
+        "inputs": [],
+        "name": "getSubmission",
+        "outputs": [
+            {
+                "name": "",
+                "type": "string"
+            }
+        ],
+        "payable": false,
+        "stateMutability": "view",
+        "type": "function"
+    },
+    {
+        "constant": true,
+        "inputs": [],
+        "name": "getStatus",
+        "outputs": [
+            {
+                "name": "",
+                "type": "uint8"
             }
         ],
         "payable": false,
@@ -88,6 +112,20 @@ ccm.files['abi.js'] = [
     {
         "constant": true,
         "inputs": [],
+        "name": "getInitiator",
+        "outputs": [
+            {
+                "name": "",
+                "type": "address"
+            }
+        ],
+        "payable": false,
+        "stateMutability": "view",
+        "type": "function"
+    },
+    {
+        "constant": true,
+        "inputs": [],
         "name": "getFund",
         "outputs": [
             {
@@ -100,23 +138,32 @@ ccm.files['abi.js'] = [
         "type": "function"
     },
     {
-        "constant": true,
+        "constant": false,
         "inputs": [],
-        "name": "getFounder",
-        "outputs": [
+        "name": "addFund",
+        "outputs": [],
+        "payable": true,
+        "stateMutability": "payable",
+        "type": "function"
+    },
+    {
+        "constant": false,
+        "inputs": [
             {
-                "name": "",
-                "type": "address"
+                "name": "_submission",
+                "type": "string"
             }
         ],
+        "name": "submitComponent",
+        "outputs": [],
         "payable": false,
-        "stateMutability": "view",
+        "stateMutability": "nonpayable",
         "type": "function"
     },
     {
         "constant": false,
         "inputs": [],
-        "name": "setDeveloper",
+        "name": "registerDeveloper",
         "outputs": [],
         "payable": true,
         "stateMutability": "payable",

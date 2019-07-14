@@ -2,7 +2,7 @@
  * @component ccm-certificate_request
  * @author René Müller <rene.mueller@smail.inf.h-brs.de> 2019
  * @license MIT License
- * @version 1.0.0
+ * @version 2.0.0
  */
 
 ccm.files['html.js'] = {
@@ -79,8 +79,7 @@ ccm.files['html.js'] = {
                                 },
                                 {
                                     "tag":      "select",
-                                    "class":    "form-control",
-                                    "inner":    ""
+                                    "class":    "form-control"
                                 }
                             ]
                         },

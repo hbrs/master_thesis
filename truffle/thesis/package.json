@@ -1,0 +1,26 @@
+{
+  "name": "truffle-thesis",
+  "version": "1.0.0",
+  "description": "Tests for master's thesis.",
+  "main": "truffle-config.js",
+  "directories": {
+    "test": "test"
+  },
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [
+    "nodejs",
+    "truffle",
+    "ethereum",
+    "blockchain",
+    "geth"
+  ],
+  "author": "René Müller",
+  "license": "ISC",
+  "dependencies": {
+    "mongodb": "^3.2.7",
+    "truffle-hdwallet-provider": "^1.0.14",
+    "web3": "^1.0.0-beta.55"
+  }
+}

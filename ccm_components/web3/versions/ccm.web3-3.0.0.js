@@ -13,10 +13,10 @@
 
         name: 'web3',
         version: [3, 0, 0],
-        ccm: 'https://ccmjs.github.io/ccm/versions/ccm-20.0.0.min.js',
+        ccm: 'https://ccmjs.github.io/ccm/versions/ccm-21.1.0.min.js',
 
         config: {
-            Web3: ['ccm.load', 'https://ccmjs.github.io/rmueller-components/web3/resources/web3-1.0.0-beta.46.min.js'],
+            Web3: ['ccm.load', 'https://ccmjs.github.io/rmueller-components/web3/resources/web3-1.0.0-beta.55.min.js'],
             units: {
                 wei:        'wei',
                 gwei:       'Gwei',
@@ -48,7 +48,7 @@
             /* Functions */
 
             this.setProvider = (provider = '', options = {}) =>
-                this.web3 = new Web3(provider, options);
+                this.web3 = new Web3(provider, null, options);
 
             this.givenProvider = () =>
                 this.web3.givenProvider;
@@ -158,8 +158,8 @@
                     new: (jsonInterface, address = '', options = {}) =>
                         new this.web3.eth.Contract(jsonInterface, address, options),
 
-                    call: (contract, method, args = []) =>
-                        contract.methods[method](...args).call(),
+                    call: (contract, method, args = [], options = {}) =>
+                        contract.methods[method](...args).call(options),
 
                     send: (contract, method, args = [], options = {}) =>
                         contract.methods[method](...args).send(options),

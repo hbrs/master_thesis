@@ -25,7 +25,7 @@
 
         name: 'metamask',
         version: [1, 0, 0],
-        ccm: 'https://ccmjs.github.io/ccm/versions/ccm-20.0.0.min.js',
+        ccm: 'https://ccmjs.github.io/ccm/versions/ccm-21.1.0.min.js',
 
         config: {},
 

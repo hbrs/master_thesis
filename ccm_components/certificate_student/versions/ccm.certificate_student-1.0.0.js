@@ -5,7 +5,7 @@
  * @version 1.0.0
  */
 
-"use strict";
+'use strict';
 
 ( () => {
 
@@ -18,7 +18,7 @@
         config: {
             web3: [
                 'ccm.instance',
-                'https://ccmjs.github.io/rmueller-components/web3/versions/ccm.web3-2.0.0.js'
+                'https://ccmjs.github.io/rmueller-components/web3/versions/ccm.web3-3.0.0.js'
             ],
             metamask: [
                 'ccm.instance',
@@ -46,35 +46,18 @@
             this.ready  = async () => {};
             this.start  = async () => {
 
-                if (this.metamask.isMetaMask()) {
+                !this.metamask.isMetaMask() && console.error ('This component requires MetaMask', 'https://metamask.io/');
+                !this.studentContract       && console.error ('Student contract address missing!');
 
-                    this.web3.setProvider(this.metamask.getProvider());
+                this.web3.setProvider (this.metamask.getProvider());
 
-                    this.metamask.enable (this.fetchStudent);
-                    this.metamask.onAccountsChanged (this.fetchStudent);
-
-                } else {
-
-                    this.element.innerHTML =
-                        `
-                        <p class="text-danger">
-                            Not connected!
-                            <br />=> Make sure <a href="https://metamask.io/">Metamask</a> is installed in your browser!
-                        </p>
-                        `;
-
-                    console.error ('metamask not installed!');
-                    return;
-                }
+                this.metamask.enable            (this.fetchStudent);
+                this.metamask.onAccountsChanged (this.fetchStudent);
 
                 this.contract = this.web3.eth.contract.new (
                     this.abi,
-                    this.contract_address
+                    this.studentContract
                 );
-
-                this.web3.eth.contract.events(this.contract, 'eEnrolled', { fromBlock: 'latest' })
-                    .on('data', data => this.fetchStudent ([this.student]))
-                    .on('error', console.error);
             };
 
 
@@ -84,36 +67,41 @@
 
                 this.student = accounts[0];
 
-                this.web3.eth.contract.call(this.contract, 'getStudent', [], {from: this.student})
-                    .catch(console.error)
-                    .then(result => {
+                this.web3.eth.contract.call (this.contract, 'getStudent', [this.student], {from: this.student})
+                    .catch (console.error)
+                    .then (result => {
 
                         this.firstname  = result.firstname;
                         this.lastname   = result.lastname;
 
-                        if (result.firstname && result.lastname)
-                            this.ccm.helper.setContent (this.element, this.ccm.helper.html(this.html[1], {
-                                address:    this.student,
-                                firstname:  this.firstname,
-                                lastname:   this.lastname
+                        if (result.firstname && result.lastname) {
+
+                            this.ccm.helper.setContent (this.element, this.ccm.helper.html (this.html [1], {
+                                address: this.student,
+                                firstname: this.firstname,
+                                lastname: this.lastname
                             }));
-                        else
-                            this.ccm.helper.setContent (this.element, this.ccm.helper.html(this.html[0], {
+
+                        } else {
+
+                            this.ccm.helper.setContent (this.element, this.ccm.helper.html (this.html [0], {
                                 address: this.student,
                                 enroll: this.enrollStudent
                             }));
+
+                        }
                     });
             };
 
             this.enrollStudent = () => {
 
-                const inputs    = this.element.querySelectorAll('input');
+                const inputs    = this.element.querySelectorAll ('input');
 
                 this.firstname  = inputs[0].value;
                 this.lastname   = inputs[1].value;
 
-                this.element.querySelector('.spinner-border').classList.remove('d-none');
-                this.element.querySelector('button').setAttribute('disabled', 'disabled');
+                this.element.querySelector ('.spinner-border').classList.remove ('d-none');
+                this.element.querySelector ('button').setAttribute ('disabled', 'disabled');
 
                 this.web3.eth.contract.send (
                     this.contract,
@@ -123,7 +111,9 @@
                         from:   this.student,
                         value:  0
                     }
-                );
+                )
+                    .catch (console.error)
+                    .then (receipt => this.fetchStudent ([receipt.from]));
             };
         }
     };

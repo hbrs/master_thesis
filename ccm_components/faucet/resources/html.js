@@ -2,10 +2,10 @@
  * @component ccm-faucet
  * @author René Müller <rene.mueller@smail.inf.h-brs.de> 2019
  * @license MIT License
- * @version 1.0.0
+ * @version 2.0.0
  */
 
-ccm.files['html_faucet.js'] = {
+ccm.files['html.js'] = {
     class: "card",
     style: "width: 16rem; margin: 0 auto;",
     inner: [
@@ -31,8 +31,8 @@ ccm.files['html_faucet.js'] = {
                         },
                         {
                             tag: "code",
-                            style: "display: block;",
-                            id: "address",
+                            class: "d-block",
+                            id: "account",
                             inner: ""
                         }
                     ]
@@ -47,7 +47,7 @@ ccm.files['html_faucet.js'] = {
                         },
                         {
                             tag: "code",
-                            style: "display: block;",
+                            class: "d-block",
                             id: "balance",
                             inner: ""
                         }
@@ -57,20 +57,15 @@ ccm.files['html_faucet.js'] = {
                     tag: "button",
                     onclick: "%request%",
                     class: "btn btn-primary",
-                    inner: "Request 1 ether"
-                },
-                {
-                    id: "loader",
-                    style: "display: none;",
                     inner: [
                         {
-                            tag: "span",
-                            inner: "Your claim is being processed, please wait: "
+                            "tag": "span",
+                            "style": "margin-right: 0.4rem;",
+                            "inner": "Request 1 ether"
                         },
                         {
-                            tag: "img",
-                            src: "https://ccmjs.github.io/rmueller-components/faucet/resources/loader.gif",
-                            width: "12px"
+                            "class": "spinner-border spinner-border-sm d-none",
+                            "role": "status"
                         }
                     ]
                 }

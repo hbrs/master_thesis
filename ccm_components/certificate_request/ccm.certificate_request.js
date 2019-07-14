@@ -2,7 +2,7 @@
  * @component ccm-certificate_request
  * @author René Müller <rene.mueller@smail.inf.h-brs.de> 2019
  * @license MIT License
- * @version 1.0.0
+ * @version 2.0.0
  */
 
 "use strict";
@@ -17,7 +17,7 @@
         config: {
             web3: [
                 'ccm.instance',
-                'https://ccmjs.github.io/rmueller-components/web3/versions/ccm.web3-2.0.0.js'
+                'https://ccmjs.github.io/rmueller-components/web3/versions/ccm.web3-3.0.0.js'
             ],
             metamask: [
                 'ccm.instance',
@@ -42,7 +42,8 @@
                     'https://code.jquery.com/jquery-3.3.1.min.js',
                     'https://stackpath.bootstrapcdn.com/bootstrap/4.2.1/js/bootstrap.min.js'
                 ]
-            ]
+            ],
+            store: ["ccm.store", {'name': 'rmuel12s_certificates'}]
         },
 
         Instance: function () {
@@ -53,113 +54,110 @@
             this.ready  = async () => {};
             this.start  = async () => {
 
-                if (this.metamask.isMetaMask()) {
+                !this.metamask.isMetaMask() && console.error ('This component requires MetaMask', 'https://metamask.io/');
+                !this.storeUri              && console.error ('Store uri missing!');
 
-                    this.web3.setProvider(this.metamask.getProvider());
+                this.store.url = this.storeUri;
 
-                    this.metamask.enable(
-                        accounts =>
-                            this.graduate = accounts[0]
-                    );
+                this.web3.setProvider (this.metamask.getProvider());
 
-                    this.metamask.onAccountsChanged(
-                        accounts =>
-                            this.graduate = accounts[0]
-                    );
-
-                } else {
-                    console.error ('metamask not installed!');
-                    return;
-                }
-
-                if (this.metamask.networkVersion() === "1")     this.certificates = this.mainnet.certificates;
-                if (this.metamask.networkVersion() === "4")     this.certificates = this.rinkeby.certificates;
-                if (this.metamask.networkVersion() === "32")    this.certificates = this.geth2.certificates;
-                if (this.metamask.networkVersion() === "42")    this.certificates = this.kovan.certificates;
+                this.metamask.enable            (this.accountChanged);
+                this.metamask.onAccountsChanged (this.accountChanged);
 
                 this.ccm.helper.setContent (this.element, this.ccm.helper.html(this.html, {
-                    check: event =>
-                        this.toggleInnerView (
-                            this.element.querySelector('input').checked
-                        ),
 
-                    close: event =>
-                        this.toggleOuterView(false),
+                    check: this.toggleDialog,
+                    close: this.toggleOuterView,
 
                     save: event => {
 
-                        const select = this.element.querySelector('select');
-                        const address = select.options[select.selectedIndex].value;
+                        const address = this.select.options[this.select.selectedIndex].value;
 
-                        this.contract =
-                            this.web3.eth.contract.new (this.abi, address);
+                        this.contract = this.web3.eth.contract.new (this.abi, address);
 
-                        this.web3.eth.contract.events(this.contract, 'eWorkSubmitted', { fromBlock: 'latest' })
-                            .on('data', data => window.alert('Certificate successful requested'))
-                            .on('error', console.error);
+                        this.toggleOuterView();
 
-                        this.toggleOuterView(false);
                     }
                 }));
 
-                this.certificates.map (certificate => {
+                this.outer      = document.querySelector ('body div');
+                this.toast      = this.element.querySelector ('.toast');
+                this.select     = this.element.querySelector('select');
+                this.checkbox   = this.element.querySelector ('input[type=checkbox]');
+                this.fieldset   = this.element.querySelector ('fieldset');
 
-                    const option = document
-                        .createElement('option');
+                this.store
+                    .get    ()
+                    .then   (this.setOptions);
 
-                    option.value        = certificate.address;
-                    option.innerText    = certificate.name;
+                document.body.appendChild (this.root);
 
-                    this.element.querySelector('select')
-                        .appendChild(option);
-                });
-
-                document.body
-                    .appendChild(this.root);
-
-                this.toggleOuterView(true);
+                this.toggleOuterView ();
             };
 
 
             /* Functions */
 
-            this.toggleInnerView = toggle => {
+            this.accountChanged = accounts =>
+                this.student = accounts [0];
 
-                if (toggle) {
-                    this.element.querySelector('fieldset').removeAttribute('disabled');
-                    this.element.querySelector('fieldset').style = 'opacity: 1;';
+            this.setOptions = data => {
+
+                data.forEach (certificate => {
+
+                    const option = document.createElement ('option');
+
+                    option.value        = certificate.key;
+                    option.innerText    = certificate.name;
+
+                    this.element.querySelector ('select').appendChild (option);
+                });
+            };
+
+            this.toggleDialog = () => {
+
+                if (this.checkbox.checked) {
+
+                    this.fieldset.removeAttribute ('disabled');
+                    this.fieldset.classList.add ('blur-off');
+
                 } else {
-                    this.element.querySelector('fieldset').setAttribute('disabled', 'disabled');
-                    this.element.querySelector('fieldset').style = 'opacity: 0.4;';
+
+                    this.fieldset.setAttribute ('disabled', 'disabled');
+                    this.fieldset.classList.remove ('blur-off');
+
                 }
             };
 
-            this.toggleOuterView = toggle => {
+            this.toggleOuterView = () => {
 
-                if (toggle) {
-                    document.querySelector('ccm-dms-1-0-6 div').style = 'opacity: 0.1;';
-                    $(this.element.querySelector('.toast')).toast('show');
+                if (this.toast.classList.contains ('show')) {
+
+                    this.outer.style = 'opacity: 1 !important;';
+                    $ (this.toast).toast('dispose');
+
                 } else {
-                    document.querySelector('ccm-dms-1-0-6 div').style = 'opacity: 1;';
-                    $(this.element.querySelector('.toast')).toast('dispose');
+
+                    this.outer.style = 'opacity: 0.1 !important;';
+                    $ (this.toast).toast ('show');
+
                 }
             };
 
-            this.callback = (instance, event) => {
+            this.request = work => {
 
-                if (event === 'create' && this.contract)
-                    instance.data.store.get()
-                        .then(data => {
-                            this.web3.eth.contract.send (
-                                this.contract,
-                                'submitWork(string)',
-                                [data[data.length - 1].key],
-                                {
-                                    from:   this.graduate,
-                                    value:  0
-                                }
-                            );
-                        });
+                if (!this.contract || !work)  { return; }
+
+                this.web3.eth.contract.send (
+                    this.contract,
+                    'submitWork(string)',
+                    [work],
+                    {
+                        from: this.student
+                    }
+                )
+                    .then (receipt => alert ('Certificate successful requested!'));
+
             };
         }
     };

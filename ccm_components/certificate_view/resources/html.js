@@ -87,7 +87,7 @@ ccm.files['html.js'] = [
                 {
                     "tag": "img",
                     "class": "position-absolute logo",
-                    "src": "https://unternehmenstag.de/login/static/img/hsbrs.gif"
+                    "src": "../certificate_view/resources/hbrs.png"
                 },
                 {
                     "tag": "span",

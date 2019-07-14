@@ -17,25 +17,19 @@
         config: {
             web3: [
                 'ccm.instance',
-                'https://ccmjs.github.io/rmueller-components/web3/versions/ccm.web3-2.0.0.js'
+                'https://ccmjs.github.io/rmueller-components/web3/versions/ccm.web3-3.0.0.js'
             ],
             metamask: [
                 'ccm.instance',
                 'https://ccmjs.github.io/rmueller-components/metamask/versions/ccm.metamask-1.0.0.js'
             ],
-            student: [
-                'ccm.start',
-                'https://ccmjs.github.io/rmueller-components/certificate_student/versions/ccm.certificate_student-1.0.0.js', {
-                    'contract_address': '0x3B0Bf3F9700Bad447D944924731Ba357905F47AC'
-                }
-            ],
             html: [
                 'ccm.load',
-                'https://ccmjs.github.io/rmueller-components/certificate_view/resources/html.js'
+                '../certificate_view/resources/html.js'
             ],
             abi: [
                 'ccm.load',
-                'https://ccmjs.github.io/rmueller-components/certificate_view/resources/abi.js'
+                '../certificate_view/resources/abi.js'
             ],
             css: [
                 'ccm.load',
@@ -45,7 +39,8 @@
             qr: [
                 'ccm.load',
                 'https://cdn.jsdelivr.net/gh/davidshimjs/qrcodejs/qrcode.min.js'
-            ]
+            ],
+            store: ["ccm.store", {'name': 'rmuel12s_certificates'}]
         },
 
         Instance: function () {
@@ -56,57 +51,39 @@
             this.ready  = async () => {};
             this.start  = async () => {
 
-                if (this.metamask.isMetaMask()) {
+                !this.metamask.isMetaMask() && console.error ('This component requires MetaMask', 'https://metamask.io/');
+                !this.storeUri              && console.error ('Store uri missing!');
+                !this.studentContract       && console.error ('Student contract address missing!');
 
-                    this.web3.setProvider(this.metamask.getProvider());
+                this.store.url = this.storeUri;
 
-                    this.metamask.enable(
-                        accounts =>
-                            this.graduate = accounts[0]
-                    );
+                this.web3.setProvider (this.metamask.getProvider());
 
-                    this.metamask.onAccountsChanged(
-                        accounts =>
-                            this.graduate = accounts[0]
-                    );
+                this.metamask.enable            (this.accountChanged);
+                this.metamask.onAccountsChanged (this.accountChanged);
 
-                } else {
-                    console.error ('metamask not installed!');
-                    return;
-                }
-
-                if (this.metamask.networkVersion() === "1")     this.certificates = this.mainnet.certificates;
-                if (this.metamask.networkVersion() === "4")     this.certificates = this.rinkeby.certificates;
-                if (this.metamask.networkVersion() === "32")    this.certificates = this.geth2.certificates;
-                if (this.metamask.networkVersion() === "42")    this.certificates = this.kovan.certificates;
+                this.student = this.web3.eth.contract.new (
+                    this.abi.student,
+                    this.studentContract
+                );
 
                 this.ccm.helper.setContent (this.element, this.ccm.helper.html(this.html[0], {
                     change: event => {
 
                         const select = this.element.querySelector('select');
 
-                        this.selectedCertificate = this.certificates[select.selectedIndex - 1];
+                        this.certificate = this.web3.eth.contract.new (
+                            this.abi.certificate,
+                            select.options[select.selectedIndex].value
+                        );
 
                         this.showCertificate();
                     }
                 }));
 
-                this.certificates.map(certificate => {
-
-                    const option = document.createElement('option');
-
-                    option.value        = certificate.address;
-                    option.innerText    = certificate.name;
-
-                    this.element.querySelector('select').appendChild(option);
-                });
-
-                this.selectedCertificate = this.certificates[0];
-
-                this.contract = this.web3.eth.contract.new (
-                    this.abi,
-                    this.selectedCertificate.address
-                );
+                this.store
+                    .get    ()
+                    .then   (this.setOptions);
 
                 document.createElement('div');
 
@@ -116,23 +93,51 @@
 
             /* Functions */
 
+            this.accountChanged = accounts => {
+
+                this.graduate = {
+                    address: accounts [0]
+                };
+
+                this.web3.eth.contract.call (this.student, 'getStudent', [this.graduate.address])
+                    .catch (console.error)
+                    .then (this.setGraduate);
+
+            };
+
+            this.setGraduate = result => {
+                this.graduate.firstname = result.firstname;
+                this.graduate.lastname  = result.lastname;
+            };
+
+            this.setOptions = data => {
+
+                data.forEach (certificate => {
+
+                    const option = document.createElement ('option');
+
+                    option.value        = certificate.key;
+                    option.innerText    = certificate.name;
+
+                    this.element.querySelector ('select').appendChild (option);
+                });
+            };
+
             this.showCertificate = () => {
 
-                this.contract.options.address = this.selectedCertificate.address;
-
-                this.web3.eth.contract.call(this.contract, 'getCertificate', [], {from: this.graduate})
-                    .catch(console.error)
-                    .then(result => {
+                this.web3.eth.contract.call (this.certificate, 'getCertificate', [], {from: this.graduate.address})
+                    .catch (console.error)
+                    .then (result => {
 
                         if (result.passed) {
 
                             const check = this.element.querySelector('input').value;
 
-                            this.qrcode.makeCode(`${check}c=${this.selectedCertificate.address}&g=${this.graduate}`);
+                            this.qrcode.makeCode (`${check}c=${this.certificate.address}&g=${this.graduate.address}`);
 
                             this.ccm.helper.setContent (this.element.querySelector('li:last-child'), this.ccm.helper.html(this.html[1], {
-                                graduate: `${this.student.firstname} ${this.student.lastname}`,
-                                certificate: this.selectedCertificate.name,
+                                graduate: `${this.graduate.firstname} ${this.graduate.lastname}`,
+                                certificate: this.certificate.name,
                                 location: 'St. Augustin',
                                 date: new Date().toDateString(),
                                 qrcode: this.qrcode._el

@@ -2,11 +2,11 @@
  * @component ccm-component_request
  * @author René Müller <rene.mueller@smail.inf.h-brs.de> 2019
  * @license MIT License
- * @version 1.0.0
+ * @version 2.0.0
  */
 
-ccm.files['html.js'] = [
-    {
+ccm.files['html.js'] = {
+    "main": {
         "class": "card text-center",
         "style": "width: 32rem; margin: 0 auto;",
         "inner": [
@@ -52,7 +52,7 @@ ccm.files['html.js'] = [
                             {
                                 "tag": "p",
                                 "class": "text-secondary",
-                                "inner": "Define all requirements this component should have. <a href='#'>Here</a> you can find a template for writing good requirements."
+                                "inner": "Define all requirements this component should have. <a href='https://www.sophist.de/fileadmin/user_upload/Bilder_zu_Seiten/Publikationen/Wissen_for_free/MASTeR_-Kern_RE-Plakat2.pdf' target='_blank'>Here</a> you can find a template for writing good requirements."
                             },
                             {
                                 "tag": "span",
@@ -101,7 +101,7 @@ ccm.files['html.js'] = [
                                 "tag": "label",
                                 "inner": {
                                     "tag": "strong",
-                                    "inner": "Fund"
+                                    "inner": "Initial fund"
                                 }
                             },
                             {
@@ -119,7 +119,7 @@ ccm.files['html.js'] = [
                                         "name": "fund",
                                         "class": "form-control",
                                         "type": "number",
-                                        "placeholder": "Fund for this component"
+                                        "placeholder": "Initial fund for this component"
                                     }
                                 ]
                             }
@@ -133,12 +133,12 @@ ccm.files['html.js'] = [
                                 "tag": "label",
                                 "inner": {
                                     "tag": "strong",
-                                    "inner": "Funder"
+                                    "inner": "Initiator"
                                 }
                             },
                             {
                                 "tag": "input",
-                                "name": "funder",
+                                "name": "initiator",
                                 "class": "form-control",
                                 "readonly": "readonly"
                             }
@@ -170,7 +170,8 @@ ccm.files['html.js'] = [
             }
         ]
     },
-    {
+
+    "requirement": {
         "class": "form-group",
         "inner": {
             "tag": "input",
@@ -178,7 +179,8 @@ ccm.files['html.js'] = [
             "placeholder": "This component should..."
         }
     },
-    [
+
+    "done": [
         {
             "tag": "li",
             "class": "list-group-item",
@@ -200,4 +202,4 @@ ccm.files['html.js'] = [
             }
         }
     ]
-];
+};

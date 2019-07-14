@@ -19,14 +19,24 @@ ccm.files['abi.js'] = [
             }
         ],
         "name": "enroll",
-        "outputs": [],
+        "outputs": [
+            {
+                "name": "enrolled",
+                "type": "bool"
+            }
+        ],
         "payable": false,
         "stateMutability": "nonpayable",
         "type": "function"
     },
     {
         "constant": true,
-        "inputs": [],
+        "inputs": [
+            {
+                "name": "_student",
+                "type": "address"
+            }
+        ],
         "name": "getStudent",
         "outputs": [
             {
@@ -41,17 +51,5 @@ ccm.files['abi.js'] = [
         "payable": false,
         "stateMutability": "view",
         "type": "function"
-    },
-    {
-        "anonymous": false,
-        "inputs": [
-            {
-                "indexed": false,
-                "name": "status",
-                "type": "bool"
-            }
-        ],
-        "name": "eEnrolled",
-        "type": "event"
     }
 ];

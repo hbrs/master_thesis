@@ -2,24 +2,10 @@
  * @component ccm-faucet
  * @author René Müller <rene.mueller@smail.inf.h-brs.de> 2019
  * @license MIT License
- * @version 1.0.0
+ * @version 2.0.0
  */
 
-ccm.files['abi_faucet.js'] = [
-    {
-        "constant": true,
-        "inputs": [],
-        "name": "etherLeft",
-        "outputs": [
-            {
-                "name": "",
-                "type": "uint256"
-            }
-        ],
-        "payable": false,
-        "stateMutability": "view",
-        "type": "function"
-    },
+ccm.files['abi.js'] = [
     {
         "constant": false,
         "inputs": [
@@ -32,6 +18,25 @@ ccm.files['abi_faucet.js'] = [
         "outputs": [],
         "payable": true,
         "stateMutability": "payable",
+        "type": "function"
+    },
+    {
+        "payable": true,
+        "stateMutability": "payable",
+        "type": "fallback"
+    },
+    {
+        "constant": true,
+        "inputs": [],
+        "name": "etherLeft",
+        "outputs": [
+            {
+                "name": "",
+                "type": "uint256"
+            }
+        ],
+        "payable": false,
+        "stateMutability": "view",
         "type": "function"
     },
     {
@@ -52,11 +57,5 @@ ccm.files['abi_faucet.js'] = [
         "payable": false,
         "stateMutability": "view",
         "type": "function"
-    },
-    {
-        "inputs": [],
-        "payable": true,
-        "stateMutability": "payable",
-        "type": "constructor"
     }
 ];
