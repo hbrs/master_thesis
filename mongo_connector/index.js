@@ -23,12 +23,6 @@ mongo.MongoClient.connect (
             console.log (err);
 });
 
-
-app.use ((req, res, next) => {
-    res.header ('Content-Type', 'application/json');
-    next();
-});
-
 app.get ('/time/:id', (req, res) => {
 
     hrtime_start = process.hrtime();
@@ -39,7 +33,7 @@ app.get ('/time/:id', (req, res) => {
 
         hrtime_end = process.hrtime (hrtime_start);
 
-        res.send ({
+        res.json ({
             data: result,
             time: hrtime_end
         });
